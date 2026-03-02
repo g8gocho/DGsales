@@ -4,6 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DGsales - AI Agents</title>
+  
+  <!-- RETELL WIDGET OFICIAL -->
+  <script
+    id="retell-widget"
+    src="https://dashboard.retellai.com/retell-widget.js"
+    type="module"
+    data-public-key="public_key_262fc8f1f2d032aa6ffee"
+    data-agent-id="agent_901b51dc8d7fecaef2e68a82b4"
+    data-title="Chat con DGsales"
+    data-color="#00d4ff"
+    data-bot-name="Asistente DGsales"
+  ></script>
+  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #fff; min-height: 100vh; }
@@ -16,208 +29,61 @@
     .agent-icon { font-size: 3rem; margin-bottom: 15px; }
     .agent-card h2 { font-size: 1.3rem; color: #00d4ff; margin-bottom: 10px; }
     .agent-card p { color: #888; font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
-    .buttons { display: flex; flex-direction: column; gap: 12px; }
-    .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 20px; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; }
-    .btn-chat { background: linear-gradient(135deg, #00d4ff, #0099cc); color: #000; }
-    .btn-call { background: linear-gradient(135deg, #00ff88, #00cc66); color: #000; }
-    .btn:hover { opacity: 0.85; transform: scale(1.02); }
+    .status-badge { display: inline-block; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; margin-bottom: 20px; }
+    .status-active { background: rgba(0, 212, 255, 0.2); color: #00d4ff; border: 1px solid #00d4ff; }
+    .status-soon { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid #ffaa00; }
     footer { text-align: center; padding: 30px; color: #444; border-top: 1px solid #222; margin-top: 20px; }
-    /* Custom chat widget styles */
-    .chat-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9998; display: flex; align-items: center; justify-content: center; }
-    .chat-container { background: #1a1a2e; border-radius: 16px; width: 400px; max-width: 95vw; height: 600px; max-height: 90vh; position: relative; overflow: hidden; border: 1px solid #333; display: flex; flex-direction: column; }
-    .chat-header { background: linear-gradient(135deg, #00d4ff, #0099cc); padding: 16px; color: #000; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
-    .close-btn { background: none; border: none; color: #000; font-size: 1.5rem; cursor: pointer; font-weight: 700; }
-    .chat-messages { flex: 1; overflow-y: auto; padding: 20px; }
-    .chat-input-container { padding: 16px; background: #16213e; border-top: 1px solid #333; }
-    .chat-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #1a1a2e; color: #fff; font-size: 0.95rem; }
-    .message { margin-bottom: 16px; }
-    .message.user { text-align: right; }
-    .message.bot { text-align: left; }
-    .message-bubble { display: inline-block; padding: 10px 16px; border-radius: 12px; max-width: 80%; word-wrap: break-word; }
-    .message.user .message-bubble { background: #00d4ff; color: #000; }
-    .message.bot .message-bubble { background: #2a2a4e; color: #fff; }
+    .info-box { background: rgba(0, 212, 255, 0.1); border: 1px solid #00d4ff; border-radius: 12px; padding: 24px; margin: 0 40px 40px 40px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+    .info-box h3 { color: #00d4ff; margin-bottom: 12px; font-size: 1.2rem; }
+    .info-box p { color: #aaa; line-height: 1.6; margin-bottom: 8px; }
   </style>
 </head>
 <body>
 
 <header>
   <h1>DG<span style="color:#fff">sales</span></h1>
-  <p>AI-Powered Sales Agents — Chat or Call anytime</p>
+  <p>AI-Powered Sales Agents — Chat disponible ahora</p>
 </header>
+
+<div class="info-box">
+  <h3>👋 ¡El chat ya funciona!</h3>
+  <p><strong>Haz clic en el botón azul flotante</strong> (esquina inferior derecha) para chatear con nuestro agente "Conversation Flow Agent".</p>
+  <p>Los otros 2 agentes estarán disponibles próximamente cuando implementemos el backend.</p>
+</div>
 
 <div class="agents-grid">
   <!-- AGENT 1: Conversation Flow Agent -->
   <div class="agent-card">
     <div class="agent-icon">💬</div>
+    <span class="status-badge status-active">✔️ Activo ahora</span>
     <h2>Conversation Flow Agent</h2>
     <p>Asistente de soporte general. Gestiona devoluciones, estado de pedidos y consultas de clientes.</p>
-    <div class="buttons">
-      <button class="btn btn-chat" onclick="openRetellChat('agent_901b51dc8d7fecaef2e68a82b4', 'Conversation Flow Agent')">💬 Chat con agente</button>
-      <button class="btn btn-call" onclick="openRetellCallback('agent_901b51dc8d7fecaef2e68a82b4')">📞 Solicitar llamada</button>
-    </div>
+    <p style="color:#00d4ff;font-weight:600;font-size:0.9rem;">→ Usa el botón flotante azul para chatear</p>
   </div>
 
   <!-- AGENT 2: Healthcare Check-In -->
   <div class="agent-card">
     <div class="agent-icon">🩺</div>
+    <span class="status-badge status-soon">Próximamente</span>
     <h2>Healthcare Check-In</h2>
     <p>Kate, asistente del departamento de citas. Prepara el chequeo anual y recoge datos del paciente.</p>
-    <div class="buttons">
-      <button class="btn btn-chat" onclick="openRetellChat('agent_18c0f1ef610e020badc961478e', 'Healthcare Check-In')">💬 Chat con agente</button>
-      <button class="btn btn-call" onclick="openRetellCallback('agent_18c0f1ef610e020badc961478e')">📞 Solicitar llamada</button>
-    </div>
+    <p style="color:#888;font-size:0.85rem;font-style:italic;">Requiere backend para activarse</p>
   </div>
 
   <!-- AGENT 3: Patient Screening -->
   <div class="agent-card">
     <div class="agent-icon">🧬</div>
+    <span class="status-badge status-soon">Próximamente</span>
     <h2>Patient Screening</h2>
     <p>Anna, representante de Retell Healthcare. Verifica identidad y conecta pacientes con servicios sociales y de salud.</p>
-    <div class="buttons">
-      <button class="btn btn-chat" onclick="openRetellChat('agent_1f088512dfc33e0c68bea6f031', 'Patient Screening')">💬 Chat con agente</button>
-      <button class="btn btn-call" onclick="openRetellCallback('agent_1f088512dfc33e0c68bea6f031')">📞 Solicitar llamada</button>
-    </div>
+    <p style="color:#888;font-size:0.85rem;font-style:italic;">Requiere backend para activarse</p>
   </div>
 </div>
 
 <footer>
   <p>DGsales © 2026 — Powered by Retell AI</p>
+  <p style="font-size:0.8rem;color:#666;margin-top:8px;">El widget de chat está activo. Los demás agentes se activarán con backend.</p>
 </footer>
-
-<!-- RETELL CHAT WIDGET -->
-<script>
-  const PUBLIC_KEY = 'public_key_262fc8f1f2d032aa6ffee';
-  let currentChatWindow = null;
-
-  // Función para abrir chat con el widget oficial de Retell
-  function openRetellChat(agentId, agentName) {
-    // Cerrar ventana anterior si existe
-    if (currentChatWindow) {
-      document.body.removeChild(currentChatWindow);
-    }
-
-    // Crear overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'chat-overlay';
-    overlay.id = 'retell-chat-overlay';
-    
-    // Crear iframe del widget de Retell
-    overlay.innerHTML = `
-      <div class="chat-container">
-        <div class="chat-header">
-          <span>${agentName}</span>
-          <button class="close-btn" onclick="closeChatWindow()">×</button>
-        </div>
-        <iframe
-          id="retell-chat-iframe"
-          src="https://retell-ai-chat-widget.vercel.app/?publicKey=${PUBLIC_KEY}&agentId=${agentId}"
-          style="width:100%;height:100%;border:none;flex:1;"
-          allow="microphone"
-        ></iframe>
-      </div>
-    `;
-    
-    document.body.appendChild(overlay);
-    currentChatWindow = overlay;
-
-    // Cerrar al hacer clic fuera
-    overlay.addEventListener('click', function(e) {
-      if (e.target === overlay) {
-        closeChatWindow();
-      }
-    });
-  }
-
-  function closeChatWindow() {
-    if (currentChatWindow) {
-      document.body.removeChild(currentChatWindow);
-      currentChatWindow = null;
-    }
-  }
-
-  // Función para abrir el callback widget (solicitar llamada)
-  function openRetellCallback(agentId) {
-    // Cerrar cualquier ventana de chat abierta
-    if (currentChatWindow) {
-      closeChatWindow();
-    }
-
-    // Crear overlay para callback
-    const overlay = document.createElement('div');
-    overlay.className = 'chat-overlay';
-    overlay.id = 'retell-callback-overlay';
-    
-    overlay.innerHTML = `
-      <div class="chat-container">
-        <div class="chat-header">
-          <span>Solicitar llamada</span>
-          <button class="close-btn" onclick="closeCallbackWindow()">×</button>
-        </div>
-        <div style="padding:24px;flex:1;overflow-y:auto;">
-          <p style="color:#aaa;margin-bottom:20px;">Ingresa tus datos y te llamaremos de inmediato:</p>
-          <form id="callback-form" style="display:flex;flex-direction:column;gap:16px;">
-            <input type="text" id="first-name" placeholder="Nombre" required style="padding:12px;border-radius:8px;border:1px solid #444;background:#1a1a2e;color:#fff;" />
-            <input type="text" id="last-name" placeholder="Apellido" required style="padding:12px;border-radius:8px;border:1px solid #444;background:#1a1a2e;color:#fff;" />
-            <input type="tel" id="phone" placeholder="Teléfono (ej: +34612345678)" required style="padding:12px;border-radius:8px;border:1px solid #444;background:#1a1a2e;color:#fff;" />
-            <label style="color:#aaa;font-size:0.85rem;display:flex;align-items:center;gap:8px;">
-              <input type="checkbox" required />
-              Acepto recibir una llamada del agente
-            </label>
-            <button type="submit" class="btn btn-call" style="width:100%;margin-top:8px;">📞 Recibir llamada ahora</button>
-          </form>
-          <div id="callback-status" style="margin-top:20px;color:#00d4ff;text-align:center;display:none;"></div>
-        </div>
-      </div>
-    `;
-    
-    document.body.appendChild(overlay);
-    currentChatWindow = overlay;
-
-    // Manejar submit del formulario
-    const form = document.getElementById('callback-form');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const firstName = document.getElementById('first-name').value;
-      const lastName = document.getElementById('last-name').value;
-      const phone = document.getElementById('phone').value;
-      const statusEl = document.getElementById('callback-status');
-      
-      statusEl.style.display = 'block';
-      statusEl.textContent = 'Iniciando llamada...';
-
-      try {
-        // Nota: Esta llamada requiere un backend con la API Key secreta
-        // Por ahora mostramos el mensaje de que se implementará el backend
-        statusEl.innerHTML = `
-          <p style="color:#ffaa00;">⚠️ La funcionalidad de llamadas requiere un servidor backend.</p>
-          <p style="color:#aaa;font-size:0.85rem;margin-top:10px;">
-            Los datos ingresados:<br/>
-            ${firstName} ${lastName}<br/>
-            ${phone}<br/><br/>
-            Por favor, usa el Chat mientras configuramos el sistema de llamadas.
-          </p>
-        `;
-      } catch (error) {
-        statusEl.innerHTML = `<p style="color:#ff4444;">Error: ${error.message}</p>`;
-      }
-    });
-
-    // Cerrar al hacer clic fuera
-    overlay.addEventListener('click', function(e) {
-      if (e.target === overlay) {
-        closeCallbackWindow();
-      }
-    });
-  }
-
-  function closeCallbackWindow() {
-    const overlay = document.getElementById('retell-callback-overlay');
-    if (overlay) {
-      document.body.removeChild(overlay);
-      currentChatWindow = null;
-    }
-  }
-</script>
 
 </body>
 </html>
