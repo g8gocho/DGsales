@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DGsales - AI Voice & Chat</title>
+    <!-- Widget en Head para mejor carga -->
+    <script
+        id="retell-widget"
+        src="https://dashboard.retellai.com/retell-widget.js"
+        data-public-key="public_key_262fc8f1f2d032aa6ffee"
+        data-agent-id="agent_901b51dc8d7fecaef2e68a82b4"
+        data-title="DGsales AI Chat"
+        data-bot-name="DG Assistant"
+        data-color="#6366f1"
+    ></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -24,144 +34,108 @@
             background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
             z-index: -1;
         }
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            text-align: center;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .container { max-width: 1000px; width: 100%; text-align: center; }
+        h1 { font-size: 3rem; margin-bottom: 10px; background: linear-gradient(to right, #fff, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         p { color: #94a3b8; margin-bottom: 40px; }
-        .agents-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            width: 100%;
-        }
-        .agent-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px;
-            transition: transform 0.3s ease;
-        }
+        .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 100%; }
+        .agent-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 30px; transition: transform 0.3s ease; }
         .agent-card:hover { transform: translateY(-5px); border-color: rgba(99, 102, 241, 0.5); }
-        .agent-card h3 { margin-bottom: 15px; font-size: 1.4rem; }
-        .btn-call {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 14px;
-            width: 100%;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
-        }
+        .btn-call { background: #fff; color: #000; border: none; padding: 14px; width: 100%; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s; }
         .btn-call:hover { background: #6366f1; color: #fff; }
         .btn-call:disabled { opacity: 0.5; cursor: not-allowed; }
-        .status-area {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: #22c55e;
-            display: none;
-        }
+        .status-area { margin-top: 15px; font-size: 0.9rem; color: #22c55e; display: none; }
+        #debug-log { position: fixed; bottom: 10px; left: 10px; font-family: monospace; font-size: 10px; color: #666; max-width: 300px; text-align: left; pointer-events: none; }
     </style>
 </head>
 <body>
     <div class="bg-glow"></div>
     <div class="container">
         <h1>DGsales</h1>
-        <p>Selecciona un agente para iniciar una llamada de voz</p>
-        
+        <p>Real-time AI Voice Agents</p>
         <div class="agents-grid">
-            <!-- Agent 1 -->
             <div class="agent-card">
                 <h3>Conversation Flow</h3>
-                <p>Soporte general y ventas</p>
+                <p>General Support & Sales</p>
                 <button class="btn-call" onclick="startCall('agent_901b51dc8d7fecaef2e68a82b4', this)">
-                    <span>🎙️</span> Llamar ahora
+                    <span class="icon">🎙️</span> <span class="text">Llamar ahora</span>
                 </button>
                 <div class="status-area">Conectado...</div>
             </div>
-            
-            <!-- Agent 2 -->
             <div class="agent-card">
                 <h3>Healthcare Check-In</h3>
-                <p>Asistente de citas médicas</p>
+                <p>Medical Appointments</p>
                 <button class="btn-call" onclick="startCall('agent_18c0f1ef610e020badc961478e', this)">
-                    <span>🎙️</span> Llamar ahora
+                    <span class="icon">🎙️</span> <span class="text">Llamar ahora</span>
                 </button>
                 <div class="status-area">Conectado...</div>
             </div>
-            
-            <!-- Agent 3 -->
             <div class="agent-card">
                 <h3>Patient Screening</h3>
-                <p>Verificación de identidad</p>
+                <p>Identity Verification</p>
                 <button class="btn-call" onclick="startCall('agent_1f088512dfc33e0c68bea6f031', this)">
-                    <span>🎙️</span> Llamar ahora
+                    <span class="icon">🎙️</span> <span class="text">Llamar ahora</span>
                 </button>
                 <div class="status-area">Conectado...</div>
             </div>
         </div>
     </div>
+    <div id="debug-log"></div>
 
-    <!-- SDK Retell Voice -->
     <script src="https://unpkg.com/retell-client-js-sdk@2.0.7/dist/index.umd.js"></script>
-    
-    <!-- Retell Chat Widget Script -->
-    <script
-        id="retell-widget"
-        src="https://dashboard.retellai.com/retell-widget.js"
-        data-public-key="public_key_262fc8f1f2d032aa6ffee"
-        data-agent-id="agent_901b51dc8d7fecaef2e68a82b4"
-        data-title="DGsales AI Chat"
-        data-bot-name="DG Assistant"
-        data-color="#6366f1"
-    ></script>
-
     <script>
         let retellClient;
         let activeBtn = null;
 
+        function log(msg) {
+            console.log(msg);
+            const debug = document.getElementById('debug-log');
+            debug.innerHTML += msg + '<br>';
+        }
+
+        window.onerror = function(msg, url, line) {
+            log('Error: ' + msg + ' at ' + line);
+            alert('Fatal error: ' + msg);
+        };
+
         window.onload = () => {
-            const RetellClient = window.retellClientJsSdk.RetellWebClient;
-            retellClient = new RetellClient();
+            try {
+                log('Iniciando SDK...');
+                // Buscamos el constructor de forma segura
+                const Sdk = window.retellClientJsSdk || window.RetellClientJsSdk || window.Retell;
+                if (!Sdk) throw new Error('Retell SDK not found in window');
+                
+                const Client = Sdk.RetellWebClient || Sdk;
+                retellClient = new Client();
+                log('SDK Listo.');
 
-            retellClient.on("call_started", () => {
-                if (activeBtn) {
-                    activeBtn.querySelector('span').textContent = '🔴';
-                    activeBtn.lastChild.textContent = ' Finalizar';
-                    activeBtn.parentElement.querySelector('.status-area').style.display = 'block';
-                }
-            });
+                retellClient.on("call_started", () => {
+                    log('Llamada iniciada');
+                    if (activeBtn) {
+                        activeBtn.querySelector('.icon').textContent = '🔴';
+                        activeBtn.querySelector('.text').textContent = ' Finalizar';
+                        activeBtn.parentElement.querySelector('.status-area').style.display = 'block';
+                    }
+                });
 
-            retellClient.on("call_ended", () => {
-                resetUI();
-            });
+                retellClient.on("call_ended", () => {
+                    log('Llamada finalizada');
+                    resetUI();
+                });
 
-            retellClient.on("error", (err) => {
-                console.error(err);
-                alert("Error: " + err.message);
-                resetUI();
-            });
+                retellClient.on("error", (err) => {
+                    log('Error SDK: ' + err.message);
+                    alert("Retell Error: " + err.message);
+                    resetUI();
+                });
+            } catch(e) {
+                log('Init error: ' + e.message);
+            }
         };
 
         function resetUI() {
             if (activeBtn) {
-                activeBtn.querySelector('span').textContent = '🎙️';
-                activeBtn.lastChild.textContent = ' Llamar ahora';
+                activeBtn.querySelector('.icon').textContent = '🎙️';
+                activeBtn.querySelector('.text').textContent = ' Llamar ahora';
                 activeBtn.parentElement.querySelector('.status-area').style.display = 'none';
                 activeBtn.disabled = false;
                 activeBtn = null;
@@ -171,29 +145,35 @@
 
         async function startCall(agentId, btn) {
             if (activeBtn) {
+                log('Deteniendo llamada...');
                 retellClient.stopCall();
                 return;
             }
 
             try {
                 activeBtn = btn;
+                log('Conectando agente: ' + agentId);
                 document.querySelectorAll('.btn-call').forEach(b => { if(b !== btn) b.disabled = true; });
-                btn.lastChild.textContent = ' Conectando...';
+                btn.querySelector('.text').textContent = ' Conectando...';
 
-                // Usamos la URL absoluta de Vercel para la API
                 const response = await fetch('https://d-gsales.vercel.app/api/create-call', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ agent_id: agentId })
                 });
 
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Error en el servidor');
+                }
+
                 const data = await response.json();
-                if (!data.access_token) throw new Error("No se pudo obtener el token");
+                log('Token recibido.');
 
                 await retellClient.startCall({ accessToken: data.access_token });
             } catch (err) {
-                console.error(err);
-                alert("Error al iniciar voz: " + err.message);
+                log('Error startCall: ' + err.message);
+                alert("Error: " + err.message);
                 resetUI();
             }
         }
