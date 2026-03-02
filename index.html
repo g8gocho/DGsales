@@ -3,288 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DGsales - Asistente de Ventas AI</title>
+    <title>DGsales - AI Voice & Chat</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #000;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #050505;
             color: #fff;
             min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        /* Animated gradient background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            opacity: 0.15;
-            z-index: 0;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 80px;
-            padding-top: 40px;
-        }
-        
-        h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-            letter-spacing: -2px;
-        }
-        
-        .subtitle {
-            font-size: 1.5rem;
-            color: #a0a0a0;
-            font-weight: 300;
-        }
-        
-        .hero-section {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 60vh;
-            text-align: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        
-        .agent-card {
+        .bg-glow {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+            z-index: -1;
+        }
+        .orb {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+            animation: move 20s infinite alternate;
+        }
+        @keyframes move {
+            from { transform: translate(-20%, -20%); }
+            to { transform: translate(20%, 20%); }
+        }
+        .card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 60px 80px;
-            max-width: 700px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .agent-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
-            animation: rotateGlow 8s linear infinite;
-        }
-        
-        @keyframes rotateGlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        .agent-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(102, 126, 234, 0.5);
-            box-shadow: 0 30px 60px rgba(102, 126, 234, 0.3);
-        }
-        
-        .agent-icon {
-            font-size: 5rem;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 10px 20px rgba(102, 126, 234, 0.5));
-        }
-        
-        .agent-card h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .agent-card p {
-            font-size: 1.2rem;
-            color: #b0b0b0;
-            line-height: 1.8;
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .cta-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            border: none;
-            padding: 20px 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-        
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .cta-button:hover::before {
-            left: 100%;
-        }
-        
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-        }
-        
-        .cta-button:active {
-            transform: scale(0.98);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 80px;
-            padding: 0 20px;
-        }
-        
-        .feature {
+            border-radius: 40px;
+            padding: 60px;
             text-align: center;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        
-        .feature:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-        
-        .feature h3 {
-            font-size: 1.3rem;
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
             margin-bottom: 10px;
-            color: #667eea;
+            background: linear-gradient(to right, #fff, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
-        .feature p {
-            color: #888;
-            line-height: 1.6;
+        p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
         }
-        
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 100px;
-            color: #666;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .btn-call {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 20px;
         }
-        
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .subtitle { font-size: 1.1rem; }
-            .agent-card { padding: 40px 30px; }
-            .agent-card h2 { font-size: 1.8rem; }
-            .features { grid-template-columns: 1fr; }
+        .btn-call:hover {
+            transform: scale(1.02);
+            background: #6366f1;
+            color: #fff;
+        }
+        .status-container {
+            margin-top: 20px;
+            display: none;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        #voice-visualizer {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 20px;
+        }
+        .bar {
+            width: 4px;
+            height: 10px;
+            background: #6366f1;
+            border-radius: 2px;
+            transition: height 0.1s ease;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>DGsales</h1>
-            <p class="subtitle">Tu Asistente de Ventas con Inteligencia Artificial</p>
-        </header>
+    <div class="bg-glow"></div>
+    <div class="orb"></div>
+    
+    <div class="card">
+        <h1>DGsales</h1>
+        <p>Voz e Inteligencia Artificial en Tiempo Real</p>
         
-        <div class="hero-section">
-            <div class="agent-card">
-                <div class="agent-icon">🎯</div>
-                <h2>Asistente de Ventas</h2>
-                <p>Habla directamente con nuestro agente AI. Gestiona devoluciones, consulta el estado de tus pedidos y obtén soporte instantáneo.</p>
-                <button class="cta-button" id="openAgent">💬 Iniciar Conversación</button>
-            </div>
-        </div>
-        
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">🎙️</div>
-                <h3>Voz en Tiempo Real</h3>
-                <p>Conversa naturalmente como si hablaras con una persona real</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">⚡</div>
-                <h3>Respuestas Instantáneas</h3>
-                <p>Obtén ayuda inmediata sin esperas ni formularios</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <h3>100% Seguro</h3>
-                <p>Tus datos están protegidos con encriptación de última generación</p>
+        <button class="btn-call" id="callBtn">
+            <span id="btnIcon">🎙️</span>
+            <span id="btnText">Hablar ahora</span>
+        </button>
+
+        <div class="status-container" id="statusArea">
+            <div class="status-dot"></div>
+            <span id="statusText">Llamada activa...</span>
+            <div id="voice-visualizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
         </div>
     </div>
-    
-    <footer>
-        <p>DGsales © 2026 — Powered by Retell AI</p>
-    </footer>
-    
-    <!-- Retell Official Widget -->
-    <script
-        id="retell-widget"
-        src="https://dashboard.retellai.com/retell-widget.js"
-        data-public-key="public_key_262fc8f1f2d032aa6ffee"
-        data-agent-id="agent_901b51dc8d7fecaef2e68a82b4"
-        data-title="Asistente DGsales"
-        data-color="#667eea"
-        data-widget="chat"
-    ></script>
-    
+
+    <!-- SDK de Retell -->
+    <script src="https://unpkg.com/retell-client-js-sdk@2.0.7/dist/index.umd.js"></script>
+
     <script>
-        // Open widget when button is clicked
-        document.getElementById('openAgent').addEventListener('click', function() {
-            if (window.retellWidget) {
-                window.retellWidget.open();
+        let retellWebClient;
+        const callBtn = document.getElementById('callBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        const statusArea = document.getElementById('statusArea');
+        const statusText = document.getElementById('statusText');
+        
+        let isCalling = false;
+
+        async function initRetell() {
+            try {
+                // El SDK se expone como window.retellClientJsSdk
+                const RetellClient = window.retellClientJsSdk.RetellWebClient;
+                retellWebClient = new RetellClient();
+
+                retellWebClient.on("call_started", () => {
+                    console.log("Call started");
+                    isCalling = true;
+                    btnText.textContent = "Finalizar";
+                    btnIcon.textContent = "🔴";
+                    statusArea.style.display = "block";
+                    statusText.textContent = "Agente escuchando...";
+                });
+
+                retellWebClient.on("call_ended", () => {
+                    console.log("Call ended");
+                    resetUI();
+                });
+
+                retellWebClient.on("error", (error) => {
+                    console.error("Retell Error:", error);
+                    alert("Error: " + error.message);
+                    resetUI();
+                });
+
+                // Visualizador de voz simple
+                retellWebClient.on("update", (update) => {
+                    if (update.type === "transcript") {
+                        // Podríamos mostrar el texto aquí si quisiéramos
+                    }
+                });
+
+            } catch (e) {
+                console.error("Error al inicializar SDK:", e);
+            }
+        }
+
+        function resetUI() {
+            isCalling = false;
+            btnText.textContent = "Hablar ahora";
+            btnIcon.textContent = "🎙️";
+            statusArea.style.display = "none";
+        }
+
+        callBtn.addEventListener('click', async () => {
+            if (isCalling) {
+                retellWebClient.stopCall();
+                return;
+            }
+
+            try {
+                btnText.textContent = "Conectando...";
+                
+                // Llamamos a tu backend en Vercel para obtener el token
+                const response = await fetch('/api/create-call', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ agent_id: 'agent_901b51dc8d7fecaef2e68a82b4' })
+                });
+
+                const data = await response.json();
+                
+                if (!data.access_token) {
+                    throw new Error("No se pudo obtener el token de acceso");
+                }
+
+                await retellWebClient.startCall({
+                    accessToken: data.access_token,
+                });
+
+            } catch (err) {
+                console.error("Error al iniciar llamada:", err);
+                alert("No se pudo iniciar la llamada: " + err.message);
+                resetUI();
             }
         });
+
+        // Inicializar al cargar
+        window.onload = initRetell;
     </script>
 </body>
 </html>
