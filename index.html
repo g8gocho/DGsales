@@ -1,161 +1,164 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DGsales - AI Voice Agent</title>
-
-    <!-- Retell Chat Widget -->
-    <script
-        id="retell-widget"
-        src="https://dashboard.retellai.com/retell-widget.js"
-        data-public-key="public_key_262fc8f1f2d032aa6ffee"
-        data-agent-id="agent_901b51dc8d7fecaef2e68a82b4"
-        data-title="DGsales AI Chat"
-        data-bot-name="DG Assistant"
-        data-color="#6366f1"
-    ></script>
-
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: #050505; color: #fff;
-            min-height: 100vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 20px;
-        }
-        .bg-glow {
-            position: fixed; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
-            z-index: -1;
-        }
-        .container {
-            max-width: 480px; width: 100%; text-align: center;
-        }
-        h1 {
-            font-size: 3rem; margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, #6366f1);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        p { color: #94a3b8; margin-bottom: 48px; }
-        .agent-card {
-            background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
-            padding: 40px 30px;
-        }
-        .agent-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; }
-        .agent-desc { color: #94a3b8; font-size: 0.95rem; margin-bottom: 32px; }
-        .btn-call {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.5);
-            color: #fff; padding: 16px 32px; border-radius: 50px;
-            font-size: 1.05rem; font-weight: 500; cursor: pointer;
-            transition: all 0.3s ease; width: 100%;
-        }
-        .btn-call:hover:not(:disabled) {
-            background: rgba(99,102,241,0.4); border-color: #6366f1;
-            transform: scale(1.02);
-        }
-        .btn-call:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-call.active {
-            background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.6);
-        }
-        .mic-icon { font-size: 1.3rem; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DGsales - AI Voice Agent</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #050505; color: #fff;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .bg-glow {
+      position: fixed; width: 100vw; height: 100vh;
+      background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+      z-index: -1;
+    }
+    .container { max-width: 480px; width: 100%; text-align: center; }
+    h1 {
+      font-size: 3rem; margin-bottom: 10px;
+      background: linear-gradient(to right, #fff, #6366f1);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    p { color: #94a3b8; margin-bottom: 48px; }
+    .agent-card {
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+      padding: 40px 30px;
+    }
+    .agent-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; }
+    .agent-desc { color: #94a3b8; font-size: 0.95rem; margin-bottom: 32px; }
+    .status-dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+      background: #6366f1; margin-right: 8px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+    .status-bar {
+      font-size: 0.85rem; color: #94a3b8; margin-bottom: 20px;
+      min-height: 20px;
+    }
+    .btn-call {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.5);
+      color: #fff; padding: 16px 32px; border-radius: 50px;
+      font-size: 1.05rem; font-weight: 500; cursor: pointer;
+      transition: all 0.3s ease; width: 100%;
+    }
+    .btn-call:hover:not(:disabled) {
+      background: rgba(99,102,241,0.4); border-color: #6366f1;
+      transform: scale(1.02);
+    }
+    .btn-call:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-call.active {
+      background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.6);
+    }
+    .mic-icon { font-size: 1.3rem; }
+  </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
-    <div class="container">
-        <h1>DGsales</h1>
-        <p>AI Voice Agent</p>
-        <div class="agent-card">
-            <div class="agent-name">Conversation Flow</div>
-            <div class="agent-desc">General Support & Sales</div>
-            <button class="btn-call" id="btn-call" onclick="handleCall(this)">
-                <span class="mic-icon">&#127899;</span>
-                <span id="btn-text">Llamar ahora</span>
-            </button>
-        </div>
+  <div class="bg-glow"></div>
+  <div class="container">
+    <h1>DGsales</h1>
+    <p>AI Voice Agent</p>
+    <div class="agent-card">
+      <div class="agent-name">Conversation Flow</div>
+      <div class="agent-desc">General Support &amp; Sales</div>
+      <div class="status-bar" id="status"></div>
+      <button class="btn-call" id="btn-call" onclick="handleCall(this)">
+        <span class="mic-icon">&#127897;</span>
+        <span id="btn-text">Llamar ahora</span>
+      </button>
     </div>
+  </div>
 
-    <script>
-        var AGENT_ID = 'agent_901b51dc8d7fecaef2e68a82b4';
-        var retellClient = null;
-        var activeCall = false;
+  <script type="module">
+    import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
 
-        function loadScript(url) {
-            return new Promise(function(resolve, reject) {
-                var s = document.createElement('script');
-                s.src = url;
-                s.onload = resolve;
-                s.onerror = function() { reject(new Error('Failed: ' + url)); };
-                document.head.appendChild(s);
-            });
+    const AGENT_ID = 'agent_901b51dc8d7fecaef2e68a82b4';
+    let retellClient = null;
+    let activeCall = false;
+
+    function setStatus(msg) {
+      document.getElementById('status').textContent = msg;
+    }
+
+    function resetUI() {
+      activeCall = false;
+      const btn = document.getElementById('btn-call');
+      btn.classList.remove('active');
+      btn.disabled = false;
+      document.getElementById('btn-text').textContent = 'Llamar ahora';
+      setStatus('');
+    }
+
+    async function handleCall(btn) {
+      if (activeCall) {
+        retellClient.stopCall();
+        return;
+      }
+      try {
+        btn.disabled = true;
+        document.getElementById('btn-text').textContent = 'Conectando...';
+        setStatus('Iniciando llamada...');
+
+        const response = await fetch('/api/create-call', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agent_id: AGENT_ID })
+        });
+
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.message || 'Error backend: ' + response.status);
         }
 
-        async function initSDK() {
-            try {
-                await loadScript('https://unpkg.com/eventemitter3@5.0.1/dist/eventemitter3.umd.min.js');
-                window.eventemitter3 = window.EventEmitter3;
-                await loadScript('https://unpkg.com/livekit-client/dist/livekit-client.umd.js');
-                window.livekitClient = window.LivekitClient;
-                await loadScript('https://unpkg.com/retell-client-js-sdk@2.0.7/dist/index.umd.js');
-                var RetellWebClient = window.retellClientJsSdk && window.retellClientJsSdk.RetellWebClient;
-                if (!RetellWebClient) throw new Error('RetellWebClient no encontrado');
-                retellClient = new RetellWebClient();
-                retellClient.on('call_started', function() {
-                    activeCall = true;
-                    document.getElementById('btn-call').classList.add('active');
-                    document.getElementById('btn-text').textContent = 'Finalizar llamada';
-                });
-                retellClient.on('call_ended', function() {
-                    resetUI();
-                });
-                retellClient.on('error', function() {
-                    resetUI();
-                });
-            } catch(err) {
-                console.error('Init error:', err.message);
-            }
-        }
+        const data = await response.json();
 
-        function resetUI() {
-            activeCall = false;
-            var btn = document.getElementById('btn-call');
-            btn.classList.remove('active');
-            btn.disabled = false;
-            document.getElementById('btn-text').textContent = 'Llamar ahora';
-        }
+        retellClient = new RetellWebClient();
 
-        async function handleCall(btn) {
-            if (activeCall) {
-                retellClient.stopCall();
-                return;
-            }
-            if (!retellClient) {
-                alert('Cargando SDK, intenta en un momento');
-                return;
-            }
-            try {
-                btn.disabled = true;
-                document.getElementById('btn-text').textContent = 'Conectando...';
-                var response = await fetch('https://d-gsales.vercel.app/api/create-call', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ agent_id: AGENT_ID })
-                });
-                if (!response.ok) throw new Error('Error backend: ' + response.status);
-                var data = await response.json();
-                await retellClient.startCall({ accessToken: data.access_token });
-                btn.disabled = false;
-            } catch (err) {
-                console.error(err);
-                alert('Error al iniciar llamada: ' + err.message);
-                resetUI();
-            }
-        }
+        retellClient.on('call_started', () => {
+          activeCall = true;
+          btn.classList.add('active');
+          btn.disabled = false;
+          document.getElementById('btn-text').textContent = 'Finalizar llamada';
+          setStatus('Llamada activa - habla ahora');
+        });
 
-        initSDK();
-    </script>
+        retellClient.on('call_ended', () => {
+          resetUI();
+        });
+
+        retellClient.on('error', (err) => {
+          console.error('Retell error:', err);
+          setStatus('Error: ' + (err.message || err));
+          resetUI();
+        });
+
+        retellClient.on('agent_start_talking', () => setStatus('Agente hablando...'));
+        retellClient.on('agent_stop_talking', () => setStatus('Llamada activa - habla ahora'));
+
+        await retellClient.startCall({
+          accessToken: data.access_token,
+          sampleRate: 24000,
+          captureDeviceId: 'default',
+          emitRawAudioSamples: false
+        });
+
+      } catch (err) {
+        console.error(err);
+        setStatus('Error: ' + err.message);
+        resetUI();
+      }
+    }
+
+    window.handleCall = handleCall;
+  </script>
 </body>
 </html>
