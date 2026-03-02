@@ -1,89 +1,175 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DGsales - AI Agents</title>
-  
-  <!-- RETELL WIDGET OFICIAL -->
-  <script
-    id="retell-widget"
-    src="https://dashboard.retellai.com/retell-widget.js"
-    type="module"
-    data-public-key="public_key_262fc8f1f2d032aa6ffee"
-    data-agent-id="agent_901b51dc8d7fecaef2e68a82b4"
-    data-title="Chat con DGsales"
-    data-color="#00d4ff"
-    data-bot-name="Asistente DGsales"
-  ></script>
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DGsales - AI Voice Agents</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #fff; min-height: 100vh; }
-    header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 40px 20px; text-align: center; border-bottom: 1px solid #333; }
-    header h1 { font-size: 2.5rem; font-weight: 700; color: #00d4ff; letter-spacing: 2px; }
-    header p { color: #aaa; margin-top: 10px; font-size: 1rem; }
-    .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; padding: 50px 40px; max-width: 1200px; margin: 0 auto; }
-    .agent-card { background: #1a1a2e; border: 1px solid #2a2a4e; border-radius: 16px; padding: 30px; transition: transform 0.3s, box-shadow 0.3s; }
-    .agent-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15); }
-    .agent-icon { font-size: 3rem; margin-bottom: 15px; }
-    .agent-card h2 { font-size: 1.3rem; color: #00d4ff; margin-bottom: 10px; }
-    .agent-card p { color: #888; font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
-    .status-badge { display: inline-block; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; margin-bottom: 20px; }
-    .status-active { background: rgba(0, 212, 255, 0.2); color: #00d4ff; border: 1px solid #00d4ff; }
-    .status-soon { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid #ffaa00; }
-    footer { text-align: center; padding: 30px; color: #444; border-top: 1px solid #222; margin-top: 20px; }
-    .info-box { background: rgba(0, 212, 255, 0.1); border: 1px solid #00d4ff; border-radius: 12px; padding: 24px; margin: 0 40px 40px 40px; max-width: 1200px; margin-left: auto; margin-right: auto; }
-    .info-box h3 { color: #00d4ff; margin-bottom: 12px; font-size: 1.2rem; }
-    .info-box p { color: #aaa; line-height: 1.6; margin-bottom: 8px; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%); color: #fff; min-height: 100vh; }
+    header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 40px 20px; text-align: center; border-bottom: 2px solid #00d4ff; box-shadow: 0 4px 20px rgba(0,212,255,0.2); }
+    header h1 { font-size: 3rem; font-weight: 700; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
+    header p { color: #aaa; margin-top: 12px; font-size: 1.1rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 50px 20px; }
+    .info-banner { background: rgba(0,212,255,0.1); border: 2px solid #00d4ff; border-radius: 12px; padding: 20px 30px; margin-bottom: 40px; text-align: center; }
+    .info-banner h2 { color: #00d4ff; font-size: 1.5rem; margin-bottom: 10px; }
+    .info-banner p { color: #aaa; font-size: 1rem; line-height: 1.6; }
+    .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; }
+    .agent-card { background: rgba(26,26,46,0.8); backdrop-filter: blur(10px); border: 1px solid #2a2a4e; border-radius: 20px; padding: 35px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .agent-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%); transition: 0.5s; }
+    .agent-card:hover::before { top: -60%; right: -60%; }
+    .agent-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,212,255,0.3); border-color: #00d4ff; }
+    .agent-icon { font-size: 4rem; margin-bottom: 20px; }
+    .agent-card h3 { font-size: 1.5rem; color: #00d4ff; margin-bottom: 15px; position: relative; z-index: 1; }
+    .agent-card p { color: #999; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.7; position: relative; z-index: 1; }
+    .btn-voice { background: linear-gradient(135deg, #00ff88, #00cc66); color: #000; padding: 14px 28px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; width: 100%; position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .btn-voice:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0,255,136,0.4); }
+    .btn-voice:active { transform: scale(0.98); }
+    .btn-voice:disabled { background: #444; color: #888; cursor: not-allowed; }
+    #voice-widget { position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: rgba(26,26,46,0.95); backdrop-filter: blur(10px); border: 2px solid #00d4ff; border-radius: 20px; padding: 25px; width: 320px; box-shadow: 0 10px 40px rgba(0,212,255,0.4); display: none; }
+    #voice-widget.active { display: block; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    #voice-widget h4 { color: #00d4ff; font-size: 1.2rem; margin-bottom: 10px; }
+    #voice-widget p { color: #aaa; font-size: 0.9rem; margin-bottom: 15px; }
+    #status { color: #00ff88; font-weight: 600; margin-bottom: 15px; }
+    .btn-end { background: #ff4444; color: #fff; padding: 12px 20px; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; }
+    .btn-end:hover { background: #cc0000; }
+    footer { text-align: center; padding: 40px 20px; color: #666; border-top: 1px solid #222; margin-top: 60px; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>DG<span style="color:#fff">sales</span></h1>
-  <p>AI-Powered Sales Agents — Chat disponible ahora</p>
+  <h1>DGsales</h1>
+  <p>🎙️ AI Voice Agents — Habla con nuestros asistentes de ventas</p>
 </header>
 
-<div class="info-box">
-  <h3>👋 ¡El chat ya funciona!</h3>
-  <p><strong>Haz clic en el botón azul flotante</strong> (esquina inferior derecha) para chatear con nuestro agente "Conversation Flow Agent".</p>
-  <p>Los otros 2 agentes estarán disponibles próximamente cuando implementemos el backend.</p>
+<div class="container">
+  <div class="info-banner">
+    <h2>📞 ¡Voz en Tiempo Real!</h2>
+    <p>Haz clic en "Llamar ahora" para hablar directamente con el agente. <strong>Permite el acceso al micrófono</strong> cuando te lo solicite el navegador.</p>
+  </div>
+
+  <div class="agents-grid">
+    <!-- Agent 1 -->
+    <div class="agent-card">
+      <div class="agent-icon">💬</div>
+      <h3>Conversation Flow Agent</h3>
+      <p>Asistente de soporte general. Gestiona devoluciones, estado de pedidos y consultas de clientes.</p>
+      <button class="btn-voice" onclick="startCall('agent_901b51dc8d7fecaef2e68a82b4', 'Conversation Flow Agent')">
+        🎙️ Llamar ahora
+      </button>
+    </div>
+
+    <!-- Agent 2 -->
+    <div class="agent-card">
+      <div class="agent-icon">🩺</div>
+      <h3>Healthcare Check-In</h3>
+      <p>Kate, asistente del departamento de citas. Prepara el chequeo anual y recoge datos del paciente.</p>
+      <button class="btn-voice" onclick="startCall('agent_18c0f1ef610e020badc961478e', 'Healthcare Check-In')">
+        🎙️ Llamar ahora
+      </button>
+    </div>
+
+    <!-- Agent 3 -->
+    <div class="agent-card">
+      <div class="agent-icon">🧬</div>
+      <h3>Patient Screening</h3>
+      <p>Anna, representante de Retell Healthcare. Verifica identidad y conecta pacientes con servicios sociales y de salud.</p>
+      <button class="btn-voice" onclick="startCall('agent_1f088512dfc33e0c68bea6f031', 'Patient Screening')">
+        🎙️ Llamar ahora
+      </button>
+    </div>
+  </div>
 </div>
 
-<div class="agents-grid">
-  <!-- AGENT 1: Conversation Flow Agent -->
-  <div class="agent-card">
-    <div class="agent-icon">💬</div>
-    <span class="status-badge status-active">✔️ Activo ahora</span>
-    <h2>Conversation Flow Agent</h2>
-    <p>Asistente de soporte general. Gestiona devoluciones, estado de pedidos y consultas de clientes.</p>
-    <p style="color:#00d4ff;font-weight:600;font-size:0.9rem;">→ Usa el botón flotante azul para chatear</p>
-  </div>
-
-  <!-- AGENT 2: Healthcare Check-In -->
-  <div class="agent-card">
-    <div class="agent-icon">🩺</div>
-    <span class="status-badge status-soon">Próximamente</span>
-    <h2>Healthcare Check-In</h2>
-    <p>Kate, asistente del departamento de citas. Prepara el chequeo anual y recoge datos del paciente.</p>
-    <p style="color:#888;font-size:0.85rem;font-style:italic;">Requiere backend para activarse</p>
-  </div>
-
-  <!-- AGENT 3: Patient Screening -->
-  <div class="agent-card">
-    <div class="agent-icon">🧬</div>
-    <span class="status-badge status-soon">Próximamente</span>
-    <h2>Patient Screening</h2>
-    <p>Anna, representante de Retell Healthcare. Verifica identidad y conecta pacientes con servicios sociales y de salud.</p>
-    <p style="color:#888;font-size:0.85rem;font-style:italic;">Requiere backend para activarse</p>
-  </div>
+<!-- Voice Widget Overlay -->
+<div id="voice-widget">
+  <h4 id="agent-name">Conectando...</h4>
+  <p id="status">Iniciando llamada...</p>
+  <p style="font-size:0.85rem;color:#666;">Asegúrate de permitir el acceso al micrófono</p>
+  <button class="btn-end" onclick="endCall()">🔴 Colgar</button>
 </div>
 
 <footer>
-  <p>DGsales © 2026 — Powered by Retell AI</p>
-  <p style="font-size:0.8rem;color:#666;margin-top:8px;">El widget de chat está activo. Los demás agentes se activarán con backend.</p>
+  <p>DGsales &copy; 2026 — Powered by Retell AI</p>
+  <p style="font-size:0.85rem;margin-top:10px;">Voz en tiempo real · SDK de Retell · Ventas retail luxury</p>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/dist/index.umd.js"></script>
+<script>
+  let retellClient = null;
+
+  async function startCall(agentId, agentName) {
+    const widget = document.getElementById('voice-widget');
+    const statusEl = document.getElementById('status');
+    const nameEl = document.getElementById('agent-name');
+
+    widget.classList.add('active');
+    nameEl.textContent = agentName;
+    statusEl.textContent = 'Conectando...';
+
+    try {
+      // Request access token from backend
+      const response = await fetch('/api/create-call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agent_id: agentId })
+      });
+
+      if (!response.ok) {
+        throw new Error('No se pudo conectar al backend. Asegúrate de que Vercel esté configurado.');
+      }
+
+      const data = await response.json();
+      
+      if (!data.access_token) {
+        throw new Error('No se recibió el token de acceso');
+      }
+
+      // Initialize Retell Web Client
+      if (!window.RetellWebClient) {
+        throw new Error('SDK de Retell no cargado');
+      }
+
+      retellClient = new window.RetellWebClient();
+
+      retellClient.on('call_started', () => {
+        statusEl.textContent = '🟢 Llamada activa - Puedes hablar ahora';
+        statusEl.style.color = '#00ff88';
+      });
+
+      retellClient.on('call_ended', () => {
+        statusEl.textContent = 'Llamada finalizada';
+        setTimeout(() => {
+          widget.classList.remove('active');
+        }, 2000);
+      });
+
+      retellClient.on('error', (error) => {
+        console.error('Error:', error);
+        statusEl.textContent = 'Error: ' + error.message;
+        statusEl.style.color = '#ff4444';
+      });
+
+      await retellClient.startCall({ accessToken: data.access_token });
+      statusEl.textContent = '🟢 Conectado - Habla ahora';
+
+    } catch (error) {
+      console.error('Error al iniciar llamada:', error);
+      statusEl.textContent = 'Error: ' + error.message;
+      statusEl.style.color = '#ff4444';
+    }
+  }
+
+  function endCall() {
+    if (retellClient) {
+      retellClient.stopCall();
+      retellClient = null;
+    }
+    document.getElementById('voice-widget').classList.remove('active');
+  }
+</script>
 
 </body>
 </html>
