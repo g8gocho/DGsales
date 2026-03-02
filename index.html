@@ -3,217 +3,263 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DGsales - Webs + IA para tu Negocio</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>DGsales - Webs + Automatización con IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-    @keyframes fade-in { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fade-in { animation: fade-in 1s ease-out; }
-    .agent-card {
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 24px;
+    :root {
+      --gold: #d4af37;
+      --gold-hover: #f1c40f;
+      --bg-dark: #0b0b0b;
+      --bg-card: #1a1a1a;
+      --text-gray: #cccccc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: #ffffff;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    
+    /* Hero Section */
+    .hero {
+      padding: 120px 0;
+      text-align: center;
+      background: linear-gradient(180deg, #0b0b0b 0%, #111111 100%);
+    }
+    .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
+    .subtitle { font-size: 20px; color: var(--text-gray); margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto; }
+    .cta-buttons { margin-bottom: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    
+    .btn-primary {
+      background-color: var(--gold);
+      color: black;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      border: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { background-color: var(--gold-hover); transform: translateY(-2px); }
+    
+    .btn-secondary {
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+      display: inline-block;
+    }
+    .btn-secondary:hover { background-color: var(--gold); color: black; }
+    
+    .hero-benefits { margin-top: 40px; }
+    .hero-benefits span { margin: 0 15px; font-size: 14px; color: var(--gold); font-weight: 600; }
+
+    /* Secciones Generales */
+    section { padding: 100px 0; }
+    .section-dark { background-color: #111111; }
+    h2 { font-size: 36px; margin-bottom: 40px; text-align: center; }
+
+    /* Problema */
+    .problem-list { list-style: none; padding: 0; font-size: 20px; line-height: 2.5; max-width: 600px; margin: 0 auto; text-align: left; }
+
+    /* Método BOOST */
+    .method-grid { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 50px; }
+    .card {
+      background-color: var(--bg-card);
       padding: 40px 30px;
-      max-width: 480px;
-      margin: 0 auto;
+      border-radius: 12px;
+      width: 320px;
+      border: 1px solid #222;
+      transition: 0.3s;
+      text-align: left;
     }
-    .btn-call {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: rgba(99,102,241,0.2);
-      border: 1px solid rgba(99,102,241,0.5);
-      color: #fff;
-      padding: 16px 32px;
-      border-radius: 50px;
-      font-size: 1.05rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 100%;
+    .card:hover { border-color: var(--gold); transform: translateY(-5px); }
+    .card h3 { color: var(--gold); margin-bottom: 15px; font-size: 22px; }
+
+    /* Agente de Voz */
+    .agent-container {
+      max-width: 500px;
+      margin: 40px auto 0;
+      background: rgba(255,255,255,0.03);
+      padding: 40px;
+      border-radius: 24px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
     }
-    .btn-call:hover:not(:disabled) {
-      background: rgba(99,102,241,0.4);
-      border-color: #6366f1;
-      transform: scale(1.02);
-    }
-    .btn-call:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-call.active { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.6); }
     .status-bar { font-size: 0.85rem; color: #94a3b8; margin-bottom: 20px; min-height: 20px; }
+    .btn-call {
+      width: 100%;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold);
+      color: #fff;
+      padding: 16px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-call:hover:not(:disabled) { background: rgba(212, 175, 55, 0.2); }
+    .btn-call.active { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; }
+
+    /* Formulario */
+    .lead-form { display: flex; flex-direction: column; max-width: 450px; margin: 0 auto; gap: 20px; }
+    .lead-form input { padding: 15px; border-radius: 8px; border: 1px solid #333; background: #222; color: #fff; font-size: 16px; }
+    .lead-form input:focus { outline: 2px solid var(--gold); }
+    
+    footer { padding: 60px 0; border-top: 1px solid #222; text-align: center; color: #666; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <!-- Hero Section -->
-  <section class="hero min-h-screen bg-gradient-to-br from-cyan-500 to-green-600 flex items-center justify-center text-white px-4">
-    <div class="text-center max-w-4xl mx-auto">
-      <h1 class="text-5xl md:text-7xl font-bold mb-8 animate-fade-in">DGsales: Webs + IA para tu Negocio</h1>
-      <p class="text-xl md:text-2xl mb-12">Creación de sitios web pro, automatizaciones inteligentes, gestión de llamadas, reservas y ventas 24/7.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="#servicios" class="bg-white text-cyan-600 px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all">Ver Servicios</a>
-        <a href="#contacto" class="border-2 border-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-cyan-600 transition-all">Reserva Demo Gratis</a>
+  <section id="hero" class="hero">
+    <div class="container">
+      <h1>Webs que venden + Automatización con IA 24/7</h1>
+      <p class="subtitle">
+        Multiplica tus reservas y ventas sin contratar más personal.
+        Creamos sistemas digitales que trabajan por ti.
+      </p>
+
+      <div class="cta-buttons">
+        <a href="#auditoria" class="btn-primary">Reserva tu auditoría gratuita</a>
+        <a href="#metodo" class="btn-secondary">Descubre cómo funciona</a>
+      </div>
+
+      <div class="hero-benefits">
+        <span>✔ Más ventas</span>
+        <span>✔ Menos trabajo manual</span>
+        <span>✔ Sistema automatizado</span>
       </div>
     </div>
   </section>
 
-  <!-- Servicios Section -->
-  <section id="servicios" class="py-20 bg-gray-50 px-4">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Nuestros Servicios</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all border border-gray-100">
-          <h3 class="text-2xl font-bold mb-4 text-cyan-600">Creación de Webs</h3>
-          <ul class="space-y-2 mb-6">
-            <li>✅ Sitios responsive y SEO</li>
-            <li>✅ Ecommerce Shopify custom</li>
-            <li>✅ Desde €500</li>
-          </ul>
-          <a href="#contacto" class="text-cyan-600 font-bold hover:underline">Solicitar Presupuesto →</a>
+  <section id="problema" class="section-dark">
+    <div class="container">
+      <h2>¿Estás perdiendo ventas por no tener un sistema?</h2>
+      <ul class="problem-list">
+        <li>❌ No respondes mensajes 24/7</li>
+        <li>❌ Pierdes reservas fuera de horario</li>
+        <li>❌ Procesos manuales que consumen tiempo</li>
+        <li>❌ No sabes cuántos leads reales recibes</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="metodo" class="section">
+    <div class="container">
+      <h2>Método BOOST™</h2>
+      <div class="method-grid">
+        <div class="card">
+          <h3>1. Auditoría Estratégica</h3>
+          <p>Analizamos tu negocio y detectamos dónde estás perdiendo dinero.</p>
         </div>
-        <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all border border-gray-100">
-          <h3 class="text-2xl font-bold mb-4 text-green-600">Automatizaciones IA</h3>
-          <ul class="space-y-2 mb-6">
-            <li>✅ CRM, inventario, emails</li>
-            <li>✅ Integración APIs</li>
-            <li>✅ Ahorra 80% tiempo</li>
-          </ul>
-          <a href="#contacto" class="text-green-600 font-bold hover:underline">Ver Demo →</a>
+        <div class="card">
+          <h3>2. Web + IA Integrada</h3>
+          <p>Diseñamos una web optimizada con automatización inteligente.</p>
         </div>
-        <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all border border-gray-100">
-          <h3 class="text-2xl font-bold mb-4 text-blue-600">Gestión Ventas/Reserva</h3>
-          <ul class="space-y-2 mb-6">
-            <li>✅ Llamadas IA (Retell)</li>
-            <li>✅ Reservas Calendly</li>
-            <li>✅ Ventas 24/7</li>
-          </ul>
-          <a href="#contacto" class="text-blue-600 font-bold hover:underline">Empezar Ahora →</a>
+        <div class="card">
+          <h3>3. Sistema 24/7</h3>
+          <p>Implementamos reservas, ventas y seguimiento automático.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Voice Agent Section -->
-  <section id="agente" class="py-20 bg-gradient-to-br from-gray-900 to-gray-800 px-4">
-    <div class="max-w-4xl mx-auto text-center mb-12">
-      <h2 class="text-4xl font-bold text-white mb-4">Habla con Nuestro Agente IA</h2>
-      <p class="text-gray-300 text-lg">Prueba este agente de demostración. <strong>Vendemos agentes como este para atender llamadas y reservas de tu negocio 24/7</strong> - habla ahora en tiempo real.</p>    </div>
-    <div class="agent-card">
-      <div class="text-center mb-6">
-        <div class="text-2xl font-bold text-white mb-2">Conversation Flow</div>
-        <div class="text-gray-400">General Support & Sales</div>
+  <!-- Agente de Voz -->
+  <section id="agente" class="section-dark">
+    <div class="container">
+      <h2>Habla con Nuestro Agente IA</h2>
+      <p class="subtitle">
+        Prueba este agente de demostración. <strong>Vendemos agentes como este para atender llamadas y reservas de tu negocio 24/7</strong>.
+      </p>
+      <div class="agent-container">
+        <div class="text-center mb-6">
+          <div class="text-xl font-bold mb-1">DG Assistant</div>
+          <div class="text-sm color-text-gray">Ventas & Reservas Demo</div>
+        </div>
+        <div class="status-bar text-center" id="status"></div>
+        <button class="btn-call" id="btn-call" onclick="handleCall(this)">
+          <span id="btn-text">📞 Llamar ahora</span>
+        </button>
       </div>
-      <div class="status-bar text-center" id="status"></div>
-      <button class="btn-call" id="btn-call" onclick="handleCall(this)">
-        <span class="text-2xl">🎤</span>
-        <span id="btn-text">Llamar ahora</span>
-      </button>
     </div>
   </section>
 
-  <!-- CTA + Contact Section -->
-  <section id="contacto" class="py-20 bg-gradient-to-r from-cyan-500 to-green-600 text-white px-4">
-    <div class="max-w-md mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-8">¿Listo para Escalar tu Negocio?</h2>
-      <p class="text-xl mb-12">Habla con nuestro agente IA o reserva una llamada gratuita.</p>
-      <form action="https://formspree.io/f/xnnqeoob" method="POST" class="space-y-4 max-w-md mx-auto">
-        <input type="email" name="email" placeholder="Tu email" required class="w-full p-4 rounded-xl text-gray-900 text-lg">
-        <input type="text" name="negocio" placeholder="Tipo de negocio" class="w-full p-4 rounded-xl text-gray-900 text-lg">
-        <button type="submit" class="w-full bg-white text-cyan-600 p-4 rounded-xl font-bold text-xl hover:shadow-xl transition-all">¡Empezar Gratis!</button>
+  <section id="auditoria" class="section">
+    <div class="container">
+      <h2>Solicita tu Auditoría Digital Gratuita</h2>
+      <form action="https://formspree.io/f/xnnqeoob" method="POST" class="lead-form">
+        <input type="text" name="nombre" placeholder="Tu nombre" required>
+        <input type="email" name="email" placeholder="Tu email" required>
+        <input type="tel" name="telefono" placeholder="Tu teléfono">
+        <button type="submit" class="btn-primary">Quiero mi auditoría</button>
       </form>
-      <p class="mt-8 text-sm opacity-90">O chatea arriba 👆 con nuestro agente de ventas.</p>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12 px-4 text-center">
-    <p>&copy; 2026 DGsales. Webs + IA para negocios en Europa. GDPR compliant.</p>
+  <section class="section-dark">
+    <div class="container text-center">
+      <h2>Empieza a vender más esta semana</h2>
+      <a href="#auditoria" class="btn-primary" style="margin-top: 20px;">Agenda tu auditoría ahora</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 DGsales. Webs + IA para negocios en Europa. GDPR compliant.</p>
+    </div>
   </footer>
 
-  <!-- Retell SDK Script -->
   <script type="module">
     import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
-
     const AGENT_ID = 'agent_901b51dc8d7fecaef2e68a82b4';
     let retellClient = null;
     let activeCall = false;
 
-    function setStatus(msg) {
-      document.getElementById('status').textContent = msg;
-    }
-
+    function setStatus(msg) { document.getElementById('status').textContent = msg; }
     function resetUI() {
       activeCall = false;
       const btn = document.getElementById('btn-call');
       btn.classList.remove('active');
       btn.disabled = false;
-      document.getElementById('btn-text').textContent = 'Llamar ahora';
+      document.getElementById('btn-text').textContent = '📞 Llamar ahora';
       setStatus('');
     }
 
     async function handleCall(btn) {
-      if (activeCall) {
-        retellClient.stopCall();
-        return;
-      }
+      if (activeCall) { retellClient.stopCall(); return; }
       try {
         btn.disabled = true;
         document.getElementById('btn-text').textContent = 'Conectando...';
         setStatus('Iniciando llamada...');
-
         const response = await fetch('/api/create-call', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ agent_id: AGENT_ID })
         });
-
-        if (!response.ok) {
-          const err = await response.json();
-          throw new Error(err.message || 'Error backend: ' + response.status);
-        }
-
+        if (!response.ok) throw new Error('Error backend');
         const data = await response.json();
         retellClient = new RetellWebClient();
-
         retellClient.on('call_started', () => {
           activeCall = true;
           btn.classList.add('active');
           btn.disabled = false;
-          document.getElementById('btn-text').textContent = 'Finalizar llamada';
+          document.getElementById('btn-text').textContent = '⏹ Finalizar';
           setStatus('Llamada activa - habla ahora');
         });
-
-        retellClient.on('call_ended', () => {
-          resetUI();
-        });
-
-        retellClient.on('error', (err) => {
-          console.error('Retell error:', err);
-          setStatus('Error: ' + (err.message || err));
-          resetUI();
-        });
-
+        retellClient.on('call_ended', () => resetUI());
+        retellClient.on('error', () => resetUI());
         retellClient.on('agent_start_talking', () => setStatus('Agente hablando...'));
-        retellClient.on('agent_stop_talking', () => setStatus('Llamada activa - habla ahora'));
-
-        await retellClient.startCall({
-          accessToken: data.access_token,
-          sampleRate: 24000,
-          captureDeviceId: 'default',
-          emitRawAudioSamples: false
-        });
-
-      } catch (err) {
-        console.error(err);
-        setStatus('Error: ' + err.message);
-        resetUI();
-      }
+        retellClient.on('agent_stop_talking', () => setStatus('Habla ahora'));
+        await retellClient.startCall({ accessToken: data.access_token, sampleRate: 24000 });
+      } catch (err) { resetUI(); }
     }
-
     window.handleCall = handleCall;
   </script>
-
 </body>
 </html>
