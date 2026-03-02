@@ -92,9 +92,9 @@
         }
 
         var AGENTS = [
-            { id: 'agent_18c0f1ef610e020badc961478e', name: 'Conversation Flow', desc: 'General Support & Sales' },
-            { id: 'agent_5b88f6fe0cb29e8eb7093de14e', name: 'Healthcare Check-In', desc: 'Medical Appointments' },
-            { id: 'agent_dd7f2c3a3af24f3f82d7e8bfd3', name: 'Patient Screening', desc: 'Identity Verification' }
+            { id: 'agent_901b51dc8d7fecaef2e68a82b4', name: 'Conversation Flow', desc: 'General Support & Sales' },
+            { id: 'agent_18c0f1ef610e020badc961478e', name: 'Healthcare Check-In', desc: 'Medical Appointments' },
+            { id: 'agent_1f088512dfc33e0c68bea6f031', name: 'Patient Screening', desc: 'Identity Verification' }
         ];
 
         var activeBtn = null;
@@ -133,9 +133,9 @@
                 window.livekitClient = window.LivekitClient;
                 debug('Livekit ok. Cargando Retell SDK...');
                 await loadScript('https://unpkg.com/retell-client-js-sdk@2.0.7/dist/index.umd.js');
-                debug('SDK ok. Global: ' + JSON.stringify(Object.keys(window.retellClientJsSdk || {})));
+                debug('SDK cargado. Keys: ' + JSON.stringify(Object.keys(window.retellClientJsSdk || {})));
                 var RetellWebClient = window.retellClientJsSdk && window.retellClientJsSdk.RetellWebClient;
-                if (!RetellWebClient) throw new Error('RetellWebClient not found in global');
+                if (!RetellWebClient) throw new Error('RetellWebClient no encontrado');
                 retellClient = new RetellWebClient();
                 retellClient.on('call_started', function() {
                     debug('call_started');
@@ -155,7 +155,7 @@
                     debug('SDK error: ' + JSON.stringify(e));
                     resetUI();
                 });
-                debug('Retell Client listo');
+                debug('SDK listo para llamadas');
             } catch(err) {
                 debug('Init error: ' + err.message);
             }
@@ -176,13 +176,13 @@
                 return;
             }
             if (!retellClient) {
-                alert('SDK aun cargando, espera un momento');
+                alert('SDK cargando, espera un momento e intenta de nuevo');
                 return;
             }
             try {
                 activeBtn = btn;
                 debug('Obteniendo token para ' + agentId);
-                btn.querySelector('span:last-child').textContent = ' Conectando...';
+                btn.querySelector('span:last-child').textContent = 'Conectando...';
                 document.querySelectorAll('.btn-call').forEach(function(b) { if (b !== btn) b.disabled = true; });
 
                 var response = await fetch('https://d-gsales.vercel.app/api/create-call', {
@@ -197,8 +197,8 @@
                 debug('Token OK. Iniciando llamada...');
                 await retellClient.startCall({ accessToken: data.access_token });
             } catch (err) {
-                debug('Error handleCall: ' + err.message);
-                alert('Error al iniciar: ' + err.message);
+                debug('Error: ' + err.message);
+                alert('Error al iniciar llamada: ' + err.message);
                 resetUI();
             }
         }
