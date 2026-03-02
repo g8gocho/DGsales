@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DGsales - AI Voice & Chat</title>
+    <title>DGsales - AI Voice Agent</title>
 
     <!-- Retell Chat Widget -->
     <script
@@ -29,76 +29,59 @@
             background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
             z-index: -1;
         }
-        .container { max-width: 1000px; width: 100%; text-align: center; }
+        .container {
+            max-width: 480px; width: 100%; text-align: center;
+        }
         h1 {
             font-size: 3rem; margin-bottom: 10px;
             background: linear-gradient(to right, #fff, #6366f1);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        p { color: #94a3b8; margin-bottom: 40px; }
-        .agents-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
-        }
+        p { color: #94a3b8; margin-bottom: 48px; }
         .agent-card {
             background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
-            padding: 30px; transition: transform 0.3s ease;
+            padding: 40px 30px;
         }
-        .agent-card:hover { transform: translateY(-4px); }
-        .agent-name { font-size: 1.3rem; font-weight: 600; margin-bottom: 6px; }
-        .agent-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 24px; }
+        .agent-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; }
+        .agent-desc { color: #94a3b8; font-size: 0.95rem; margin-bottom: 32px; }
         .btn-call {
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.4);
-            color: #fff; padding: 14px 28px; border-radius: 50px;
-            font-size: 1rem; font-weight: 500; cursor: pointer;
+            background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.5);
+            color: #fff; padding: 16px 32px; border-radius: 50px;
+            font-size: 1.05rem; font-weight: 500; cursor: pointer;
             transition: all 0.3s ease; width: 100%;
         }
         .btn-call:hover:not(:disabled) {
-            background: rgba(99,102,241,0.35); border-color: #6366f1;
+            background: rgba(99,102,241,0.4); border-color: #6366f1;
             transform: scale(1.02);
         }
         .btn-call:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-call.active {
             background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.6);
         }
-        .mic-icon { font-size: 1.2rem; }
-        .debug-log {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(0,0,0,0.85); color: #0f0; font-size: 11px;
-            font-family: monospace; padding: 6px 10px; max-height: 120px;
-            overflow-y: auto; z-index: 9999; display: none;
-        }
+        .mic-icon { font-size: 1.3rem; }
     </style>
 </head>
 <body>
     <div class="bg-glow"></div>
     <div class="container">
         <h1>DGsales</h1>
-        <p>Real-time AI Voice Agents</p>
-        <div class="agents-grid" id="agents-grid"></div>
+        <p>AI Voice Agent</p>
+        <div class="agent-card">
+            <div class="agent-name">Conversation Flow</div>
+            <div class="agent-desc">General Support & Sales</div>
+            <button class="btn-call" id="btn-call" onclick="handleCall(this)">
+                <span class="mic-icon">&#127899;</span>
+                <span id="btn-text">Llamar ahora</span>
+            </button>
+        </div>
     </div>
-    <div class="debug-log" id="debug-log"></div>
 
     <script>
-        var DEBUG = false;
-        function debug(msg) {
-            console.log(msg);
-            if (!DEBUG) return;
-            var el = document.getElementById('debug-log');
-            el.style.display = 'block';
-            el.innerHTML += msg + '<br>';
-            el.scrollTop = el.scrollHeight;
-        }
-
-        var AGENTS = [
-            { id: 'agent_901b51dc8d7fecaef2e68a82b4', name: 'Conversation Flow', desc: 'General Support & Sales' },
-            { id: 'agent_18c0f1ef610e020badc961478e', name: 'Healthcare Check-In', desc: 'Medical Appointments' },
-            { id: 'agent_1f088512dfc33e0c68bea6f031', name: 'Patient Screening', desc: 'Identity Verification' }
-        ];
-
-        var activeBtn = null;
+        var AGENT_ID = 'agent_901b51dc8d7fecaef2e68a82b4';
         var retellClient = null;
+        var activeCall = false;
 
         function loadScript(url) {
             return new Promise(function(resolve, reject) {
@@ -110,100 +93,68 @@
             });
         }
 
-        function renderAgents() {
-            var grid = document.getElementById('agents-grid');
-            AGENTS.forEach(function(agent) {
-                var card = document.createElement('div');
-                card.className = 'agent-card';
-                card.innerHTML = '<div class="agent-name">' + agent.name + '</div>' +
-                    '<div class="agent-desc">' + agent.desc + '</div>' +
-                    '<button class="btn-call" id="btn-' + agent.id + '" onclick="handleCall(\'' + agent.id + '\', this)">' +
-                    '<span class="mic-icon">\uD83C\uDF99</span><span>Llamar ahora</span></button>';
-                grid.appendChild(card);
-            });
-        }
-
         async function initSDK() {
             try {
-                debug('Cargando eventemitter3...');
                 await loadScript('https://unpkg.com/eventemitter3@5.0.1/dist/eventemitter3.umd.min.js');
                 window.eventemitter3 = window.EventEmitter3;
-                debug('EE3 ok. Cargando livekit...');
                 await loadScript('https://unpkg.com/livekit-client/dist/livekit-client.umd.js');
                 window.livekitClient = window.LivekitClient;
-                debug('Livekit ok. Cargando Retell SDK...');
                 await loadScript('https://unpkg.com/retell-client-js-sdk@2.0.7/dist/index.umd.js');
-                debug('SDK cargado. Keys: ' + JSON.stringify(Object.keys(window.retellClientJsSdk || {})));
                 var RetellWebClient = window.retellClientJsSdk && window.retellClientJsSdk.RetellWebClient;
                 if (!RetellWebClient) throw new Error('RetellWebClient no encontrado');
                 retellClient = new RetellWebClient();
                 retellClient.on('call_started', function() {
-                    debug('call_started');
-                    if (activeBtn) {
-                        activeBtn.classList.add('active');
-                        activeBtn.querySelector('span:last-child').textContent = 'Finalizar llamada';
-                        document.querySelectorAll('.btn-call').forEach(function(b) {
-                            if (b !== activeBtn) b.disabled = false;
-                        });
-                    }
+                    activeCall = true;
+                    document.getElementById('btn-call').classList.add('active');
+                    document.getElementById('btn-text').textContent = 'Finalizar llamada';
                 });
                 retellClient.on('call_ended', function() {
-                    debug('call_ended');
                     resetUI();
                 });
-                retellClient.on('error', function(e) {
-                    debug('SDK error: ' + JSON.stringify(e));
+                retellClient.on('error', function() {
                     resetUI();
                 });
-                debug('SDK listo para llamadas');
             } catch(err) {
-                debug('Init error: ' + err.message);
+                console.error('Init error:', err.message);
             }
         }
 
         function resetUI() {
-            if (activeBtn) {
-                activeBtn.classList.remove('active');
-                activeBtn.querySelector('span:last-child').textContent = 'Llamar ahora';
-                activeBtn = null;
-            }
-            document.querySelectorAll('.btn-call').forEach(function(b) { b.disabled = false; });
+            activeCall = false;
+            var btn = document.getElementById('btn-call');
+            btn.classList.remove('active');
+            btn.disabled = false;
+            document.getElementById('btn-text').textContent = 'Llamar ahora';
         }
 
-        async function handleCall(agentId, btn) {
-            if (activeBtn) {
+        async function handleCall(btn) {
+            if (activeCall) {
                 retellClient.stopCall();
                 return;
             }
             if (!retellClient) {
-                alert('SDK cargando, espera un momento e intenta de nuevo');
+                alert('Cargando SDK, intenta en un momento');
                 return;
             }
             try {
-                activeBtn = btn;
-                debug('Obteniendo token para ' + agentId);
-                btn.querySelector('span:last-child').textContent = 'Conectando...';
-                document.querySelectorAll('.btn-call').forEach(function(b) { if (b !== btn) b.disabled = true; });
-
+                btn.disabled = true;
+                document.getElementById('btn-text').textContent = 'Conectando...';
                 var response = await fetch('https://d-gsales.vercel.app/api/create-call', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ agent_id: agentId })
+                    body: JSON.stringify({ agent_id: AGENT_ID })
                 });
-
                 if (!response.ok) throw new Error('Error backend: ' + response.status);
                 var data = await response.json();
-
-                debug('Token OK. Iniciando llamada...');
                 await retellClient.startCall({ accessToken: data.access_token });
+                btn.disabled = false;
             } catch (err) {
-                debug('Error: ' + err.message);
+                console.error(err);
                 alert('Error al iniciar llamada: ' + err.message);
                 resetUI();
             }
         }
 
-        renderAgents();
         initSDK();
     </script>
 </body>
