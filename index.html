@@ -128,10 +128,16 @@
       }
 
       // Initialize Retell Web Client
-      if (!window.RetellWebClient) {
-        throw new Error('SDK de Retell no cargado');
-      }
-
+        // Wait for Retell SDK to load
+        let attempts = 0;
+        while (!window.RetellWebClient && attempts < 50) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+        
+        if (!window.RetellWebClient) {
+            throw new Error('SDK de Retell no cargado después de 5 segundos');
+        }
       retellClient = new window.RetellWebClient();
 
       retellClient.on('call_started', () => {
