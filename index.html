@@ -3,81 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DGsales - AI Voice Agent</title>
+  <title>DGsales - Webs + IA para tu Negocio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: #050505; color: #fff;
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 20px;
-    }
-    .bg-glow {
-      position: fixed; width: 100vw; height: 100vh;
-      background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
-      z-index: -1;
-    }
-    .container { max-width: 480px; width: 100%; text-align: center; }
-    h1 {
-      font-size: 3rem; margin-bottom: 10px;
-      background: linear-gradient(to right, #fff, #6366f1);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    p { color: #94a3b8; margin-bottom: 48px; }
+    body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fade-in 1s ease-out; }
     .agent-card {
-      background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
       padding: 40px 30px;
-    }
-    .agent-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; }
-    .agent-desc { color: #94a3b8; font-size: 0.95rem; margin-bottom: 32px; }
-    .status-dot {
-      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-      background: #6366f1; margin-right: 8px;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.3); }
-    }
-    .status-bar {
-      font-size: 0.85rem; color: #94a3b8; margin-bottom: 20px;
-      min-height: 20px;
+      max-width: 480px;
+      margin: 0 auto;
     }
     .btn-call {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.5);
-      color: #fff; padding: 16px 32px; border-radius: 50px;
-      font-size: 1.05rem; font-weight: 500; cursor: pointer;
-      transition: all 0.3s ease; width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(99,102,241,0.2);
+      border: 1px solid rgba(99,102,241,0.5);
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
     }
     .btn-call:hover:not(:disabled) {
-      background: rgba(99,102,241,0.4); border-color: #6366f1;
+      background: rgba(99,102,241,0.4);
+      border-color: #6366f1;
       transform: scale(1.02);
     }
     .btn-call:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-call.active {
-      background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.6);
-    }
-    .mic-icon { font-size: 1.3rem; }
+    .btn-call.active { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.6); }
+    .status-bar { font-size: 0.85rem; color: #94a3b8; margin-bottom: 20px; min-height: 20px; }
   </style>
 </head>
 <body>
-  <div class="bg-glow"></div>
-  <div class="container">
-    <h1>DGsales</h1>
-    <p>AI Voice Agent</p>
+
+  <!-- Hero Section -->
+  <section class="hero min-h-screen bg-gradient-to-br from-cyan-500 to-green-600 flex items-center justify-center text-white px-4">
+    <div class="text-center max-w-4xl mx-auto">
+      <h1 class="text-5xl md:text-7xl font-bold mb-8 animate-fade-in">DGsales: Webs + IA para tu Negocio</h1>
+      <p class="text-xl md:text-2xl mb-12">Creación de sitios web pro, automatizaciones inteligentes, gestión de llamadas, reservas y ventas 24/7.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#servicios" class="bg-white text-cyan-600 px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all">Ver Servicios</a>
+        <a href="#contacto" class="border-2 border-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-cyan-600 transition-all">Reserva Demo Gratis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios Section -->
+  <section id="servicios" class="py-20 bg-gray-50 px-4">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-16 text-gray-800">Nuestros Servicios</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all border border-gray-100">
+          <h3 class="text-2xl font-bold mb-4 text-cyan-600">Creación de Webs</h3>
+          <ul class="space-y-2 mb-6">
+            <li>✅ Sitios responsive y SEO</li>
+            <li>✅ Ecommerce Shopify custom</li>
+            <li>✅ Desde €500</li>
+          </ul>
+          <a href="#contacto" class="text-cyan-600 font-bold hover:underline">Solicitar Presupuesto →</a>
+        </div>
+        <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all border border-gray-100">
+          <h3 class="text-2xl font-bold mb-4 text-green-600">Automatizaciones IA</h3>
+          <ul class="space-y-2 mb-6">
+            <li>✅ CRM, inventario, emails</li>
+            <li>✅ Integración APIs</li>
+            <li>✅ Ahorra 80% tiempo</li>
+          </ul>
+          <a href="#contacto" class="text-green-600 font-bold hover:underline">Ver Demo →</a>
+        </div>
+        <div class="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all border border-gray-100">
+          <h3 class="text-2xl font-bold mb-4 text-blue-600">Gestión Ventas/Reserva</h3>
+          <ul class="space-y-2 mb-6">
+            <li>✅ Llamadas IA (Retell)</li>
+            <li>✅ Reservas Calendly</li>
+            <li>✅ Ventas 24/7</li>
+          </ul>
+          <a href="#contacto" class="text-blue-600 font-bold hover:underline">Empezar Ahora →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Voice Agent Section -->
+  <section id="agente" class="py-20 bg-gradient-to-br from-gray-900 to-gray-800 px-4">
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h2 class="text-4xl font-bold text-white mb-4">Habla con Nuestro Agente IA</h2>
+      <p class="text-gray-300 text-lg">Prueba nuestra IA de ventas ahora mismo - habla y recibe respuestas en tiempo real</p>
+    </div>
     <div class="agent-card">
-      <div class="agent-name">Conversation Flow</div>
-      <div class="agent-desc">General Support &amp; Sales</div>
-      <div class="status-bar" id="status"></div>
+      <div class="text-center mb-6">
+        <div class="text-2xl font-bold text-white mb-2">Conversation Flow</div>
+        <div class="text-gray-400">General Support & Sales</div>
+      </div>
+      <div class="status-bar text-center" id="status"></div>
       <button class="btn-call" id="btn-call" onclick="handleCall(this)">
-        <span class="mic-icon">&#127897;</span>
+        <span class="text-2xl">🎤</span>
         <span id="btn-text">Llamar ahora</span>
       </button>
     </div>
-  </div>
+  </section>
 
+  <!-- CTA + Contact Section -->
+  <section id="contacto" class="py-20 bg-gradient-to-r from-cyan-500 to-green-600 text-white px-4">
+    <div class="max-w-md mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-8">¿Listo para Escalar tu Negocio?</h2>
+      <p class="text-xl mb-12">Habla con nuestro agente IA o reserva una llamada gratuita.</p>
+      <form action="https://formspree.io/f/xnnqeoob" method="POST" class="space-y-4 max-w-md mx-auto">
+        <input type="email" name="email" placeholder="Tu email" required class="w-full p-4 rounded-xl text-gray-900 text-lg">
+        <input type="text" name="negocio" placeholder="Tipo de negocio" class="w-full p-4 rounded-xl text-gray-900 text-lg">
+        <button type="submit" class="w-full bg-white text-cyan-600 p-4 rounded-xl font-bold text-xl hover:shadow-xl transition-all">¡Empezar Gratis!</button>
+      </form>
+      <p class="mt-8 text-sm opacity-90">O chatea arriba 👆 con nuestro agente de ventas.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12 px-4 text-center">
+    <p>&copy; 2026 DGsales. Webs + IA para negocios en Europa. GDPR compliant.</p>
+  </footer>
+
+  <!-- Retell SDK Script -->
   <script type="module">
     import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
 
@@ -120,7 +176,6 @@
         }
 
         const data = await response.json();
-
         retellClient = new RetellWebClient();
 
         retellClient.on('call_started', () => {
@@ -160,5 +215,6 @@
 
     window.handleCall = handleCall;
   </script>
+
 </body>
 </html>
