@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DGsales - AI Agents</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #fff; min-height: 100vh; }
+    header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 40px 20px; text-align: center; border-bottom: 1px solid #333; }
+    header h1 { font-size: 2.5rem; font-weight: 700; color: #00d4ff; letter-spacing: 2px; }
+    header p { color: #aaa; margin-top: 10px; font-size: 1rem; }
+    .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; padding: 50px 40px; max-width: 1200px; margin: 0 auto; }
+    .agent-card { background: #1a1a2e; border: 1px solid #2a2a4e; border-radius: 16px; padding: 30px; transition: transform 0.3s, box-shadow 0.3s; }
+    .agent-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15); }
+    .agent-icon { font-size: 3rem; margin-bottom: 15px; }
+    .agent-card h2 { font-size: 1.3rem; color: #00d4ff; margin-bottom: 10px; }
+    .agent-card p { color: #888; font-size: 0.9rem; margin-bottom: 25px; line-height: 1.6; }
+    .buttons { display: flex; flex-direction: column; gap: 12px; }
+    .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 20px; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+    .btn-chat { background: linear-gradient(135deg, #00d4ff, #0099cc); color: #000; }
+    .btn-call { background: linear-gradient(135deg, #00ff88, #00cc66); color: #000; }
+    .btn:hover { opacity: 0.85; transform: scale(1.02); }
+    footer { text-align: center; padding: 30px; color: #444; border-top: 1px solid #222; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>DG<span style="color:#fff">sales</span></h1>
+  <p>AI-Powered Sales Agents — Chat or Call anytime</p>
+</header>
+
+<div class="agents-grid">
+
+  <!-- AGENT 1: Conversation Flow Agent -->
+  <div class="agent-card">
+    <div class="agent-icon">&#x1F4AC;</div>
+    <h2>Conversation Flow Agent</h2>
+    <p>Asistente de soporte general. Gestiona devoluciones, estado de pedidos y consultas de clientes.</p>
+    <div class="buttons">
+      <button class="btn btn-chat" onclick="openChat('agent_901b51dc8d7fecaef2e68a82b4')">&#x1F4AC; Chat con agente</button>
+      <button class="btn btn-call" onclick="openCall('agent_901b51dc8d7fecaef2e68a82b4')">&#x1F4DE; Llamar al agente</button>
+    </div>
+  </div>
+
+  <!-- AGENT 2: Healthcare Check-In -->
+  <div class="agent-card">
+    <div class="agent-icon">&#x1FA7A;</div>
+    <h2>Healthcare Check-In</h2>
+    <p>Kate, asistente del departamento de citas. Prepara el chequeo anual y recoge datos del paciente.</p>
+    <div class="buttons">
+      <button class="btn btn-chat" onclick="openChat('agent_18c0f1ef610e020badc961478e')">&#x1F4AC; Chat con agente</button>
+      <button class="btn btn-call" onclick="openCall('agent_18c0f1ef610e020badc961478e')">&#x1F4DE; Llamar al agente</button>
+    </div>
+  </div>
+
+  <!-- AGENT 3: Patient Screening -->
+  <div class="agent-card">
+    <div class="agent-icon">&#x1F9EC;</div>
+    <h2>Patient Screening</h2>
+    <p>Anna, representante de Retell Healthcare. Verifica identidad y conecta pacientes con servicios sociales y de salud.</p>
+    <div class="buttons">
+      <button class="btn btn-chat" onclick="openChat('agent_1f088512dfc33e0c68bea6f031')">&#x1F4AC; Chat con agente</button>
+      <button class="btn btn-call" onclick="openCall('agent_1f088512dfc33e0c68bea6f031')">&#x1F4DE; Llamar al agente</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>DGsales &copy; 2026 &mdash; Powered by Retell AI</p>
+</footer>
+
+<!-- RETELL WIDGET SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/dist/index.umd.js"></script>
+<script>
+  const PUBLIC_KEY = 'public_key_262fc8f1f2d032aa6ffee';
+
+  // ---- CHAT WIDGET ----
+  function openChat(agentId) {
+    // Remove any existing widget
+    const existing = document.getElementById('retell-chat-widget');
+    if (existing) existing.remove();
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/dist/index.umd.js';
+    script.onload = function() {
+      if (window.RetellWebClient) {
+        const client = new window.RetellWebClient();
+        // Use Retell embed chat
+      }
+    };
+
+    // Retell Chat Embed via widget API
+    fetch('https://api.retellai.com/v2/create-web-call', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PUBLIC_KEY
+      },
+      body: JSON.stringify({ agent_id: agentId, call_type: 'chat' })
+    }).catch(() => {});
+
+    // Show embedded widget using Retell's official embed
+    showRetellChatEmbed(agentId);
+  }
+
+  function showRetellChatEmbed(agentId) {
+    const overlay = document.createElement('div');
+    overlay.id = 'retell-chat-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9998;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML = `
+      <div style="background:#1a1a2e;border-radius:16px;width:400px;max-width:95vw;height:600px;max-height:90vh;position:relative;overflow:hidden;border:1px solid #333;">
+        <button onclick="document.getElementById('retell-chat-overlay').remove()" style="position:absolute;top:10px;right:14px;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;z-index:1;">&times;</button>
+        <iframe
+          src="https://widget.retellai.com/chat?agentId=${agentId}&publicKey=${PUBLIC_KEY}"
+          style="width:100%;height:100%;border:none;"
+          allow="microphone"
+        ></iframe>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  // ---- VOICE CALL WIDGET ----
+  function openCall(agentId) {
+    const existing = document.getElementById('retell-call-overlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'retell-call-overlay';
+    overlay.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;';
+    overlay.innerHTML = `
+      <div style="background:#1a1a2e;border:1px solid #00d4ff;border-radius:16px;padding:24px;width:300px;text-align:center;box-shadow:0 8px 32px rgba(0,212,255,0.3);">
+        <p style="color:#00d4ff;font-weight:700;margin-bottom:8px;">&#x1F4DE; Conectando...</p>
+        <p style="color:#888;font-size:0.85rem;margin-bottom:20px;">Por favor permite el acceso al micr&oacute;fono</p>
+        <div id="call-status" style="color:#aaa;font-size:0.8rem;margin-bottom:16px;">Iniciando llamada...</div>
+        <button id="end-call-btn" onclick="endCall()" style="background:#ff4444;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:1rem;cursor:pointer;width:100%;">&#x23F9; Colgar</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    startWebCall(agentId);
+  }
+
+  let retellClient = null;
+
+  async function startWebCall(agentId) {
+    try {
+      if (!window.RetellWebClient) {
+        document.getElementById('call-status').textContent = 'Cargando SDK...';
+        await loadScript('https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/dist/index.umd.js');
+      }
+
+      retellClient = new window.RetellWebClient();
+
+      // Get access token from Retell
+      const res = await fetch('https://api.retellai.com/v2/create-web-call', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + PUBLIC_KEY
+        },
+        body: JSON.stringify({ agent_id: agentId })
+      });
+
+      const data = await res.json();
+
+      if (!data.access_token) {
+        document.getElementById('call-status').textContent = 'Error: ' + (data.message || 'No se pudo iniciar la llamada');
+        return;
+      }
+
+      retellClient.on('call_started', () => {
+        document.getElementById('call-status').textContent = '&#x1F7E2; Llamada activa';
+      });
+      retellClient.on('call_ended', () => {
+        const overlay = document.getElementById('retell-call-overlay');
+        if (overlay) overlay.remove();
+      });
+      retellClient.on('error', (e) => {
+        document.getElementById('call-status').textContent = 'Error: ' + e.message;
+      });
+
+      await retellClient.startCall({ accessToken: data.access_token });
+      document.getElementById('call-status').textContent = '&#x1F7E2; En llamada';
+
+    } catch (err) {
+      const statusEl = document.getElementById('call-status');
+      if (statusEl) statusEl.textContent = 'Error: ' + err.message;
+    }
+  }
+
+  function endCall() {
+    if (retellClient) {
+      retellClient.stopCall();
+      retellClient = null;
+    }
+    const overlay = document.getElementById('retell-call-overlay');
+    if (overlay) overlay.remove();
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+</script>
+
+<!-- RETELL EMBED WIDGET (oficial) -->
+<script
+  src="https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/dist/index.umd.js"
+  defer
+></script>
+
+</body>
+</html>
