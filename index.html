@@ -96,8 +96,16 @@
   <p style="font-size:0.85rem;margin-top:10px;">Voz en tiempo real · SDK de Retell · Ventas retail luxury</p>
 </footer>
 
-<script src="https://unpkg.com/retell-client-js-sdk@2.0.7/dist/index.umd.js"></script><script>
-  let retellClient = null;
+<!-- Load dependencies for Retell SDK -->
+<script src="https://unpkg.com/eventemitter3@5.0.1/dist/eventemitter3.umd.js"></script>
+<script src="https://unpkg.com/livekit-client/dist/livekit-client.umd.js"></script>
+<script src="https://unpkg.com/retell-client-js-sdk@2.0.7/dist/index.umd.js"></script>
+<script>
+    // Fix naming mismatches for dependencies
+    if (window.EventEmitter3) window.eventemitter3 = window.EventEmitter3;
+    if (window.LivekitClient) window.livekitClient = window.LivekitClient;
+</script>
+<script>  let retellClient = null;
 
   async function startCall(agentId, agentName) {
     const widget = document.getElementById('voice-widget');
@@ -129,15 +137,15 @@
       // Initialize Retell Web Client
         // Wait for Retell SDK to load
         let attempts = 0;
-        while (!window.RetellWebClient && attempts < 50) {
+        while (!window.retellClientJsSdk.RetellWebClient && attempts < 50) {
             await new Promise(resolve => setTimeout(resolve, 100));
             attempts++;
         }
         
-        if (!window.RetellWebClient) {
+        if (!window.retellClientJsSdk.RetellWebClient) {
             throw new Error('SDK de Retell no cargado después de 5 segundos');
         }
-      retellClient = new window.RetellWebClient();
+      retellClient = new window.retellClientJsSdk.RetellWebClient();
 
       retellClient.on('call_started', () => {
         statusEl.textContent = '🟢 Llamada activa - Puedes hablar ahora';
