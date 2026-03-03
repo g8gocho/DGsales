@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         agent_name: 'DGsales Voice Agent',
-        llm_websocket_url: llmData.llm_websocket_url,
+                response_engine: { type: 'retell-llm', llm_id: llmData.llm_id },
         voice_id: 'openai-Alloy',
         language: 'multi',
         responsiveness: 1,
