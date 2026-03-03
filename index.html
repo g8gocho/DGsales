@@ -10,14 +10,11 @@
     <style>
         :root { --gold: #d4af37; --gold-hover: #f1c40f; --bg-dark: #0b0b0b; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: #ffffff; scroll-behavior: smooth; }
-        
-        /* Language visibility logic */
         [data-lang="es"] { display: block; }
         [data-lang="en"] { display: none; }
-        html[data-lang] { display: block !important; } 
+        html[data-lang] { display: block !important; }
         html[data-lang="en"] [data-lang="es"] { display: none; }
         html[data-lang="en"] [data-lang="en"] { display: block; }
-
         .lang-switch { background: rgba(11,11,11,0.9); backdrop-filter: blur(10px); }
         .btn-primary { background-color: var(--gold); color: #000; transition: 0.3s; }
         .btn-primary:hover { background-color: var(--gold-hover); transform: translateY(-2px); }
@@ -27,8 +24,16 @@
         #exitPopup { display: none; background: rgba(0,0,0,0.9); }
         #exitPopup.show { display: flex; }
     </style>
+    <!-- Retell Widget Integration -->
+    <script
+        src="https://dashboard.retellai.com/retell-widget.js"
+        data-public-key="public_key_262fc8f1f2d032aa6ffee"
+        data-agent-id="agent_4573c1ecc1d8e26ae78c1f71b9"
+        data-agent-version="0"
+        data-title="Chat con DGsales"
+    ></script>
 </head>
-<body>
+<body class="bg-[#0b0b0b]">
     <!-- Lang Switcher -->
     <nav class="lang-switch fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center border-b border-white/10">
         <div class="text-xl font-bold tracking-tighter italic">DG<span class="text-[#d4af37]">sales</span></div>
@@ -38,7 +43,7 @@
         </div>
     </nav>
 
-    <!-- Hero -->
+    <!-- Hero Section -->
     <header class="pt-32 pb-20 px-6 text-center max-w-4xl mx-auto">
         <div data-lang="es">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Vende más con <span class="text-[#d4af37]">IA de Voz</span></h1>
@@ -48,176 +53,123 @@
             <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Sell more with <span class="text-[#d4af37]">Voice AI</span></h1>
             <p class="text-gray-400 text-lg mb-10">We automate your business: from landing pages to voice agents that close sales 24/7.</p>
         </div>
-        <a href="#agente" class="btn-primary px-8 py-4 rounded-full font-bold inline-block">
+        <a href="#agente" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-block">
             <span data-lang="es">Probar Agente Gratis</span>
             <span data-lang="en">Try Agent for Free</span>
         </a>
     </header>
 
-    <!-- Services -->
-    <section class="py-20 px-6 bg-[#0f0f0f]">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-            <div class="card p-8 rounded-2xl">
-                <div class="text-[#d4af37] text-3xl mb-4">🌐</div>
-                <h3 class="text-xl font-bold mb-3" data-lang="es">Webs de Alto Impacto</h3>
-                <h3 class="text-xl font-bold mb-3" data-lang="en">High-Impact Websites</h3>
-                <p class="text-gray-400 text-sm" data-lang="es">Diseñamos landing pages optimizadas para conversión con tecnología moderna.</p>
-                <p class="text-gray-400 text-sm" data-lang="en">We design landing pages optimized for conversion using modern technology.</p>
-            </div>
-            <div class="card p-8 rounded-2xl border-[#d4af37]">
-                <div class="text-[#d4af37] text-3xl mb-4">📞</div>
-                <h3 class="text-xl font-bold mb-3" data-lang="es">Agentes de Voz AI</h3>
-                <h3 class="text-xl font-bold mb-3" data-lang="en">Voice AI Agents</h3>
-                <p class="text-gray-400 text-sm" data-lang="es">Atención al cliente y ventas automáticas. No pierdas ni un solo lead.</p>
-                <p class="text-gray-400 text-sm" data-lang="en">Automated customer service and sales. Don't lose a single lead.</p>
-            </div>
-            <div class="card p-8 rounded-2xl">
-                <div class="text-[#d4af37] text-3xl mb-4">⚡</div>
-                <h3 class="text-xl font-bold mb-3" data-lang="es">Automatización Full</h3>
-                <h3 class="text-xl font-bold mb-3" data-lang="en">Full Automation</h3>
-                <p class="text-gray-400 text-sm" data-lang="es">Conectamos tu CRM, pagos y agenda para que el negocio rinda al máximo.</p>
-                <p class="text-gray-400 text-sm" data-lang="en">We connect your CRM, payments, and calendar to maximize business performance.</p>
-            </div>
+    <!-- Features Section -->
+    <section class="py-20 px-6 grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div class="card p-8 rounded-2xl">
+            <div class="text-3xl mb-4">🌐</div>
+            <h3 class="text-xl font-bold mb-3" data-lang="es">Webs de Alto Impacto</h3>
+            <h3 class="text-xl font-bold mb-3" data-lang="en">High-Impact Websites</h3>
+            <p class="text-gray-400" data-lang="es">Diseñamos landing pages optimizadas para conversión con tecnología moderna.</p>
+            <p class="text-gray-400" data-lang="en">We design landing pages optimized for conversion using modern technology.</p>
+        </div>
+        <div class="card p-8 rounded-2xl">
+            <div class="text-3xl mb-4">📞</div>
+            <h3 class="text-xl font-bold mb-3" data-lang="es">Agentes de Voz AI</h3>
+            <h3 class="text-xl font-bold mb-3" data-lang="en">Voice AI Agents</h3>
+            <p class="text-gray-400" data-lang="es">Atención al cliente y ventas automáticas. No pierdas ni un solo lead.</p>
+            <p class="text-gray-400" data-lang="en">Automated customer service and sales. Don't lose a single lead.</p>
+        </div>
+        <div class="card p-8 rounded-2xl">
+            <div class="text-3xl mb-4">⚡</div>
+            <h3 class="text-xl font-bold mb-3" data-lang="es">Automatización Full</h3>
+            <h3 class="text-xl font-bold mb-3" data-lang="en">Full Automation</h3>
+            <p class="text-gray-400" data-lang="es">Conectamos tu CRM, pagos y agenda para que el negocio rinda al máximo.</p>
+            <p class="text-gray-400" data-lang="en">We connect your CRM, payments, and calendar to maximize business performance.</p>
         </div>
     </section>
 
-    <!-- Agent Section -->
-    <section id="agente" class="py-24 px-6 text-center">
-        <div class="max-w-3xl mx-auto p-10 rounded-3xl border border-[#d4af37]/30 bg-[#161616]">
-            <div data-lang="es">
-                <h2 class="text-3xl font-bold mb-4">Habla con nuestro Agente</h2>
-                <p class="text-gray-400 mb-8">Vendemos agentes personalizados como este para atender las llamadas, ventas y reservas de tu negocio. Pruébalo ahora mismo:</p>
-            </div>
-            <div data-lang="en">
-                <h2 class="text-3xl font-bold mb-4">Talk to our Agent</h2>
-                <p class="text-gray-400 mb-8">We sell custom agents like this one to handle your business calls, sales, and bookings. Try it right now:</p>
-            </div>
-            
-            <div id="status" class="text-xs text-[#d4af37] mb-2 uppercase tracking-widest h-4"></div>
-            <button id="btn-call" onclick="handleCall(this)" class="btn-primary w-full max-w-xs py-4 rounded-xl font-bold text-lg shadow-lg shadow-[#d4af37]/20 flex items-center justify-center gap-2 mx-auto">
-                <span id="btn-text">
-                    <span data-lang="es">📞 Llamar ahora</span>
-                    <span data-lang="en">📞 Call now</span>
-                </span>
-            </button>
-            <p class="text-[10px] text-gray-500 mt-4 italic" data-lang="es">*Requiere permiso de micrófono</p>
-            <p class="text-[10px] text-gray-500 mt-4 italic" data-lang="en">*Microphone permission required</p>
-        </div>
+    <!-- Voice Agent Call Section -->
+    <section id="agente" class="py-20 px-6 text-center bg-white/5 border-y border-white/10">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8" data-lang="es">Habla con nuestro Agente</h2>
+        <h2 class="text-3xl md:text-4xl font-bold mb-8" data-lang="en">Talk to our Agent</h2>
+        <p class="max-w-2xl mx-auto mb-10 text-gray-400" data-lang="es">Vendemos agentes personalizados como este para atender las llamadas, ventas y reservas de tu negocio. Pruébalo ahora mismo:</p>
+        <p class="max-w-2xl mx-auto mb-10 text-gray-400" data-lang="en">We sell custom agents like this one to handle your business calls, sales, and bookings. Try it right now:</p>
+        
+        <button id="btn-call" onclick="handleCall(this)" class="btn-primary px-10 py-5 rounded-full font-bold text-xl inline-flex items-center gap-3">
+            <span id="btn-text">
+                <span data-lang="es">📞 Llamar ahora</span>
+                <span data-lang="en">📞 Call now</span>
+            </span>
+        </button>
+        <div id="status" class="mt-4 text-sm text-[#d4af37] font-medium min-h-[20px]"></div>
+        <p class="mt-4 text-xs text-gray-500">*<span data-lang="es">Requiere permiso de micrófono</span><span data-lang="en">Microphone permission required</span></p>
     </section>
 
-    <!-- Pricing -->
-    <section class="py-20 px-6 bg-[#0b0b0b]">
-        <h2 class="text-4xl font-bold text-center mb-16" data-lang="es">Planes</h2>
-        <h2 class="text-4xl font-bold text-center mb-16" data-lang="en">Pricing Plans</h2>
-        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-            <div class="card p-10 rounded-2xl relative overflow-hidden">
+    <!-- Pricing Section -->
+    <section class="py-20 px-6 max-w-6xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-16" data-lang="es">Planes</h2>
+        <h2 class="text-4xl font-bold mb-16" data-lang="en">Pricing Plans</h2>
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="card p-10 rounded-3xl text-left">
                 <h3 class="text-2xl font-bold mb-2">Web Starter</h3>
-                <div class="text-4xl font-bold text-[#d4af37] mb-6">€499<span class="text-sm text-gray-500">/one-time</span></div>
-                <ul class="text-gray-400 space-y-3 mb-10 text-sm">
-                    <li data-lang="es">✓ Landing Page Premium</li>
-                    <li data-lang="en">✓ Premium Landing Page</li>
+                <div class="text-4xl font-bold mb-6 text-[#d4af37]">€499 <span class="text-sm text-gray-400 font-normal">/one-time</span></div>
+                <ul class="space-y-4 text-gray-300 mb-10">
+                    <li>✓ <span data-lang="es">Landing Page Premium</span><span data-lang="en">Premium Landing Page</span></li>
                     <li>✓ Copywriting Persuasivo</li>
-                    <li data-lang="es">✓ Integración de Leads</li>
-                    <li data-lang="en">✓ Lead Integration</li>
+                    <li>✓ <span data-lang="es">Integración de Leads</span><span data-lang="en">Lead Integration</span></li>
                 </ul>
-                <button class="w-full py-3 rounded border border-[#d4af37] text-[#d4af37] font-bold" data-lang="es">Empezar</button>
-                <button class="w-full py-3 rounded border border-[#d4af37] text-[#d4af37] font-bold" data-lang="en">Start Now</button>
+                <button class="w-full py-4 border border-[#d4af37] text-[#d4af37] font-bold rounded-xl hover:bg-[#d4af37] hover:text-black transition">
+                    <span data-lang="es">Empezar</span><span data-lang="en">Start Now</span>
+                </button>
             </div>
-            <div class="card p-10 rounded-2xl border-[#d4af37] bg-gradient-to-b from-[#1a1a1a] to-[#0b0b0b]">
-                <div class="absolute top-4 right-4 bg-[#d4af37] text-black text-[10px] font-bold px-2 py-1 rounded">POPULAR</div>
+            <div class="card p-10 rounded-3xl text-left border-[#d4af37] relative overflow-hidden">
+                <div class="absolute top-4 right-4 bg-[#d4af37] text-black text-[10px] px-2 py-1 rounded font-bold">POPULAR</div>
                 <h3 class="text-2xl font-bold mb-2">AI Agent Pro</h3>
-                <div class="text-4xl font-bold text-[#d4af37] mb-6">€999<span class="text-sm text-gray-500">/set-up</span></div>
-                <ul class="text-gray-400 space-y-3 mb-10 text-sm">
-                    <li data-lang="es">✓ Agente de Voz 24/7</li>
-                    <li data-lang="en">✓ 24/7 Voice Agent</li>
-                    <li data-lang="es">✓ Agenda Reservas Directas</li>
-                    <li data-lang="en">✓ Direct Booking Sync</li>
-                    <li data-lang="es">✓ Soporte Multilingüe</li>
-                    <li data-lang="en">✓ Multilingual Support</li>
+                <div class="text-4xl font-bold mb-6 text-[#d4af37]">€999 <span class="text-sm text-gray-400 font-normal">/set-up</span></div>
+                <ul class="space-y-4 text-gray-300 mb-10">
+                    <li>✓ <span data-lang="es">Agente de Voz 24/7</span><span data-lang="en">24/7 Voice Agent</span></li>
+                    <li>✓ <span data-lang="es">Agenda Reservas Directas</span><span data-lang="en">Direct Booking Sync</span></li>
+                    <li>✓ <span data-lang="es">Soporte Multilingüe</span><span data-lang="en">Multilingual Support</span></li>
                 </ul>
-                <button class="w-full btn-primary py-3 rounded font-bold" data-lang="es">Lo quiero</button>
-                <button class="w-full btn-primary py-3 rounded font-bold" data-lang="en">Get it Now</button>
+                <button class="w-full py-4 bg-[#d4af37] text-black font-bold rounded-xl hover:opacity-90 transition">
+                    <span data-lang="es">Lo quiero</span><span data-lang="en">Get it Now</span>
+                </button>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-white/10 text-center text-gray-500 text-sm">
-        <p>© 2024 DGsales - Smart AI Automation. Amsterdam | Barcelona.</p>
+    <footer class="py-10 border-t border-white/10 text-center text-gray-500 text-sm">
+        © 2024 DGsales - Smart AI Automation. Amsterdam | Barcelona.
     </footer>
 
-    <!-- Exit Popup -->
-    <div id="exitPopup" class="fixed inset-0 z-[100] items-center justify-center p-6">
-        <div class="bg-[#1a1a1a] p-10 rounded-3xl max-w-md w-full border border-[#d4af37]/50 text-center relative">
-            <button onclick="closePopup()" class="absolute top-4 right-4 text-gray-500 text-xl">×</button>
+    <!-- Exit Intent Popup -->
+    <div id="exitPopup" class="fixed inset-0 z-[100] hidden items-center justify-center p-6">
+        <div class="bg-[#1a1a1a] p-10 rounded-3xl max-w-md w-full border border-white/20 relative">
+            <button onclick="closePopup()" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-white">&times;</button>
             <h2 class="text-2xl font-bold mb-4" data-lang="es">¿Quieres ver cómo funciona en TU negocio?</h2>
             <h2 class="text-2xl font-bold mb-4" data-lang="en">Want to see how it works for YOUR business?</h2>
             <p class="text-gray-400 mb-8" data-lang="es">Déjanos tu email y te enviamos una demo personalizada gratis.</p>
             <p class="text-gray-400 mb-8" data-lang="en">Leave your email and we'll send you a free custom demo.</p>
             <input type="email" placeholder="Email" class="w-full bg-black border border-white/20 p-3 rounded-lg mb-4 text-white">
-            <button class="btn-primary w-full py-3 rounded-lg font-bold" data-lang="es">Enviar Demo</button>
-            <button class="btn-primary w-full py-3 rounded-lg font-bold" data-lang="en">Send Demo</button>
+            <button class="btn-primary w-full py-4 rounded-xl font-bold">
+                <span data-lang="es">Enviar Demo</span><span data-lang="en">Send Demo</span>
+            </button>
         </div>
     </div>
 
-    <script>
-        function setLanguage(lang) {
-            document.documentElement.setAttribute('data-lang', lang);
-            localStorage.setItem('pref-lang', lang);
-        }
-        const savedLang = localStorage.getItem('pref-lang');
-        if (savedLang) setLanguage(savedLang);
-
-        // Exit Intent
-        let shown = false;
-        document.addEventListener('mouseleave', (e) => {
-            if (e.clientY < 0 && !shown) {
-                showPopup();
-                shown = true;
-            }
-        });
-        function showPopup() { document.getElementById('exitPopup').classList.add('show'); }
-        function closePopup() { document.getElementById('exitPopup').classList.remove('show'); }
-    </script>
-
-    <!-- Retell AI Chat Widget -->
-    <script
-        id="retell-chat-widget"
-        src="https://dashboard.retellai.com/retell-widget.js"
-        type="module"
-        data-public-key="public_key_262fc8f1f2d032aa6ffee"
-        data-agent-id="agent_4573c1ecc1d8e26ae78c1f71b9"
-        data-widget="chat"
-        data-title="DGsales AI Chat"
-        data-color="#d4af37"
-    ></script>
-
-    <!-- Retell AI Callback Widget -->
-    <script
-        id="retell-call-widget"
-        src="https://dashboard.retellai.com/retell-widget.js"
-        type="module"
-        data-public-key="public_key_262fc8f1f2d032aa6ffee"
-        data-agent-id="agent_901b51dc8d7fecaef2e68a82b4"
-        data-widget="callback"
-        data-phone-number="+1234567890" 
-        data-title="Solicitar Llamada"
-        data-color="#d4af37"
-    ></script>
-
+    <!-- SDK & Logic Scripts -->
     <script type="module">
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
-        const AGENT_ID = 'agent_901b51dc8d7fecaef2e68a82b4';
+        const AGENT_ID = 'agent_4573c1ecc1d8e26ae78c1f71b9'; 
         let retellClient = null;
         let activeCall = false;
 
         function setStatus(msg) {
-            document.getElementById('status').textContent = msg;
+            const statusEl = document.getElementById('status');
+            if(statusEl) statusEl.textContent = msg;
         }
 
         function resetUI() {
             activeCall = false;
             const btn = document.getElementById('btn-call');
+            if (!btn) return;
             btn.classList.remove('active');
             btn.disabled = false;
             const lang = document.documentElement.getAttribute('data-lang');
@@ -232,7 +184,8 @@
             }
             try {
                 btn.disabled = true;
-                document.getElementById('btn-text').textContent = '...';
+                const textEl = document.getElementById('btn-text');
+                if(textEl) textEl.textContent = '...';
                 setStatus('Connecting...');
 
                 const response = await fetch('/api/create-call', {
@@ -240,6 +193,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ agent_id: AGENT_ID })
                 });
+                
+                if (!response.ok) throw new Error('API connection failed');
                 const data = await response.json();
 
                 retellClient = new RetellWebClient();
@@ -248,9 +203,10 @@
                     btn.classList.add('active');
                     btn.disabled = false;
                     const lang = document.documentElement.getAttribute('data-lang');
-                    document.getElementById('btn-text').textContent = lang === 'es' ? '⏹ Finalizar' : '⏹ End call';
+                    if(textEl) textEl.textContent = lang === 'es' ? '⏹ Finalizar' : '⏹ End call';
                     setStatus(lang === 'es' ? 'Llamada activa' : 'Call active');
                 });
+
                 retellClient.on('call_ended', () => resetUI());
                 retellClient.on('error', () => resetUI());
 
@@ -259,10 +215,30 @@
                     sampleRate: 24000
                 });
             } catch (err) {
+                console.error(err);
                 resetUI();
             }
         }
         window.handleCall = handleCall;
+
+        // Language settings
+        window.setLanguage = function(lang) {
+            document.documentElement.setAttribute('data-lang', lang);
+            localStorage.setItem('pref-lang', lang);
+        }
+        const savedLang = localStorage.getItem('pref-lang');
+        if (savedLang) setLanguage(savedLang);
+
+        // Exit intent
+        let shown = false;
+        document.addEventListener('mouseleave', (e) => {
+            if (e.clientY < 0 && !shown) {
+                showPopup();
+                shown = true;
+            }
+        });
+        window.showPopup = function() { document.getElementById('exitPopup').classList.add('show'); }
+        window.closePopup = function() { document.getElementById('exitPopup').classList.remove('show'); }
     </script>
 </body>
 </html>
