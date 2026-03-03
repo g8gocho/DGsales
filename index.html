@@ -156,7 +156,6 @@
             <h2 data-lang="es" class="text-2xl font-bold mb-4">¿Quieres ver cómo funciona en TU negocio?</h2>
             <h2 data-lang="en" class="text-2xl font-bold mb-4">Want to see how it works for YOUR business?</h2>
             <p class="text-gray-400 mb-8">Déjanos tu email y te enviamos una demo personalizada gratis.</p>
-            <p data-lang="en" class="text-gray-400 mb-8" style="display:none">Leave your email and we'll send you a free custom demo.</p>
             <input type="email" placeholder="Email" class="w-full bg-black border border-white/20 p-3 rounded-lg mb-4 text-white">
             <button class="w-full btn-primary py-3 rounded-lg font-bold">
                 <span data-lang="es">Enviar Demo</span><span data-lang="en">Send Demo</span>
@@ -202,7 +201,16 @@
                 if(textEl) textEl.textContent = '...';
                 setStatus('Connecting...');
 
-                // Initialize client if not exists
+                const response = await fetch('/api/create-call', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ agent_id: AGENT_ID })
+                });
+
+                if (!response.ok) throw new Error('API connection failed');
+                const data = await response.json();
+
+                // Create client inside gesture
                 if (!retellClient) {
                     retellClient = new RetellWebClient();
                     
@@ -222,26 +230,20 @@
                     });
                 }
 
-                const response = await fetch('/api/create-call', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ agent_id: AGENT_ID })
-                });
+                // iPhone/Safari: resume AudioContext if it's suspended
+                if (retellClient.audioContext && retellClient.audioContext.state === 'suspended') {
+                    await retellClient.audioContext.resume();
+                }
 
-                if (!response.ok) throw new Error('API connection failed');
-                const data = await response.json();
-
-                // Mobile optimization: AudioContext must be resumed within a user gesture
-                // Retell SDK handles this inside startCall, but we ensure low sampleRate for compatibility
                 await retellClient.startCall({
                     accessToken: data.access_token,
-                    sampleRate: 16000 // Lower sample rate for better mobile/iPhone compatibility
+                    sampleRate: 24000 // Standard rate for better iPhone hardware compatibility
                 });
 
             } catch (err) {
                 console.error(err);
                 resetUI();
-                alert('Error al iniciar la llamada. Por favor, asegúrate de dar permisos de micrófono.');
+                alert('Error al conectar. Por favor, verifica tu conexión y permisos de micrófono.');
             }
         }
 
@@ -251,8 +253,6 @@
         window.setLanguage = function(lang) {
             document.documentElement.setAttribute('data-lang', lang);
             localStorage.setItem('pref-lang', lang);
-            
-            // Update call button text if not active
             if (!activeCall) {
                 const btnText = document.getElementById('btn-text');
                 if(btnText) {
@@ -273,13 +273,8 @@
             }
         });
 
-        window.showPopup = function() {
-            document.getElementById('exitPopup').classList.add('show');
-        }
-
-        window.closePopup = function() {
-            document.getElementById('exitPopup').classList.remove('show');
-        }
+        window.showPopup = function() { document.getElementById('exitPopup').classList.add('show'); }
+        window.closePopup = function() { document.getElementById('exitPopup').classList.remove('show'); }
     </script>
 </body>
 </html>
