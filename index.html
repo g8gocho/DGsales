@@ -59,75 +59,85 @@
         </a>
     </header>
 
-    <!-- Features Section -->
-    <section class="py-20 px-6 grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+    <!-- Features -->
+    <section class="py-20 px-6 max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
         <div class="card p-8 rounded-2xl">
-            <div class="text-3xl mb-4">🌐</div>
-            <h3 class="text-xl font-bold mb-3" data-lang="es">Webs de Alto Impacto</h3>
-            <h3 class="text-xl font-bold mb-3" data-lang="en">High-Impact Websites</h3>
-            <p class="text-gray-400" data-lang="es">Diseñamos landing pages optimizadas para conversión con tecnología moderna.</p>
-            <p class="text-gray-400" data-lang="en">We design landing pages optimized for conversion using modern technology.</p>
+            <div class="text-4xl mb-4">🌐</div>
+            <h3 data-lang="es" class="text-xl font-bold mb-2">Webs de Alto Impacto</h3>
+            <h3 data-lang="en" class="text-xl font-bold mb-2">High-Impact Websites</h3>
+            <p data-lang="es" class="text-gray-400">Diseñamos landing pages optimizadas para conversión con tecnología moderna.</p>
+            <p data-lang="en" class="text-gray-400">We design landing pages optimized for conversion using modern technology.</p>
         </div>
         <div class="card p-8 rounded-2xl">
-            <div class="text-3xl mb-4">📞</div>
-            <h3 class="text-xl font-bold mb-3" data-lang="es">Agentes de Voz AI</h3>
-            <h3 class="text-xl font-bold mb-3" data-lang="en">Voice AI Agents</h3>
-            <p class="text-gray-400" data-lang="es">Atención al cliente y ventas automáticas. No pierdas ni un solo lead.</p>
-            <p class="text-gray-400" data-lang="en">Automated customer service and sales. Don't lose a single lead.</p>
+            <div class="text-4xl mb-4">📞</div>
+            <h3 data-lang="es" class="text-xl font-bold mb-2">Agentes de Voz AI</h3>
+            <h3 data-lang="en" class="text-xl font-bold mb-2">Voice AI Agents</h3>
+            <p data-lang="es" class="text-gray-400">Atención al cliente y ventas automáticas. No pierdas ni un solo lead.</p>
+            <p data-lang="en" class="text-gray-400">Automated customer service and sales. Don't lose a single lead.</p>
         </div>
         <div class="card p-8 rounded-2xl">
-            <div class="text-3xl mb-4">⚡</div>
-            <h3 class="text-xl font-bold mb-3" data-lang="es">Automatización Full</h3>
-            <h3 class="text-xl font-bold mb-3" data-lang="en">Full Automation</h3>
-            <p class="text-gray-400" data-lang="es">Conectamos tu CRM, pagos y agenda para que el negocio rinda al máximo.</p>
-            <p class="text-gray-400" data-lang="en">We connect your CRM, payments, and calendar to maximize business performance.</p>
+            <div class="text-4xl mb-4">⚡</div>
+            <h3 data-lang="es" class="text-xl font-bold mb-2">Automatización Full</h3>
+            <h3 data-lang="en" class="text-xl font-bold mb-2">Full Automation</h3>
+            <p data-lang="es" class="text-gray-400">Conectamos tu CRM, pagos y agenda para que el negocio rinda al máximo.</p>
+            <p data-lang="en" class="text-gray-400">We connect your CRM, payments, and calendar to maximize business performance.</p>
         </div>
     </section>
 
-    <!-- Voice Agent Call Section -->
-    <section id="agente" class="py-20 px-6 text-center bg-white/5 border-y border-white/10">
-        <h2 class="text-3xl md:text-4xl font-bold mb-8" data-lang="es">Habla con nuestro Agente</h2>
-        <h2 class="text-3xl md:text-4xl font-bold mb-8" data-lang="en">Talk to our Agent</h2>
-        <p class="max-w-2xl mx-auto mb-10 text-gray-400" data-lang="es">Vendemos agentes personalizados como este para atender las llamadas, ventas y reservas de tu negocio. Pruébalo ahora mismo:</p>
-        <p class="max-w-2xl mx-auto mb-10 text-gray-400" data-lang="en">We sell custom agents like this one to handle your business calls, sales, and bookings. Try it right now:</p>
+    <!-- Voice Agent Demo -->
+    <section id="agente" class="py-24 bg-white/5 border-y border-white/10 text-center px-6">
+        <h2 data-lang="es" class="text-3xl md:text-5xl font-bold mb-8">Habla con nuestro Agente</h2>
+        <h2 data-lang="en" class="text-3xl md:text-5xl font-bold mb-8">Talk to our Agent</h2>
         
-        <button id="btn-call" onclick="handleCall(this)" class="btn-primary px-10 py-5 rounded-full font-bold text-xl inline-flex items-center gap-3">
-            <span id="btn-text">
-                <span data-lang="es">📞 Llamar ahora</span>
-                <span data-lang="en">📞 Call now</span>
-            </span>
-        </button>
-        <div id="status" class="mt-4 text-sm text-[#d4af37] font-medium min-h-[20px]"></div>
-        <p class="mt-4 text-xs text-gray-500">*<span data-lang="es">Requiere permiso de micrófono</span><span data-lang="en">Microphone permission required</span></p>
+        <p data-lang="es" class="text-gray-400 max-w-2xl mx-auto mb-12 italic text-lg">
+            Vendemos agentes personalizados como este para atender las llamadas, ventas y reservas de tu negocio. Pruébalo ahora mismo:
+        </p>
+        <p data-lang="en" class="text-gray-400 max-w-2xl mx-auto mb-12 italic text-lg">
+            We sell custom agents like this one to handle your business calls, sales, and bookings. Try it right now:
+        </p>
+
+        <div class="flex flex-col items-center gap-4">
+            <button id="btn-call" onclick="handleCall(this)" class="btn-primary btn-call px-12 py-6 rounded-full font-bold text-2xl flex items-center gap-3 shadow-2xl shadow-gold/20">
+                <span id="btn-text">
+                    <span data-lang="es">📞 Llamar ahora</span>
+                    <span data-lang="en">📞 Call now</span>
+                </span>
+            </button>
+            <p id="status" class="text-[#d4af37] font-medium h-6"></p>
+            <p class="text-xs text-gray-500 mt-2 italic">
+                * <span data-lang="es">Requiere permiso de micrófono</span>
+                <span data-lang="en">Microphone permission required</span>
+            </p>
+        </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="py-20 px-6 max-w-6xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-16" data-lang="es">Planes</h2>
-        <h2 class="text-4xl font-bold mb-16" data-lang="en">Pricing Plans</h2>
-        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div class="card p-10 rounded-3xl text-left">
+    <!-- Plans -->
+    <section class="py-24 px-6 max-w-5xl mx-auto">
+        <h2 data-lang="es" class="text-4xl font-bold text-center mb-16">Planes</h2>
+        <h2 data-lang="en" class="text-4xl font-bold text-center mb-16">Pricing Plans</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="card p-10 rounded-3xl border-white/10">
                 <h3 class="text-2xl font-bold mb-2">Web Starter</h3>
-                <div class="text-4xl font-bold mb-6 text-[#d4af37]">€499 <span class="text-sm text-gray-400 font-normal">/one-time</span></div>
-                <ul class="space-y-4 text-gray-300 mb-10">
+                <div class="text-4xl font-bold mb-6">€499 <span class="text-sm font-normal text-gray-400">/one-time</span></div>
+                <ul class="space-y-4 mb-10 text-gray-300">
                     <li>✓ <span data-lang="es">Landing Page Premium</span><span data-lang="en">Premium Landing Page</span></li>
                     <li>✓ Copywriting Persuasivo</li>
                     <li>✓ <span data-lang="es">Integración de Leads</span><span data-lang="en">Lead Integration</span></li>
                 </ul>
-                <button class="w-full py-4 border border-[#d4af37] text-[#d4af37] font-bold rounded-xl hover:bg-[#d4af37] hover:text-black transition">
+                <button class="w-full py-4 border border-white/20 rounded-xl hover:bg-white/10 transition">
                     <span data-lang="es">Empezar</span><span data-lang="en">Start Now</span>
                 </button>
             </div>
-            <div class="card p-10 rounded-3xl text-left border-[#d4af37] relative overflow-hidden">
-                <div class="absolute top-4 right-4 bg-[#d4af37] text-black text-[10px] px-2 py-1 rounded font-bold">POPULAR</div>
+            <div class="card p-10 rounded-3xl border-[#d4af37] relative">
+                <div class="absolute -top-4 right-8 bg-[#d4af37] text-black text-xs font-bold px-3 py-1 rounded-full">POPULAR</div>
                 <h3 class="text-2xl font-bold mb-2">AI Agent Pro</h3>
-                <div class="text-4xl font-bold mb-6 text-[#d4af37]">€999 <span class="text-sm text-gray-400 font-normal">/set-up</span></div>
-                <ul class="space-y-4 text-gray-300 mb-10">
+                <div class="text-4xl font-bold mb-6">€999 <span class="text-sm font-normal text-gray-400">/set-up</span></div>
+                <ul class="space-y-4 mb-10 text-gray-300">
                     <li>✓ <span data-lang="es">Agente de Voz 24/7</span><span data-lang="en">24/7 Voice Agent</span></li>
                     <li>✓ <span data-lang="es">Agenda Reservas Directas</span><span data-lang="en">Direct Booking Sync</span></li>
                     <li>✓ <span data-lang="es">Soporte Multilingüe</span><span data-lang="en">Multilingual Support</span></li>
                 </ul>
-                <button class="w-full py-4 bg-[#d4af37] text-black font-bold rounded-xl hover:opacity-90 transition">
+                <button class="w-full btn-primary py-4 rounded-xl font-bold">
                     <span data-lang="es">Lo quiero</span><span data-lang="en">Get it Now</span>
                 </button>
             </div>
@@ -135,29 +145,29 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-10 border-t border-white/10 text-center text-gray-500 text-sm">
-        © 2024 DGsales - Smart AI Automation. Amsterdam | Barcelona.
+    <footer class="py-12 px-6 border-t border-white/5 text-center text-gray-500 text-sm">
+        <p>&copy; 2024 DGsales - Smart AI Automation. Amsterdam | Barcelona.</p>
     </footer>
 
-    <!-- Exit Intent Popup -->
-    <div id="exitPopup" class="fixed inset-0 z-[100] hidden items-center justify-center p-6">
-        <div class="bg-[#1a1a1a] p-10 rounded-3xl max-w-md w-full border border-white/20 relative">
-            <button onclick="closePopup()" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-white">&times;</button>
-            <h2 class="text-2xl font-bold mb-4" data-lang="es">¿Quieres ver cómo funciona en TU negocio?</h2>
-            <h2 class="text-2xl font-bold mb-4" data-lang="en">Want to see how it works for YOUR business?</h2>
-            <p class="text-gray-400 mb-8" data-lang="es">Déjanos tu email y te enviamos una demo personalizada gratis.</p>
-            <p class="text-gray-400 mb-8" data-lang="en">Leave your email and we'll send you a free custom demo.</p>
+    <!-- Exit Popup -->
+    <div id="exitPopup" class="fixed inset-0 z-[100] items-center justify-center p-6">
+        <div class="bg-[#1a1a1a] p-10 rounded-3xl max-w-md w-full border border-white/10 shadow-2xl relative">
+            <button onclick="closePopup()" class="absolute top-4 right-4 text-gray-500 hover:text-white">×</button>
+            <h2 data-lang="es" class="text-2xl font-bold mb-4">¿Quieres ver cómo funciona en TU negocio?</h2>
+            <h2 data-lang="en" class="text-2xl font-bold mb-4">Want to see how it works for YOUR business?</h2>
+            <p class="text-gray-400 mb-8">Déjanos tu email y te enviamos una demo personalizada gratis.</p>
+            <p data-lang="en" class="text-gray-400 mb-8" style="display:none">Leave your email and we'll send you a free custom demo.</p>
             <input type="email" placeholder="Email" class="w-full bg-black border border-white/20 p-3 rounded-lg mb-4 text-white">
-            <button class="btn-primary w-full py-4 rounded-xl font-bold">
+            <button class="w-full btn-primary py-3 rounded-lg font-bold">
                 <span data-lang="es">Enviar Demo</span><span data-lang="en">Send Demo</span>
             </button>
         </div>
     </div>
 
-    <!-- SDK & Logic Scripts -->
     <script type="module">
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
-        const AGENT_ID = 'agent_397e0f111a1fa4c643603c976a'; 
+        
+        const AGENT_ID = 'agent_397e0f111a1fa4c643603c976a';
         let retellClient = null;
         let activeCall = false;
 
@@ -173,7 +183,10 @@
             btn.classList.remove('active');
             btn.disabled = false;
             const lang = document.documentElement.getAttribute('data-lang');
-            document.getElementById('btn-text').innerHTML = lang === 'es' ? '📞 Llamar ahora' : '📞 Call now';
+            const btnText = document.getElementById('btn-text');
+            if(btnText) {
+                btnText.innerHTML = lang === 'es' ? '📞 Llamar ahora' : '📞 Call now';
+            }
             setStatus('');
         }
 
@@ -182,50 +195,72 @@
                 if (retellClient) retellClient.stopCall();
                 return;
             }
+
             try {
                 btn.disabled = true;
                 const textEl = document.getElementById('btn-text');
                 if(textEl) textEl.textContent = '...';
                 setStatus('Connecting...');
 
+                // Initialize client if not exists
+                if (!retellClient) {
+                    retellClient = new RetellWebClient();
+                    
+                    retellClient.on('call_started', () => {
+                        activeCall = true;
+                        btn.classList.add('active');
+                        btn.disabled = false;
+                        const lang = document.documentElement.getAttribute('data-lang');
+                        if(textEl) textEl.textContent = lang === 'es' ? '⏹ Finalizar' : '⏹ End call';
+                        setStatus(lang === 'es' ? 'Llamada activa' : 'Call active');
+                    });
+
+                    retellClient.on('call_ended', () => resetUI());
+                    retellClient.on('error', (err) => {
+                        console.error('Retell Error:', err);
+                        resetUI();
+                    });
+                }
+
                 const response = await fetch('/api/create-call', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ agent_id: AGENT_ID })
                 });
-                
+
                 if (!response.ok) throw new Error('API connection failed');
                 const data = await response.json();
 
-                retellClient = new RetellWebClient();
-                retellClient.on('call_started', () => {
-                    activeCall = true;
-                    btn.classList.add('active');
-                    btn.disabled = false;
-                    const lang = document.documentElement.getAttribute('data-lang');
-                    if(textEl) textEl.textContent = lang === 'es' ? '⏹ Finalizar' : '⏹ End call';
-                    setStatus(lang === 'es' ? 'Llamada activa' : 'Call active');
-                });
-
-                retellClient.on('call_ended', () => resetUI());
-                retellClient.on('error', () => resetUI());
-
+                // Mobile optimization: AudioContext must be resumed within a user gesture
+                // Retell SDK handles this inside startCall, but we ensure low sampleRate for compatibility
                 await retellClient.startCall({
                     accessToken: data.access_token,
-                    sampleRate: 24000
+                    sampleRate: 16000 // Lower sample rate for better mobile/iPhone compatibility
                 });
+
             } catch (err) {
                 console.error(err);
                 resetUI();
+                alert('Error al iniciar la llamada. Por favor, asegúrate de dar permisos de micrófono.');
             }
         }
+
         window.handleCall = handleCall;
 
         // Language settings
         window.setLanguage = function(lang) {
             document.documentElement.setAttribute('data-lang', lang);
             localStorage.setItem('pref-lang', lang);
+            
+            // Update call button text if not active
+            if (!activeCall) {
+                const btnText = document.getElementById('btn-text');
+                if(btnText) {
+                    btnText.innerHTML = lang === 'es' ? '📞 Llamar ahora' : '📞 Call now';
+                }
+            }
         }
+
         const savedLang = localStorage.getItem('pref-lang');
         if (savedLang) setLanguage(savedLang);
 
@@ -237,8 +272,14 @@
                 shown = true;
             }
         });
-        window.showPopup = function() { document.getElementById('exitPopup').classList.add('show'); }
-        window.closePopup = function() { document.getElementById('exitPopup').classList.remove('show'); }
+
+        window.showPopup = function() {
+            document.getElementById('exitPopup').classList.add('show');
+        }
+
+        window.closePopup = function() {
+            document.getElementById('exitPopup').classList.remove('show');
+        }
     </script>
 </body>
 </html>
