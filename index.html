@@ -2,7 +2,7 @@
 <html lang="es" data-lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DGsales - Webs + Automatización con IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -199,18 +199,9 @@
                 btn.disabled = true;
                 const textEl = document.getElementById('btn-text');
                 if(textEl) textEl.textContent = '...';
-                setStatus('Connecting...');
-
-                const response = await fetch('/api/create-call', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ agent_id: AGENT_ID })
-                });
-
-                if (!response.ok) throw new Error('API connection failed');
-                const data = await response.json();
-
-                // Create client inside gesture
+                
+                // CRITICAL FOR IPHONE:
+                // Initialize Client and Resume Context immediately within the click event
                 if (!retellClient) {
                     retellClient = new RetellWebClient();
                     
@@ -230,26 +221,36 @@
                     });
                 }
 
-                // iPhone/Safari: resume AudioContext if it's suspended
-                if (retellClient.audioContext && retellClient.audioContext.state === 'suspended') {
+                // iPhone Safari requires resuming context inside the gesture
+                if (retellClient.audioContext) {
                     await retellClient.audioContext.resume();
                 }
 
+                setStatus('Conectando...');
+
+                const response = await fetch('/api/create-call', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ agent_id: AGENT_ID })
+                });
+
+                if (!response.ok) throw new Error('API connection failed');
+                const data = await response.json();
+
                 await retellClient.startCall({
                     accessToken: data.access_token,
-                    sampleRate: 24000 // Standard rate for better iPhone hardware compatibility
+                    sampleRate: 48000 // Optimized for iPhone hardware
                 });
 
             } catch (err) {
                 console.error(err);
                 resetUI();
-                alert('Error al conectar. Por favor, verifica tu conexión y permisos de micrófono.');
+                alert('Asegúrate de permitir el micrófono y tener una conexión estable.');
             }
         }
 
         window.handleCall = handleCall;
 
-        // Language settings
         window.setLanguage = function(lang) {
             document.documentElement.setAttribute('data-lang', lang);
             localStorage.setItem('pref-lang', lang);
@@ -263,15 +264,6 @@
 
         const savedLang = localStorage.getItem('pref-lang');
         if (savedLang) setLanguage(savedLang);
-
-        // Exit intent
-        let shown = false;
-        document.addEventListener('mouseleave', (e) => {
-            if (e.clientY < 0 && !shown) {
-                showPopup();
-                shown = true;
-            }
-        });
 
         window.showPopup = function() { document.getElementById('exitPopup').classList.add('show'); }
         window.closePopup = function() { document.getElementById('exitPopup').classList.remove('show'); }
