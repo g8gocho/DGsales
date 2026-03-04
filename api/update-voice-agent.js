@@ -1,9 +1,8 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
-    // Accept GET for easy browser trigger (temporary)
 
   try {
     // Step 1: Create a Retell LLM with DGsales prompt
@@ -31,7 +30,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         agent_name: 'DGsales Voice Agent',
-                response_engine: { type: 'retell-llm', llm_id: llmData.llm_id },
+        response_engine: { type: 'retell-llm', llm_id: llmData.llm_id },
         voice_id: 'openai-Alloy',
         language: 'multi',
         responsiveness: 1,
@@ -53,4 +52,4 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-}
+};
