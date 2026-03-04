@@ -24,14 +24,6 @@
         #exitPopup { display: none; background: rgba(0,0,0,0.9); }
         #exitPopup.show { display: flex; }
     </style>
-    <!-- Retell Widget Integration -->
-    <script id="retell-widget"
-        src="https://dashboard.retellai.com/retell-widget.js"
-        data-public-key="public_key_262fc8f1f2d032aa6ffee"
-        data-agent-id="agent_4573c1ecc1d8e26ae78c1f71b9"
-        data-agent-version="0"
-        data-title="Chat con DGsales"
-    ></script>
 </head>
 <body class="bg-[#0b0b0b]">
     <!-- Lang Switcher -->
@@ -166,7 +158,7 @@
     <script type="module">
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
         
-        const AGENT_ID = 'agent_397e0f111a1fa4c643603c976a';
+        const AGENT_ID = 'agent_4573c1ecc1d8e26ae78c1f71b9';
         let retellClient = null;
         let activeCall = false;
 
@@ -184,8 +176,7 @@
             const lang = document.documentElement.getAttribute('data-lang');
             const btnText = document.getElementById('btn-text');
             if(btnText) {
-                btnText.innerHTML = lang === 'es' ? '📞 Llamar ahora' : '📞 Call now';
-            }
+            btnText.innerHTML = '<span data-lang="es">📞 Llamar ahora</span><span data-lang="en">📞 Call now</span>';            }
             setStatus('');
         }
 
@@ -198,8 +189,7 @@
             try {
                 btn.disabled = true;
                 const textEl = document.getElementById('btn-text');
-                if(textEl) textEl.textContent = '...';
-                
+        if(textEl) textEl.innerHTML = '<span data-lang="es">...</span><span data-lang="en">...</span>';                
                 // CRITICAL FOR IPHONE:
                 // Initialize Client and Resume Context immediately within the click event
                 if (!retellClient) {
@@ -210,8 +200,7 @@
                         btn.classList.add('active');
                         btn.disabled = false;
                         const lang = document.documentElement.getAttribute('data-lang');
-                        if(textEl) textEl.textContent = lang === 'es' ? '⏹ Finalizar' : '⏹ End call';
-                        setStatus(lang === 'es' ? 'Llamada activa' : 'Call active');
+        if(textEl) textEl.innerHTML = '<span data-lang="es">⏹ Finalizar</span><span data-lang="en">⏹ End call</span>';                        setStatus(lang === 'es' ? 'Llamada activa' : 'Call active');
                     });
 
                     retellClient.on('call_ended', () => resetUI());
