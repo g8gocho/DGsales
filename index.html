@@ -243,20 +243,18 @@
 
           
      const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
-        const response = await fetch(endpoint, {
-     
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ agent_id: AGENT_ID })
-  
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ agent_id: AGENT_ID })
+});
+if (!response.ok) throw new Error('API connection failed');
+const data = await response.json();
 
-                if (!response.ok) throw new Error('API connection failed');
-                const data = await response.json();
-
-                await retellClient.startCall({
-                    accessToken: data.access_token,
-                    sampleRate: 48000 // Optimized for iPhone hardware
-                });
+await retellClient.startCall({
+    accessToken: data.access_token,
+    sampleRate: 48000 // Optimized for iPhone hardware
+});
 
             } catch (err) {
                 console.error(err);
