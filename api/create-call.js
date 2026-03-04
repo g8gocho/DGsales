@@ -1,6 +1,6 @@
-import Retell from 'retell-sdk';
+const Retell = require('retell-sdk');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -37,7 +37,6 @@ export default async function handler(req, res) {
       access_token: webCallResponse.access_token,
       call_id: webCallResponse.call_id
     });
-
   } catch (error) {
     console.error('Error creating web call:', error);
     return res.status(500).json({ 
@@ -45,4 +44,4 @@ export default async function handler(req, res) {
       message: error.message 
     });
   }
-}
+};
