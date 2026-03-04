@@ -161,6 +161,8 @@
         const AGENT_ID = 'agent_4573c1ecc1d8e26ae78c1f71b9';
         let retellClient = null;
         let activeCall = false;
+        const BACKEND_URL = window.location.hostname.includes('github.io') ? 'https://dgsales.vercel.app' : '';
+        
 
         function setStatus(msg) {
             const statusEl = document.getElementById('status');
@@ -168,9 +170,10 @@
         }
 
         function resetUI() {
-            ac
-            
-                tiveCall = false;
+    activeCall = false;
+      
+          
+       
             const btn = document.getElementById('btn-call');
             if (!btn) return;
             btn.classList.remove('active');
@@ -238,11 +241,14 @@
 
                 setStatus('Conectando...');
 
-                const response = await fetch('/api/create-call', {
+          
+     const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
+        const response = await fetch(endpoint, {
+     
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ agent_id: AGENT_ID })
-                });
+  
 
                 if (!response.ok) throw new Error('API connection failed');
                 const data = await response.json();
