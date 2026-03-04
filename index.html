@@ -168,7 +168,9 @@
         }
 
         function resetUI() {
-            activeCall = false;
+            ac
+            
+                tiveCall = false;
             const btn = document.getElementById('btn-call');
             if (!btn) return;
             btn.classList.remove('active');
@@ -185,7 +187,20 @@
                 if (retellClient) retellClient.stopCall();
                 return;
             }
+    // Solicitar permiso de micrófono antes de iniciar la llamada
+    try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (micErr) {
+        resetUI();
+        alert(
+            document.documentElement.getAttribute('data-lang') === 'es'
+                ? 'Debes permitir el micrófono para iniciar la llamada.'
+                : 'You must allow microphone access to start the call.'
+        );
+        return;
+    }
 
+            
             try {
                 btn.disabled = true;
                 const textEl = document.getElementById('btn-text');
@@ -204,10 +219,16 @@
                     });
 
                     retellClient.on('call_ended', () => resetUI());
-                    retellClient.on('error', (err) => {
-                        console.error('Retell Error:', err);
-                        resetUI();
-                    });
+                        retellClient.on('error', (err) => {
+            console.error('Retell Error:', err);
+            resetUI();
+            alert(
+                document.documentElement.getAttribute('data-lang') === 'es'
+                    ? 'Se produjo un error al gestionar la llamada. Comprueba tu conexión y permisos de audio.'
+                    : 'An error occurred handling the call. Please check your connection and audio permissions.'
+            );
+        });
+ 
                 }
 
                 // iPhone Safari requires resuming context inside the gesture
@@ -234,7 +255,12 @@
             } catch (err) {
                 console.error(err);
                 resetUI();
-                alert('Asegúrate de permitir el micrófono y tener una conexión estable.');
+                alert(
+            document.documentElement.getAttribute('data-lang') === 'es'
+                ? 'Se produjo un error. Asegúrate de permitir el micrófono y tener una conexión estable.'
+                : 'An error occurred. Please ensure you allow microphone access and have a stable connection.'
+                    );
+            
             }
         }
 
