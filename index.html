@@ -160,7 +160,7 @@
         
         const AGENT_ID = 'agent_4573c1ecc1d8e26ae78c1f71b9';
         let retellClient = null;
-        let activeCall = false;
+      let startingCall = false;  let activeCall = false;
       const BACKEND_URL = window.location.hostname.includes('github.io') ? 'https://d-gsales.vercel.app' : '';
         
 
@@ -190,18 +190,8 @@
                 if (retellClient) retellClient.stopCall();
                 return;
             }
-    // Solicitar permiso de micrófono antes de iniciar la llamada
-    try {
-        await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (micErr) {
-        resetUI();
-        alert(
-            document.documentElement.getAttribute('data-lang') === 'es'
-                ? 'Debes permitir el micrófono para iniciar la llamada.'
-                : 'You must allow microphone access to start the call.'
-        );
-        return;
-    }
+    if (startingCall) return;
+startingCall = true;
 
             
             try {
@@ -256,18 +246,17 @@ await retellClient.startCall({
     sampleRate: 44100 // Optimized for iPhone hardware
 });
 
-            } catch (err) {
-                console.error(err);
-                resetUI();
-                alert(
-            document.documentElement.getAttribute('data-lang') === 'es'
-                ? 'Se produjo un error. Asegúrate de permitir el micrófono y tener una conexión estable.'
-                : 'An error occurred. Please ensure you allow microphone access and have a stable connection.'
-                    );
-            
-            }
-        }
-
+           } catch (err) {
+  console.error(err);
+  resetUI();
+  alert(
+    document.documentElement.getAttribute('data-lang') === 'es'
+      ? 'Se produjo un error. Asegúrate de permitir el micrófono y tener una conexión estable.'
+      : 'An error occurred. Please ensure you allow microphone access and have a stable connection.'
+  );
+} finally {
+  startingCall = false;
+}
         window.handleCall = handleCall;
 
         window.setLanguage = function(lang) {
