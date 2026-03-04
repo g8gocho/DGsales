@@ -253,7 +253,7 @@ const data = await response.json();
 
 await retellClient.startCall({
     accessToken: data.access_token,
-    sampleRate: 48000 // Optimized for iPhone hardware
+    sampleRate: 44100 // Optimized for iPhone hardware
 });
 
             } catch (err) {
