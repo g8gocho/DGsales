@@ -45,6 +45,8 @@
             color: #ffffff;
             transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
             box-shadow: 0 10px 26px rgba(36, 95, 191, 0.22);
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
         }
         .btn-primary:hover {
             filter: brightness(1.05);
@@ -97,6 +99,109 @@
             border-color: #2c6dd9;
             box-shadow: 0 0 0 3px rgba(44, 109, 217, 0.14);
         }
+        .plans-wrap {
+            background: #f7faff;
+            border: 1px solid #d8e2ef;
+            border-radius: 1.4rem;
+            padding: 1.25rem;
+        }
+        .product-card {
+            position: relative;
+            border: 1px solid #d3dfef;
+            border-radius: 1.2rem;
+            background: #ffffff;
+            box-shadow: 0 14px 28px rgba(18, 40, 72, 0.08);
+            padding: 1.35rem;
+        }
+        .product-card.featured {
+            border: 2px solid #2c6dd9;
+            box-shadow: 0 18px 34px rgba(25, 78, 158, 0.16);
+        }
+        .product-badge {
+            position: absolute;
+            top: -0.72rem;
+            right: 1rem;
+            background: #2c6dd9;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.26rem 0.62rem;
+            letter-spacing: 0.04em;
+        }
+        .price-main {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            color: #153a69;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            line-height: 1.05;
+        }
+        .plan-list {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.58rem;
+            color: #334f74;
+            font-size: 0.95rem;
+        }
+        .plan-item {
+            display: flex;
+            gap: 0.55rem;
+            align-items: flex-start;
+        }
+        .plan-check {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 999px;
+            background: #e8f0ff;
+            color: #1a4c9f;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+            font-size: 0.75rem;
+        }
+        .cta-secondary {
+            width: 100%;
+            border: 1px solid #c2d2e8;
+            color: #21466f;
+            border-radius: 0.85rem;
+            padding: 0.8rem 1rem;
+            font-weight: 700;
+            background: #fff;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .cta-secondary:hover { border-color: #2c6dd9; background: #f3f8ff; }
+        .comparison-wrap {
+            margin-top: 1rem;
+            border: 1px solid #d8e2ef;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #fff;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem 0.7rem;
+            border-bottom: 1px solid #e3ebf5;
+            text-align: left;
+            color: #355175;
+        }
+        .comparison-table th {
+            background: #f4f8fe;
+            color: #1d3f68;
+            font-weight: 700;
+        }
+        .comparison-mobile { display: none; }
+        .comparison-cell-ok { color: #1a4c9f; font-weight: 700; }
+        .comparison-cell-muted { color: #6d829e; }
         header, section, footer { animation: fadeUp 0.7s ease both; }
         section:nth-of-type(2) { animation-delay: 0.08s; }
         section:nth-of-type(3) { animation-delay: 0.14s; }
@@ -126,6 +231,34 @@
             header { padding-top: 7rem !important; }
             h1 { line-height: 1.06; }
             .btn-primary { width: 100%; max-width: 340px; }
+            .plans-wrap { padding: 0.9rem; }
+            .product-card { padding: 1rem; }
+            .comparison-table { display: none; }
+            .comparison-mobile {
+                display: grid;
+                gap: 0.6rem;
+                padding: 0.7rem;
+            }
+            .comparison-mobile-row {
+                border: 1px solid #dde7f4;
+                border-radius: 0.75rem;
+                padding: 0.65rem 0.75rem;
+                background: #fbfdff;
+            }
+            .comparison-mobile-label {
+                color: #355175;
+                font-weight: 700;
+                margin-bottom: 0.38rem;
+                font-size: 0.83rem;
+            }
+            .comparison-mobile-values {
+                display: flex;
+                justify-content: space-between;
+                gap: 0.6rem;
+                font-size: 0.8rem;
+            }
+            .comparison-mobile-values span:first-child { color: #1d3f68; font-weight: 700; }
+            .comparison-mobile-values span:last-child { color: #1a4c9f; font-weight: 700; }
         }
     </style>
 </head>
@@ -253,31 +386,92 @@
     <section class="py-24 px-6 max-w-5xl mx-auto">
         <h2 data-lang="es" class="text-4xl font-bold text-center mb-16">Planes</h2>
         <h2 data-lang="en" class="text-4xl font-bold text-center mb-16">Pricing Plans</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="card p-10 rounded-3xl border-white/10">
-                <h3 class="text-2xl font-bold mb-2">Web Starter</h3>
-                <div class="text-4xl font-bold mb-6">EUR499 <span class="text-sm font-normal text-[#6e84a3]">/one-time</span></div>
-                <ul class="space-y-4 mb-10 text-[#334f74]">
-                    <li>✓ <span data-lang="es">Landing Page Premium</span><span data-lang="en">Premium Landing Page</span></li>
-                    <li>✓ Copywriting Persuasivo</li>
-                    <li>✓ <span data-lang="es">Integración de Leads</span><span data-lang="en">Lead Integration</span></li>
-                </ul>
-                <button class="w-full py-4 border border-white/20 rounded-xl hover:bg-white/10 transition font-semibold">
-                    <span data-lang="es">Empezar</span><span data-lang="en">Start Now</span>
-                </button>
+        <div class="plans-wrap">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div class="product-card">
+                    <h3 class="text-2xl font-bold mb-2">Web Starter</h3>
+                    <p data-lang="es" class="text-[#5c7493] text-sm">Para empresas que necesitan una web que convierta desde el primer mes.</p>
+                    <p data-lang="en" class="text-[#5c7493] text-sm">For teams that need a conversion-ready page from day one.</p>
+                    <div class="price-main mt-4">EUR499 <span class="text-sm font-semibold text-[#6f86a4]">/one-time</span></div>
+                    <div class="plan-list">
+                        <div class="plan-item"><span class="plan-check">✓</span><span data-lang="es">Landing page premium orientada a conversion</span><span data-lang="en">Premium conversion-focused landing page</span></div>
+                        <div class="plan-item"><span class="plan-check">✓</span><span data-lang="es">Copywriting de ventas + estructura de oferta</span><span data-lang="en">Sales copywriting + offer structure</span></div>
+                        <div class="plan-item"><span class="plan-check">✓</span><span data-lang="es">Integracion de leads y seguimiento inicial</span><span data-lang="en">Lead integration and initial tracking</span></div>
+                    </div>
+                    <button class="cta-secondary mt-5">
+                        <span data-lang="es">Quiero mejorar mi web</span><span data-lang="en">Upgrade my website</span>
+                    </button>
+                </div>
+
+                <div class="product-card featured">
+                    <div class="product-badge">BEST VALUE</div>
+                    <h3 class="text-2xl font-bold mb-2">AI Agent Pro</h3>
+                    <p data-lang="es" class="text-[#5c7493] text-sm">Para negocio con volumen de llamadas y necesidad de atencion constante.</p>
+                    <p data-lang="en" class="text-[#5c7493] text-sm">For businesses with call volume and always-on service needs.</p>
+                    <div class="price-main mt-4">EUR999 <span class="text-sm font-semibold text-[#6f86a4]">/set-up</span></div>
+                    <div class="plan-list">
+                        <div class="plan-item"><span class="plan-check">✓</span><span data-lang="es">Agente de voz 24/7 para ventas y soporte</span><span data-lang="en">24/7 voice agent for sales and support</span></div>
+                        <div class="plan-item"><span class="plan-check">✓</span><span data-lang="es">Sincronizacion de reservas y agenda</span><span data-lang="en">Booking and calendar sync</span></div>
+                        <div class="plan-item"><span class="plan-check">✓</span><span data-lang="es">Operacion bilingue ES/EN con handoff</span><span data-lang="en">Bilingual ES/EN operation with handoff</span></div>
+                    </div>
+                    <button class="btn-primary w-full py-3 rounded-xl font-bold mt-5">
+                        <span data-lang="es">Activar AI Agent Pro</span><span data-lang="en">Activate AI Agent Pro</span>
+                    </button>
+                </div>
             </div>
-            <div class="card p-10 rounded-3xl border-[#2c6dd9] relative">
-                <div class="absolute -top-4 right-8 bg-[#2c6dd9] text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</div>
-                <h3 class="text-2xl font-bold mb-2">AI Agent Pro</h3>
-                <div class="text-4xl font-bold mb-6">EUR999 <span class="text-sm font-normal text-[#6e84a3]">/set-up</span></div>
-                <ul class="space-y-4 mb-10 text-[#334f74]">
-                    <li>✓ <span data-lang="es">Agente de Voz 24/7</span><span data-lang="en">24/7 Voice Agent</span></li>
-                    <li>✓ <span data-lang="es">Agenda Reservas Directas</span><span data-lang="en">Direct Booking Sync</span></li>
-                    <li>✓ <span data-lang="es">Soporte Multilingüe</span><span data-lang="en">Multilingual Support</span></li>
-                </ul>
-                <button class="w-full btn-primary py-4 rounded-xl font-bold">
-                    <span data-lang="es">Lo quiero</span><span data-lang="en">Get it Now</span>
-                </button>
+
+            <div class="comparison-wrap mt-5">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th><span data-lang="es">Comparativa</span><span data-lang="en">Comparison</span></th>
+                            <th>Web Starter</th>
+                            <th>AI Agent Pro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span data-lang="es">Objetivo principal</span><span data-lang="en">Primary goal</span></td>
+                            <td class="comparison-cell-muted"><span data-lang="es">Captar leads desde la web</span><span data-lang="en">Capture leads from website</span></td>
+                            <td class="comparison-cell-ok"><span data-lang="es">Atender y convertir por voz</span><span data-lang="en">Handle and convert via voice</span></td>
+                        </tr>
+                        <tr>
+                            <td><span data-lang="es">Tiempo de lanzamiento</span><span data-lang="en">Launch timeline</span></td>
+                            <td>7-10 days</td>
+                            <td>10-14 days</td>
+                        </tr>
+                        <tr>
+                            <td><span data-lang="es">Cobertura fuera de horario</span><span data-lang="en">After-hours coverage</span></td>
+                            <td class="comparison-cell-muted">No</td>
+                            <td class="comparison-cell-ok">24/7</td>
+                        </tr>
+                        <tr>
+                            <td><span data-lang="es">Ideal para</span><span data-lang="en">Best for</span></td>
+                            <td><span data-lang="es">Empresas que inician embudo digital</span><span data-lang="en">Teams starting digital funnel</span></td>
+                            <td><span data-lang="es">Equipos con leads diarios y llamadas</span><span data-lang="en">Teams with daily leads and calls</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="comparison-mobile">
+                    <div class="comparison-mobile-row">
+                        <div class="comparison-mobile-label" data-lang="es">Objetivo principal</div>
+                        <div class="comparison-mobile-label" data-lang="en">Primary goal</div>
+                        <div class="comparison-mobile-values"><span>Web Starter</span><span data-lang="es">Leads web</span><span data-lang="en">Web leads</span></div>
+                        <div class="comparison-mobile-values"><span>AI Agent Pro</span><span data-lang="es">Conversion por voz</span><span data-lang="en">Voice conversion</span></div>
+                    </div>
+                    <div class="comparison-mobile-row">
+                        <div class="comparison-mobile-label" data-lang="es">Tiempo de lanzamiento</div>
+                        <div class="comparison-mobile-label" data-lang="en">Launch timeline</div>
+                        <div class="comparison-mobile-values"><span>Web Starter</span><span>7-10 days</span></div>
+                        <div class="comparison-mobile-values"><span>AI Agent Pro</span><span>10-14 days</span></div>
+                    </div>
+                    <div class="comparison-mobile-row">
+                        <div class="comparison-mobile-label" data-lang="es">Cobertura</div>
+                        <div class="comparison-mobile-label" data-lang="en">Coverage</div>
+                        <div class="comparison-mobile-values"><span>Web Starter</span><span>No</span></div>
+                        <div class="comparison-mobile-values"><span>AI Agent Pro</span><span>24/7</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
