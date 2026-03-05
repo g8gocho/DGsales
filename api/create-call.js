@@ -27,16 +27,28 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Missing agent_id in request body" });
     }
 
-    const response = await fetch("https://api.retellai.com/v1/create-web-call", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.RETELL_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ agent_id }),
-    });
+    const payload = JSON.stringify({ agent_id });
+    const headers = {
+      Authorization: `Bearer ${process.env.RETELL_API_KEY}`,
+      "Content-Type": "application/json",
+    };
 
-    const data = await response.json().catch(() => ({}));
+    // Try current Retell endpoint first, then legacy path if needed.
+    let response = await fetch("https://api.retellai.com/v1/create-web-call", {
+      method: "POST",
+      headers,
+      body: payload,
+    });
+    let data = await response.json().catch(() => ({}));
+
+    if (response.status === 404) {
+      response = await fetch("https://api.retellai.com/create-web-call", {
+        method: "POST",
+        headers,
+        body: payload,
+      });
+      data = await response.json().catch(() => ({}));
+    }
 
     if (!response.ok) {
       return res.status(response.status).json({
