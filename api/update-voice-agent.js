@@ -35,9 +35,7 @@ module.exports = async function handler(req, res) {
         language: 'multi',
         responsiveness: 1,
         interruption_sensitivity: 1,
-        enable_backchannel: false,
-        backchannel_frequency: 0,
-        ambient_sound: 'none'
+        enable_backchannel: false
       })
     });
     const agentData = await agentRes.json();
