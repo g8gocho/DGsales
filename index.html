@@ -215,6 +215,7 @@
             box-shadow: 0 14px 26px rgba(14, 34, 62, 0.08);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
         .plan-card-pro.featured {
             border: 2px solid #2c6dd9;
@@ -237,6 +238,17 @@
             letter-spacing: 0.02em;
         }
         .plan-title { font-size: 1.4rem; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #14355f; }
+        .plan-topline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #2a5da6;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
         .plan-price {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: clamp(1.85rem, 4vw, 2.25rem);
@@ -275,6 +287,7 @@
             border-radius: 0.85rem;
             font-weight: 800;
             font-size: 0.95rem;
+            margin-top: 0.35rem;
         }
         .plan-cta-secondary {
             border: 1px solid #bfd1e8;
@@ -494,6 +507,7 @@
         <h2 data-lang="en" class="text-4xl font-bold text-center mb-16">Pricing Plans</h2>
         <div class="pricing-grid">
             <article class="plan-card-pro">
+                <div class="plan-topline">Core Offer</div>
                 <h3 class="plan-title">Web Starter</h3>
                 <p data-lang="es" class="plan-sub">Landing de alto rendimiento para convertir visitas en oportunidades comerciales.</p>
                 <p data-lang="en" class="plan-sub">High-performance landing page to turn visits into qualified opportunities.</p>
@@ -516,6 +530,7 @@
 
             <article class="plan-card-pro featured">
                 <div class="product-badge">RECOMMENDED</div>
+                <div class="plan-topline">Growth Engine</div>
                 <h3 class="plan-title">AI Agent Pro</h3>
                 <p data-lang="es" class="plan-sub">Automatiza llamadas, filtrado de leads y reservas sin depender del horario del equipo.</p>
                 <p data-lang="en" class="plan-sub">Automate calls, lead qualification, and bookings beyond team working hours.</p>
