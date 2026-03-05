@@ -304,15 +304,17 @@
                     <input id="leadName" class="field" type="text" required placeholder="Nombre / Name">
                     <input id="leadEmail" class="field" type="email" required placeholder="Email">
                     <input id="leadCompany" class="field" type="text" placeholder="Empresa / Company">
+                    <input id="leadWebsite" class="hidden" type="text" autocomplete="off" tabindex="-1" aria-hidden="true">
                     <textarea id="leadMessage" class="field min-h-[120px]" placeholder="Cuéntanos tu objetivo principal / Tell us your main goal"></textarea>
-                    <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold">
+                    <button id="leadSubmit" type="submit" class="btn-primary w-full py-3 rounded-xl font-bold">
                         <span data-lang="es">Solicitar propuesta</span>
                         <span data-lang="en">Request proposal</span>
                     </button>
                     <p class="text-xs text-[#5e7391]">
-                        <span data-lang="es">Este formulario abrira tu cliente de correo para enviarnos los datos.</span>
-                        <span data-lang="en">This form opens your email client to send us the details.</span>
+                        <span data-lang="es">Tus datos se envian de forma segura y te respondemos en menos de 24h.</span>
+                        <span data-lang="en">Your details are securely submitted and we reply in under 24h.</span>
                     </p>
+                    <p id="leadStatus" class="text-sm text-[#2b4f7c] h-5"></p>
                 </form>
             </div>
         </div>
@@ -458,18 +460,49 @@ await retellClient.startCall({
 
         const leadForm = document.getElementById('leadForm');
         if (leadForm) {
-            leadForm.addEventListener('submit', (event) => {
+            leadForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
                 const name = document.getElementById('leadName')?.value?.trim() || '';
                 const email = document.getElementById('leadEmail')?.value?.trim() || '';
                 const company = document.getElementById('leadCompany')?.value?.trim() || '';
                 const message = document.getElementById('leadMessage')?.value?.trim() || '';
+                const website = document.getElementById('leadWebsite')?.value?.trim() || '';
+                const leadStatus = document.getElementById('leadStatus');
+                const submitBtn = document.getElementById('leadSubmit');
+                const lang = document.documentElement.getAttribute('data-lang');
 
-                const subject = encodeURIComponent('DGsales - New lead request');
-                const body = encodeURIComponent(
-                    `Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\nGoal:\n${message}`
-                );
-                window.location.href = `mailto:hello@dgsales.co?subject=${subject}&body=${body}`;
+                if (leadStatus) leadStatus.textContent = lang === 'es' ? 'Enviando...' : 'Sending...';
+                if (submitBtn) submitBtn.disabled = true;
+
+                try {
+                    const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, company, message, website })
+                    });
+
+                    const result = await response.json().catch(() => ({}));
+                    if (!response.ok || !result?.ok) {
+                        throw new Error(result?.error || 'Lead submit failed');
+                    }
+
+                    leadForm.reset();
+                    if (leadStatus) {
+                        leadStatus.textContent = lang === 'es'
+                            ? 'Recibido. Te contactamos en menos de 24h.'
+                            : 'Received. We will contact you within 24h.';
+                    }
+                } catch (error) {
+                    console.error('Lead form error:', error);
+                    if (leadStatus) {
+                        leadStatus.textContent = lang === 'es'
+                            ? 'No se pudo enviar ahora. Intentalo de nuevo.'
+                            : 'Could not submit now. Please try again.';
+                    }
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false;
+                }
             });
         }
 
