@@ -62,6 +62,41 @@
             transform: translateY(-4px);
             box-shadow: 0 16px 30px rgba(18, 40, 72, 0.12);
         }
+        .logo-pill {
+            border: 1px solid #d8e2ef;
+            background: #ffffff;
+            color: #3f5878;
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 0.55rem 1rem;
+            letter-spacing: 0.02em;
+            font-size: 0.8rem;
+        }
+        .kpi-value { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #163968; }
+        .case-note {
+            border-left: 3px solid #2c6dd9;
+            background: #f5f9ff;
+        }
+        .contact-panel {
+            background: #ffffff;
+            border: 1px solid #d8e2ef;
+            border-radius: 1.25rem;
+            box-shadow: 0 12px 24px rgba(18, 40, 72, 0.08);
+        }
+        .field {
+            width: 100%;
+            border: 1px solid #ced9e9;
+            background: #f6f9fd;
+            color: #132238;
+            border-radius: 0.75rem;
+            padding: 0.8rem 0.9rem;
+            font-size: 0.95rem;
+        }
+        .field:focus {
+            outline: none;
+            border-color: #2c6dd9;
+            box-shadow: 0 0 0 3px rgba(44, 109, 217, 0.14);
+        }
         header, section, footer { animation: fadeUp 0.7s ease both; }
         section:nth-of-type(2) { animation-delay: 0.08s; }
         section:nth-of-type(3) { animation-delay: 0.14s; }
@@ -119,6 +154,48 @@
             <span data-lang="en">Try Agent for Free</span>
         </a>
     </header>
+
+    <!-- Trust Strip -->
+    <section class="px-6 pb-10 max-w-6xl mx-auto">
+        <div class="text-center mb-5 text-[#5c7392] text-sm font-semibold tracking-wide">
+            <span data-lang="es">Confianza para equipos comerciales y operaciones</span>
+            <span data-lang="en">Trusted by sales and operations teams</span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-3">
+            <span class="logo-pill">B2B SERVICES</span>
+            <span class="logo-pill">CLINICS</span>
+            <span class="logo-pill">REAL ESTATE</span>
+            <span class="logo-pill">EDTECH</span>
+            <span class="logo-pill">HOSPITALITY</span>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section class="py-8 px-6 max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-5 mb-8">
+            <div class="card p-6 rounded-2xl">
+                <div class="kpi-value text-4xl">+38%</div>
+                <p data-lang="es" class="text-[#4f6786] mt-2">Incremento medio de leads cualificados en 60 dias.</p>
+                <p data-lang="en" class="text-[#4f6786] mt-2">Average increase in qualified leads within 60 days.</p>
+            </div>
+            <div class="card p-6 rounded-2xl">
+                <div class="kpi-value text-4xl">-42%</div>
+                <p data-lang="es" class="text-[#4f6786] mt-2">Reduccion del tiempo de respuesta comercial.</p>
+                <p data-lang="en" class="text-[#4f6786] mt-2">Reduction in commercial response time.</p>
+            </div>
+            <div class="card p-6 rounded-2xl">
+                <div class="kpi-value text-4xl">24/7</div>
+                <p data-lang="es" class="text-[#4f6786] mt-2">Atencion automatizada sin ampliar equipo interno.</p>
+                <p data-lang="en" class="text-[#4f6786] mt-2">Automated coverage without expanding internal team.</p>
+            </div>
+        </div>
+        <div class="case-note rounded-2xl p-6">
+            <h3 data-lang="es" class="text-2xl font-bold mb-2">Caso Real: Clinica Privada</h3>
+            <h3 data-lang="en" class="text-2xl font-bold mb-2">Case Study: Private Clinic</h3>
+            <p data-lang="es" class="text-[#476182]">En 8 semanas, combinando landing + agente de voz, pasaron de perder llamadas en horas pico a captar 31 citas extra al mes.</p>
+            <p data-lang="en" class="text-[#476182]">In 8 weeks, by combining a conversion page with a voice agent, they moved from missed peak-hour calls to 31 additional monthly bookings.</p>
+        </div>
+    </section>
 
     <!-- Features -->
     <section class="py-20 px-6 max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
@@ -201,6 +278,42 @@
                 <button class="w-full btn-primary py-4 rounded-xl font-bold">
                     <span data-lang="es">Lo quiero</span><span data-lang="en">Get it Now</span>
                 </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contacto" class="py-10 px-6 max-w-6xl mx-auto">
+        <div class="contact-panel p-8 md:p-10 grid md:grid-cols-2 gap-8">
+            <div>
+                <h2 data-lang="es" class="text-3xl md:text-4xl font-bold mb-3">Hablemos de tu caso</h2>
+                <h2 data-lang="en" class="text-3xl md:text-4xl font-bold mb-3">Let's review your case</h2>
+                <p data-lang="es" class="text-[#4f6786] mb-6">Te damos una propuesta concreta en 24h: estructura, plan y estimacion.</p>
+                <p data-lang="en" class="text-[#4f6786] mb-6">Get a concrete proposal within 24h: structure, plan, and estimate.</p>
+                <a href="https://calendly.com/dgsales/strategy-call" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block px-6 py-3 rounded-xl font-bold">
+                    <span data-lang="es">Reservar llamada estrategica</span>
+                    <span data-lang="en">Book strategy call</span>
+                </a>
+                <p class="text-xs text-[#5e7391] mt-3">
+                    <span data-lang="es">Si no usas Calendly aun, cambia este enlace por el tuyo.</span>
+                    <span data-lang="en">If you do not use Calendly yet, replace this link with yours.</span>
+                </p>
+            </div>
+            <div>
+                <form id="leadForm" class="space-y-3">
+                    <input id="leadName" class="field" type="text" required placeholder="Nombre / Name">
+                    <input id="leadEmail" class="field" type="email" required placeholder="Email">
+                    <input id="leadCompany" class="field" type="text" placeholder="Empresa / Company">
+                    <textarea id="leadMessage" class="field min-h-[120px]" placeholder="Cuéntanos tu objetivo principal / Tell us your main goal"></textarea>
+                    <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold">
+                        <span data-lang="es">Solicitar propuesta</span>
+                        <span data-lang="en">Request proposal</span>
+                    </button>
+                    <p class="text-xs text-[#5e7391]">
+                        <span data-lang="es">Este formulario abrira tu cliente de correo para enviarnos los datos.</span>
+                        <span data-lang="en">This form opens your email client to send us the details.</span>
+                    </p>
+                </form>
             </div>
         </div>
     </section>
@@ -342,6 +455,23 @@ await retellClient.startCall({
 
         const savedLang = localStorage.getItem('pref-lang');
         if (savedLang) setLanguage(savedLang);
+
+        const leadForm = document.getElementById('leadForm');
+        if (leadForm) {
+            leadForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const name = document.getElementById('leadName')?.value?.trim() || '';
+                const email = document.getElementById('leadEmail')?.value?.trim() || '';
+                const company = document.getElementById('leadCompany')?.value?.trim() || '';
+                const message = document.getElementById('leadMessage')?.value?.trim() || '';
+
+                const subject = encodeURIComponent('DGsales - New lead request');
+                const body = encodeURIComponent(
+                    `Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\nGoal:\n${message}`
+                );
+                window.location.href = `mailto:hello@dgsales.co?subject=${subject}&body=${body}`;
+            });
+        }
 
         window.showPopup = function() { document.getElementById('exitPopup').classList.add('show'); }
         window.closePopup = function() { document.getElementById('exitPopup').classList.remove('show'); }
