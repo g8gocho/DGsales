@@ -44,8 +44,8 @@ module.exports = async function handler(req, res) {
             response_engine: { type: 'retell-llm', llm_id: llmId },
             voice_id: voiceId,
             language,
-            // Higher responsiveness reduces perceived delay before speaking.
-            responsiveness: 2,
+            // Maximum supported value for quicker turn-taking.
+            responsiveness: 1,
             interruption_sensitivity: 1,
             enable_backchannel: false
           })
