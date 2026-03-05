@@ -31,15 +31,29 @@ export default async function handler(req, res) {
 
     const requestedAgentId = normalizeAgentId(body?.agent_id);
     const fallbackAgentId = normalizeAgentId(process.env.RETELL_AGENT_ID);
+    const fallbackAgentIdEn = normalizeAgentId(process.env.RETELL_AGENT_ID_EN);
+    const fallbackAgentIdEs = normalizeAgentId(process.env.RETELL_AGENT_ID_ES);
+    const requestLanguage = String(body?.language || "").toLowerCase();
+    const languageCode = requestLanguage.startsWith("es")
+      ? "es"
+      : requestLanguage.startsWith("en")
+        ? "en"
+        : null;
 
-    if (!requestedAgentId && !fallbackAgentId) {
+    const languageOrderedFallbacks = languageCode === "es"
+      ? [fallbackAgentIdEs, fallbackAgentIdEn, fallbackAgentId]
+      : languageCode === "en"
+        ? [fallbackAgentIdEn, fallbackAgentIdEs, fallbackAgentId]
+        : [fallbackAgentId, fallbackAgentIdEn, fallbackAgentIdEs];
+
+    if (!requestedAgentId && !languageOrderedFallbacks.some(Boolean)) {
       return res.status(400).json({
         error: "Missing agent_id",
-        hint: "Send agent_id in request body or set RETELL_AGENT_ID on server.",
+        hint: "Send agent_id in request body or set RETELL_AGENT_ID / RETELL_AGENT_ID_EN / RETELL_AGENT_ID_ES on server.",
       });
     }
 
-    const candidateAgentIds = [requestedAgentId, fallbackAgentId].filter(
+    const candidateAgentIds = [requestedAgentId, ...languageOrderedFallbacks].filter(
       (id, index, arr) => Boolean(id) && arr.indexOf(id) === index
     );
 
@@ -110,6 +124,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       access_token: data.access_token,
       agent_id: chosenAgentId,
+      language_selected: languageCode || "auto",
     });
   } catch (error) {
     console.error("create-call handler error:", error);

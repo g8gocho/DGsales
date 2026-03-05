@@ -669,8 +669,7 @@
     <script type="module">
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
         
-        const AGENT_ID = 'agent_4573c1ecc1d8e26ae78c1f71b9';
-                const ZAPIER_CALL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/26692222/u07hbb1/';
+        const ZAPIER_CALL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/26692222/u07hbb1/';
         let retellClient = null;
       let startingCall = false;  let activeCall = false;
             let callStartedAt = null;
@@ -787,11 +786,12 @@ startingCall = true;
                 setStatus('Conectando...');
 
           
-     const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
+         const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
+    const preferredLanguage = document.documentElement.getAttribute('data-lang') || 'en';
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ agent_id: AGENT_ID })
+        body: JSON.stringify({ language: preferredLanguage })
 });
 if (!response.ok) throw new Error('API connection failed');
 const data = await response.json();
