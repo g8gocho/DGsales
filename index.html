@@ -7,30 +7,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-900: #091018;
-            --bg-800: #101a26;
-            --surface: rgba(21, 33, 47, 0.76);
-            --line: rgba(167, 189, 214, 0.22);
-            --text: #eef4ff;
-            --muted: #a7bdd6;
-            --accent: #f5a742;
-            --accent-strong: #ffbe63;
-            --accent-deep: #b96b1b;
+            --bg-900: #f4f7fb;
+            --bg-800: #eaf0f7;
+            --surface: #ffffff;
+            --line: #d8e2ef;
+            --text: #132238;
+            --muted: #4f6786;
+            --accent: #245fbf;
+            --accent-strong: #2c6dd9;
+            --accent-deep: #1a4c9f;
         }
         * { box-sizing: border-box; }
         body {
-            font-family: 'Manrope', sans-serif;
-            background: radial-gradient(90% 80% at 15% 5%, rgba(24, 66, 98, 0.32), transparent 60%),
-                        radial-gradient(70% 70% at 85% 20%, rgba(245, 167, 66, 0.12), transparent 60%),
-                        linear-gradient(165deg, var(--bg-900) 0%, #060b12 60%, #0a121b 100%);
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: linear-gradient(180deg, var(--bg-900) 0%, #eef3f9 100%);
             color: var(--text);
             scroll-behavior: smooth;
             min-height: 100vh;
         }
-        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; }
+        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
         .accent-text { color: var(--accent-strong); }
         [data-lang="es"] { display: block; }
         [data-lang="en"] { display: none; }
@@ -38,32 +36,31 @@
         html[data-lang="en"] [data-lang="es"] { display: none; }
         html[data-lang="en"] [data-lang="en"] { display: block; }
         .lang-switch {
-            background: rgba(8, 14, 21, 0.72);
-            backdrop-filter: blur(14px);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--line);
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
-            color: #1f1302;
+            color: #ffffff;
             transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
-            box-shadow: 0 14px 34px rgba(245, 167, 66, 0.3);
+            box-shadow: 0 10px 26px rgba(36, 95, 191, 0.22);
         }
         .btn-primary:hover {
             filter: brightness(1.05);
             transform: translateY(-2px);
-            box-shadow: 0 18px 40px rgba(245, 167, 66, 0.38);
+            box-shadow: 0 14px 30px rgba(36, 95, 191, 0.3);
         }
         .card {
             background: var(--surface);
             border: 1px solid var(--line);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.24);
+            box-shadow: 0 12px 24px rgba(18, 40, 72, 0.08);
             transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
         .card:hover {
-            border-color: rgba(245, 167, 66, 0.62);
-            transform: translateY(-6px);
-            box-shadow: 0 16px 40px rgba(9, 16, 24, 0.52);
+            border-color: #aac0df;
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px rgba(18, 40, 72, 0.12);
         }
         header, section, footer { animation: fadeUp 0.7s ease both; }
         section:nth-of-type(2) { animation-delay: 0.08s; }
@@ -75,7 +72,7 @@
         .btn-call {
             min-width: min(92vw, 420px);
             justify-content: center;
-            border: 1px solid rgba(255, 190, 99, 0.38);
+            border: 1px solid rgba(44, 109, 217, 0.28);
         }
         .btn-call.active {
             background: linear-gradient(135deg, #ff6b58 0%, #ef4444 100%) !important;
@@ -83,8 +80,8 @@
             color: #fff;
         }
         .btn-call.active { background-color: #ef4444 !important; border-color: #ef4444; }
-        #status { color: var(--accent-strong); }
-        #exitPopup { display: none; background: rgba(5, 9, 14, 0.82); backdrop-filter: blur(6px); }
+        #status { color: var(--accent-deep); }
+        #exitPopup { display: none; background: rgba(11, 24, 41, 0.45); backdrop-filter: blur(6px); }
         #exitPopup.show { display: flex; }
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(16px); }
@@ -100,10 +97,10 @@
 <body>
     <!-- Lang Switcher -->
     <nav class="lang-switch fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center">
-        <div class="text-xl font-bold tracking-tighter">DG<span class="accent-text">sales</span></div>
+        <div class="text-xl font-bold tracking-tighter text-[#12253f]">DG<span class="accent-text">sales</span></div>
         <div class="flex gap-2">
-            <button onclick="setLanguage('es')" class="px-3 py-1 rounded border border-white/20 text-xs hover:border-[#f5a742] hover:bg-white/10 transition">ES</button>
-            <button onclick="setLanguage('en')" class="px-3 py-1 rounded border border-white/20 text-xs hover:border-[#f5a742] hover:bg-white/10 transition">EN</button>
+            <button onclick="setLanguage('es')" class="px-3 py-1 rounded border border-[#cad6e6] text-xs text-[#27476e] hover:border-[#2c6dd9] hover:bg-[#edf3fd] transition">ES</button>
+            <button onclick="setLanguage('en')" class="px-3 py-1 rounded border border-[#cad6e6] text-xs text-[#27476e] hover:border-[#2c6dd9] hover:bg-[#edf3fd] transition">EN</button>
         </div>
     </nav>
 
@@ -111,11 +108,11 @@
     <header class="pt-32 pb-20 px-6 text-center max-w-5xl mx-auto">
         <div data-lang="es">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Vende más con <span class="accent-text">IA de Voz</span></h1>
-            <p class="text-[#a7bdd6] text-lg md:text-xl mb-10 max-w-3xl mx-auto">Automatizamos tu negocio: desde landing pages hasta agentes de voz que convierten leads en clientes durante todo el dia.</p>
+            <p class="text-[#4f6786] text-lg md:text-xl mb-10 max-w-3xl mx-auto">Automatizamos tu negocio con una infraestructura comercial completa: web de conversion, cualificacion por voz y procesos conectados.</p>
         </div>
         <div data-lang="en">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Sell more with <span class="accent-text">Voice AI</span></h1>
-            <p class="text-[#a7bdd6] text-lg md:text-xl mb-10 max-w-3xl mx-auto">We automate your business, from high-converting pages to voice agents that capture and qualify leads all day long.</p>
+            <p class="text-[#4f6786] text-lg md:text-xl mb-10 max-w-3xl mx-auto">We build a complete growth stack: conversion-focused pages, AI voice qualification, and integrated business workflows.</p>
         </div>
         <a href="#agente" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-block">
             <span data-lang="es">Probar Agente Gratis</span>
@@ -129,34 +126,34 @@
             <div class="text-4xl mb-4">🌐</div>
             <h3 data-lang="es" class="text-xl font-bold mb-2">Webs de Alto Impacto</h3>
             <h3 data-lang="en" class="text-xl font-bold mb-2">High-Impact Websites</h3>
-            <p data-lang="es" class="text-[#b3c5dc]">Diseñamos landing pages optimizadas para conversión con tecnologia moderna.</p>
-            <p data-lang="en" class="text-[#b3c5dc]">We design landing pages optimized for conversion using modern technology.</p>
+            <p data-lang="es" class="text-[#4f6786]">Disenamos paginas orientadas a resultados, con arquitectura clara y foco en conversion B2B.</p>
+            <p data-lang="en" class="text-[#4f6786]">We design performance-focused pages with clear architecture and B2B conversion intent.</p>
         </div>
         <div class="card p-8 rounded-2xl">
             <div class="text-4xl mb-4">📞</div>
             <h3 data-lang="es" class="text-xl font-bold mb-2">Agentes de Voz AI</h3>
             <h3 data-lang="en" class="text-xl font-bold mb-2">Voice AI Agents</h3>
-            <p data-lang="es" class="text-[#b3c5dc]">Atencion al cliente y ventas automaticas. No pierdas ni un solo lead.</p>
-            <p data-lang="en" class="text-[#b3c5dc]">Automated customer service and sales. Do not lose a single lead.</p>
+            <p data-lang="es" class="text-[#4f6786]">Atencion, pre-cualificacion y seguimiento automatico para no perder oportunidades.</p>
+            <p data-lang="en" class="text-[#4f6786]">Automated support, lead qualification, and follow-up so opportunities do not leak.</p>
         </div>
         <div class="card p-8 rounded-2xl">
             <div class="text-4xl mb-4">⚡</div>
             <h3 data-lang="es" class="text-xl font-bold mb-2">Automatización Full</h3>
             <h3 data-lang="en" class="text-xl font-bold mb-2">Full Automation</h3>
-            <p data-lang="es" class="text-[#b3c5dc]">Conectamos CRM, pagos y agenda para que el negocio rinda al maximo.</p>
-            <p data-lang="en" class="text-[#b3c5dc]">We connect your CRM, payments, and calendar to maximize business performance.</p>
+            <p data-lang="es" class="text-[#4f6786]">Conectamos CRM, agenda y operaciones para escalar sin friccion.</p>
+            <p data-lang="en" class="text-[#4f6786]">We connect CRM, scheduling, and operations to scale without friction.</p>
         </div>
     </section>
 
     <!-- Voice Agent Demo -->
-    <section id="agente" class="py-24 bg-white/5 border-y border-white/10 text-center px-6">
+    <section id="agente" class="py-24 bg-[#edf3fb] border-y border-[#d8e2ef] text-center px-6">
         <h2 data-lang="es" class="text-3xl md:text-5xl font-bold mb-8">Habla con nuestro Agente</h2>
         <h2 data-lang="en" class="text-3xl md:text-5xl font-bold mb-8">Talk to our Agent</h2>
         
-        <p data-lang="es" class="text-[#c3d2e6] max-w-2xl mx-auto mb-12 italic text-lg">
+        <p data-lang="es" class="text-[#4f6786] max-w-2xl mx-auto mb-12 text-lg">
             Vendemos agentes personalizados como este para atender las llamadas, ventas y reservas de tu negocio. Pruébalo ahora mismo:
         </p>
-        <p data-lang="en" class="text-[#c3d2e6] max-w-2xl mx-auto mb-12 italic text-lg">
+        <p data-lang="en" class="text-[#4f6786] max-w-2xl mx-auto mb-12 text-lg">
             We sell custom agents like this one to handle your business calls, sales, and bookings. Try it right now:
         </p>
 
@@ -168,7 +165,7 @@
                 </span>
             </button>
             <p id="status" class="font-medium h-6"></p>
-            <p class="text-xs text-gray-500 mt-2 italic">
+            <p class="text-xs text-[#5e7391] mt-2">
                 * <span data-lang="es">Requiere permiso de micrófono</span>
                 <span data-lang="en">Microphone permission required</span>
             </p>
@@ -182,8 +179,8 @@
         <div class="grid md:grid-cols-2 gap-8">
             <div class="card p-10 rounded-3xl border-white/10">
                 <h3 class="text-2xl font-bold mb-2">Web Starter</h3>
-                <div class="text-4xl font-bold mb-6">EUR499 <span class="text-sm font-normal text-[#b4c8df]">/one-time</span></div>
-                <ul class="space-y-4 mb-10 text-[#d7e2f0]">
+                <div class="text-4xl font-bold mb-6">EUR499 <span class="text-sm font-normal text-[#6e84a3]">/one-time</span></div>
+                <ul class="space-y-4 mb-10 text-[#334f74]">
                     <li>✓ <span data-lang="es">Landing Page Premium</span><span data-lang="en">Premium Landing Page</span></li>
                     <li>✓ Copywriting Persuasivo</li>
                     <li>✓ <span data-lang="es">Integración de Leads</span><span data-lang="en">Lead Integration</span></li>
@@ -192,11 +189,11 @@
                     <span data-lang="es">Empezar</span><span data-lang="en">Start Now</span>
                 </button>
             </div>
-            <div class="card p-10 rounded-3xl border-[#f5a742] relative">
-                <div class="absolute -top-4 right-8 bg-[#f5a742] text-black text-xs font-bold px-3 py-1 rounded-full">POPULAR</div>
+            <div class="card p-10 rounded-3xl border-[#2c6dd9] relative">
+                <div class="absolute -top-4 right-8 bg-[#2c6dd9] text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</div>
                 <h3 class="text-2xl font-bold mb-2">AI Agent Pro</h3>
-                <div class="text-4xl font-bold mb-6">EUR999 <span class="text-sm font-normal text-[#b4c8df]">/set-up</span></div>
-                <ul class="space-y-4 mb-10 text-[#d7e2f0]">
+                <div class="text-4xl font-bold mb-6">EUR999 <span class="text-sm font-normal text-[#6e84a3]">/set-up</span></div>
+                <ul class="space-y-4 mb-10 text-[#334f74]">
                     <li>✓ <span data-lang="es">Agente de Voz 24/7</span><span data-lang="en">24/7 Voice Agent</span></li>
                     <li>✓ <span data-lang="es">Agenda Reservas Directas</span><span data-lang="en">Direct Booking Sync</span></li>
                     <li>✓ <span data-lang="es">Soporte Multilingüe</span><span data-lang="en">Multilingual Support</span></li>
@@ -209,18 +206,18 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-white/10 text-center text-[#a1b4ca] text-sm">
+    <footer class="py-12 px-6 border-t border-[#d8e2ef] text-center text-[#546c8c] text-sm">
         <p>&copy; 2024 DGsales - Smart AI Automation. Amsterdam | Barcelona.</p>
     </footer>
 
     <!-- Exit Popup -->
     <div id="exitPopup" class="fixed inset-0 z-[100] items-center justify-center p-6">
-        <div class="bg-[#101b28] p-10 rounded-3xl max-w-md w-full border border-white/10 shadow-2xl relative">
-            <button onclick="closePopup()" class="absolute top-4 right-4 text-[#94a8bf] hover:text-white">×</button>
+        <div class="bg-white p-10 rounded-3xl max-w-md w-full border border-[#d8e2ef] shadow-2xl relative">
+            <button onclick="closePopup()" class="absolute top-4 right-4 text-[#7f94af] hover:text-[#12253f]">×</button>
             <h2 data-lang="es" class="text-2xl font-bold mb-4">¿Quieres ver cómo funciona en TU negocio?</h2>
             <h2 data-lang="en" class="text-2xl font-bold mb-4">Want to see how it works for YOUR business?</h2>
-            <p class="text-[#b7c7db] mb-8">Dejanos tu email y te enviamos una demo personalizada gratis.</p>
-            <input type="email" placeholder="Email" class="w-full bg-[#0a1118] border border-white/20 p-3 rounded-lg mb-4 text-white">
+            <p class="text-[#4f6786] mb-8">Dejanos tu email y te enviamos una demo personalizada gratis.</p>
+            <input type="email" placeholder="Email" class="w-full bg-[#f3f7fc] border border-[#d8e2ef] p-3 rounded-lg mb-4 text-[#132238]">
             <button class="w-full btn-primary py-3 rounded-lg font-bold">
                 <span data-lang="es">Enviar Demo</span><span data-lang="en">Send Demo</span>
             </button>
