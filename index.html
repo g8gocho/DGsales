@@ -216,10 +216,17 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .plan-card-pro:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 34px rgba(14, 34, 62, 0.12);
+            border-color: #b8cde7;
         }
         .plan-card-pro.featured {
             border: 2px solid #2c6dd9;
             box-shadow: 0 18px 34px rgba(30, 84, 167, 0.18);
+            background: linear-gradient(180deg, #f9fcff 0%, #eef5ff 100%);
         }
         .plan-chip-row {
             display: flex;
@@ -248,6 +255,11 @@
             letter-spacing: 0.05em;
             text-transform: uppercase;
             margin-bottom: 0.4rem;
+            background: #edf3ff;
+            border: 1px solid #d6e4f8;
+            border-radius: 999px;
+            padding: 0.26rem 0.62rem;
+            width: fit-content;
         }
         .plan-price {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -257,7 +269,16 @@
             font-weight: 800;
             margin: 0.8rem 0;
         }
+        .plan-card-pro.featured .plan-price { color: #10407a; }
         .plan-sub { color: #5a7698; font-size: 0.95rem; }
+        .plan-kicker {
+            margin-top: 0.2rem;
+            color: #2b507c;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
         .plan-list-pro { display: grid; gap: 0.58rem; margin: 0.85rem 0 1rem; }
         .plan-row {
             display: grid;
@@ -288,6 +309,10 @@
             font-weight: 800;
             font-size: 0.95rem;
             margin-top: 0.35rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
         }
         .plan-cta-secondary {
             border: 1px solid #bfd1e8;
@@ -295,6 +320,12 @@
             background: #ffffff;
         }
         .plan-cta-secondary:hover { background: #f3f8ff; border-color: #2c6dd9; }
+        .plan-cta-note {
+            margin-top: 0.45rem;
+            color: #607a99;
+            font-size: 0.78rem;
+            text-align: center;
+        }
         .mini-compare {
             margin-top: 1rem;
             border: 1px solid #d8e2ef;
@@ -507,8 +538,10 @@
         <h2 data-lang="en" class="text-4xl font-bold text-center mb-16">Pricing Plans</h2>
         <div class="pricing-grid">
             <article class="plan-card-pro">
-                <div class="plan-topline">Core Offer</div>
+                <div class="plan-topline">Launch Package</div>
                 <h3 class="plan-title">Web Starter</h3>
+                <div class="plan-kicker" data-lang="es">Ideal para validar oferta rapido</div>
+                <div class="plan-kicker" data-lang="en">Ideal to validate your offer fast</div>
                 <p data-lang="es" class="plan-sub">Landing de alto rendimiento para convertir visitas en oportunidades comerciales.</p>
                 <p data-lang="en" class="plan-sub">High-performance landing page to turn visits into qualified opportunities.</p>
                 <div class="plan-chip-row">
@@ -522,16 +555,19 @@
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Copy comercial + estructura de oferta</span><span data-lang="en">Sales copy + offer structure</span></div>
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Captura de leads integrada</span><span data-lang="en">Integrated lead capture</span></div>
                 </div>
-                <button class="plan-cta-secondary mt-auto">
+                <a href="#contacto" class="plan-cta-secondary mt-auto">
                     <span data-lang="es">Empezar con Web Starter</span>
                     <span data-lang="en">Start with Web Starter</span>
-                </button>
+                </a>
+                <div class="plan-cta-note"><span data-lang="es">Entrega inicial en 7-10 dias</span><span data-lang="en">Initial delivery in 7-10 days</span></div>
             </article>
 
             <article class="plan-card-pro featured">
                 <div class="product-badge">RECOMMENDED</div>
                 <div class="plan-topline">Growth Engine</div>
                 <h3 class="plan-title">AI Agent Pro</h3>
+                <div class="plan-kicker" data-lang="es">La opcion elegida por equipos comerciales</div>
+                <div class="plan-kicker" data-lang="en">Top choice for commercial teams</div>
                 <p data-lang="es" class="plan-sub">Automatiza llamadas, filtrado de leads y reservas sin depender del horario del equipo.</p>
                 <p data-lang="en" class="plan-sub">Automate calls, lead qualification, and bookings beyond team working hours.</p>
                 <div class="plan-chip-row">
@@ -546,10 +582,11 @@
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Sincronizacion de agenda y reservas</span><span data-lang="en">Calendar and booking sync</span></div>
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Registro de llamada + automatizaciones</span><span data-lang="en">Call logs + automation hooks</span></div>
                 </div>
-                <button class="btn-primary plan-cta-primary mt-auto">
+                <a href="#contacto" class="btn-primary plan-cta-primary mt-auto">
                     <span data-lang="es">Activar AI Agent Pro</span>
                     <span data-lang="en">Activate AI Agent Pro</span>
-                </button>
+                </a>
+                <div class="plan-cta-note"><span data-lang="es">Incluye configuracion y go-live guiado</span><span data-lang="en">Includes setup and guided go-live</span></div>
             </article>
         </div>
 
