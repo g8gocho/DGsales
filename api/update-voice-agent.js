@@ -44,8 +44,9 @@ module.exports = async function handler(req, res) {
             response_engine: { type: 'retell-llm', llm_id: llmId },
             voice_id: voiceId,
             language,
-            responsiveness: 0,
-            interruption_sensitivity: 0,
+            // Higher responsiveness reduces perceived delay before speaking.
+            responsiveness: 2,
+            interruption_sensitivity: 1,
             enable_backchannel: false
           })
         });
@@ -59,9 +60,9 @@ module.exports = async function handler(req, res) {
       throw { step: 'create-agent', ...lastError };
     };
 
-    const englishPrompt = 'You are DGsales voice assistant for a web and AI automation agency. Your goal is to answer clearly, qualify the lead, and guide visitors to book a strategy call. Services: 1) Web Starter (EUR499 one-time): premium landing page, persuasive copywriting, lead integrations. 2) AI Agent Pro (EUR999 setup): 24/7 voice agent, direct booking sync, multilingual support. Always answer in clear American English (en-US). Keep wording concise and natural. Number and price delivery rules: when saying numbers, prices, dates, or phone numbers, speak slowly and clearly in one continuous sentence. Never restart mid-number, never self-correct aloud, and avoid partial repeats. For prices, say the full amount once and pause briefly. Do not use filler sounds. End by asking for email and inviting the user to book a strategy call.';
+    const englishPrompt = 'You are DGsales voice assistant for a web and AI automation agency. Your goal is to answer clearly, qualify the lead, and guide visitors to book a strategy call. Services: 1) Web Starter (EUR499 one-time): premium landing page, persuasive copywriting, lead integrations. 2) AI Agent Pro (EUR999 setup): 24/7 voice agent, direct booking sync, multilingual support. Always answer in clear American English (en-US). Keep wording concise and natural. Speaking cadence rule: speak fluently at about 1.5x normal pace while staying intelligible and confident. Number and price delivery rules: when saying numbers, prices, dates, or phone numbers, speak clearly in one continuous sentence. Never restart mid-number, never self-correct aloud, and avoid partial repeats. For prices, say the full amount once and pause briefly. Do not use filler sounds. End by asking for email and inviting the user to book a strategy call.';
 
-    const spanishPrompt = 'Eres el asistente de voz de DGsales para automatizacion web e IA de voz. Tu objetivo es responder con claridad, cualificar al lead y guiar al visitante para reservar una llamada estrategica. Servicios: 1) Web Starter (EUR499 pago unico): landing premium, copy persuasivo e integraciones de leads. 2) AI Agent Pro (EUR999 puesta en marcha): agente de voz 24/7, sincronizacion de reservas y soporte multilingue. Responde siempre en espanol de Espana (es-ES), con vocabulario natural y pronunciacion clara. Reglas para numeros y precios: cuando digas cifras, precios, fechas o telefonos, habla despacio y de forma continua, sin reiniciar a mitad de frase. No te autocorrijas en voz alta y evita repetir fragmentos. Para precios, di el importe completo una sola vez y haz una breve pausa. No uses muletillas. Al final, pide email e invita a reservar una llamada estrategica.';
+    const spanishPrompt = 'Eres el asistente de voz de DGsales para automatizacion web e IA de voz. Tu objetivo es responder con claridad, cualificar al lead y guiar al visitante para reservar una llamada estrategica. Servicios: 1) Web Starter (EUR499 pago unico): landing premium, copy persuasivo e integraciones de leads. 2) AI Agent Pro (EUR999 puesta en marcha): agente de voz 24/7, sincronizacion de reservas y soporte multilingue. Responde siempre en espanol de Espana (es-ES), con pronunciacion natural de Espana y diccion limpia. Regla de cadencia: habla fluido alrededor de 1.5x de velocidad conversacional normal, manteniendo claridad. Reglas para numeros y precios: cuando digas cifras, precios, fechas o telefonos, dilo en una sola frase continua, sin reiniciar ni corregirte a mitad. No repitas fragmentos. Para precios, di el importe completo una sola vez y haz una breve pausa. No uses muletillas. Al final, pide email e invita a reservar una llamada estrategica.';
 
     const llmEn = await createLlm({
       generalPrompt: englishPrompt,
@@ -84,7 +85,15 @@ module.exports = async function handler(req, res) {
       agentName: 'DGsales Voice Agent ES',
       llmId: llmEs.llm_id,
       language: 'es-ES',
-      voiceCandidates: [process.env.RETELL_VOICE_ID_ES, 'retell-Lucia', 'retell-Sofia', 'retell-Chloe']
+      voiceCandidates: [
+        process.env.RETELL_VOICE_ID_ES,
+        'retell-Lucia',
+        'retell-Sofia',
+        'retell-Carmen',
+        'retell-Isabella',
+        'retell-Elena',
+        'retell-Chloe'
+      ]
     });
 
     return res.status(200).json({
