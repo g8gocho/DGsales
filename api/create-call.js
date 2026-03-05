@@ -2,7 +2,9 @@ export default async function handler(req, res) {
   // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept, Origin");
+  res.setHeader("Access-Control-Max-Age", "86400");
+  res.setHeader("Cache-Control", "no-store");
 
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
@@ -22,8 +24,13 @@ export default async function handler(req, res) {
       try { body = JSON.parse(body); } catch (_) { body = {}; }
     }
 
-    const requestedAgentId = body?.agent_id;
-    const fallbackAgentId = process.env.RETELL_AGENT_ID;
+    const normalizeAgentId = (value) => {
+      if (typeof value !== "string") return value;
+      return value.replace(/\\n/g, "").trim();
+    };
+
+    const requestedAgentId = normalizeAgentId(body?.agent_id);
+    const fallbackAgentId = normalizeAgentId(process.env.RETELL_AGENT_ID);
 
     if (!requestedAgentId && !fallbackAgentId) {
       return res.status(400).json({
