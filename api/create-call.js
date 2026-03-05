@@ -33,27 +33,39 @@ export default async function handler(req, res) {
       "Content-Type": "application/json",
     };
 
-    // Try current Retell endpoint first, then legacy path if needed.
-    let response = await fetch("https://api.retellai.com/v1/create-web-call", {
-      method: "POST",
-      headers,
-      body: payload,
-    });
-    let data = await response.json().catch(() => ({}));
+    const retellUrls = [
+      "https://api.retellai.com/v2/create-web-call",
+      "https://api.retellai.com/v1/create-web-call",
+      "https://api.retellai.com/create-web-call",
+    ];
 
-    if (response.status === 404) {
-      response = await fetch("https://api.retellai.com/create-web-call", {
+    let response;
+    let data = {};
+    let lastStatus = 0;
+
+    // Retell has changed web-call routes across API versions; try compatible paths.
+    for (const url of retellUrls) {
+      response = await fetch(url, {
         method: "POST",
         headers,
         body: payload,
       });
       data = await response.json().catch(() => ({}));
+      lastStatus = response.status;
+
+      if (response.ok) break;
+      if (response.status !== 404) break;
     }
 
-    if (!response.ok) {
-      return res.status(response.status).json({
+    if (!response || !response.ok) {
+      const hint = lastStatus === 404
+        ? "Verify RETELL_API_KEY and that agent_id exists in the same Retell workspace."
+        : undefined;
+
+      return res.status(lastStatus || 500).json({
         error: "Retell API error",
-        status: response.status,
+        status: lastStatus || 500,
+        hint,
         details: data,
       });
     }
