@@ -22,12 +22,20 @@ export default async function handler(req, res) {
       try { body = JSON.parse(body); } catch (_) { body = {}; }
     }
 
-    const agent_id = body?.agent_id;
-    if (!agent_id) {
-      return res.status(400).json({ error: "Missing agent_id in request body" });
+    const requestedAgentId = body?.agent_id;
+    const fallbackAgentId = process.env.RETELL_AGENT_ID;
+
+    if (!requestedAgentId && !fallbackAgentId) {
+      return res.status(400).json({
+        error: "Missing agent_id",
+        hint: "Send agent_id in request body or set RETELL_AGENT_ID on server.",
+      });
     }
 
-    const payload = JSON.stringify({ agent_id });
+    const candidateAgentIds = [requestedAgentId, fallbackAgentId].filter(
+      (id, index, arr) => Boolean(id) && arr.indexOf(id) === index
+    );
+
     const headers = {
       Authorization: `Bearer ${process.env.RETELL_API_KEY}`,
       "Content-Type": "application/json",
@@ -42,24 +50,39 @@ export default async function handler(req, res) {
     let response;
     let data = {};
     let lastStatus = 0;
+    let chosenAgentId = null;
 
-    // Retell has changed web-call routes across API versions; try compatible paths.
-    for (const url of retellUrls) {
-      response = await fetch(url, {
-        method: "POST",
-        headers,
-        body: payload,
-      });
-      data = await response.json().catch(() => ({}));
-      lastStatus = response.status;
+    for (const candidateAgentId of candidateAgentIds) {
+      const payload = JSON.stringify({ agent_id: candidateAgentId });
+      chosenAgentId = candidateAgentId;
 
-      if (response.ok) break;
-      if (response.status !== 404) break;
+      // Retell has changed web-call routes across API versions; try compatible paths.
+      for (const url of retellUrls) {
+        response = await fetch(url, {
+          method: "POST",
+          headers,
+          body: payload,
+        });
+        data = await response.json().catch(() => ({}));
+        lastStatus = response.status;
+
+        if (response.ok) break;
+        if (response.status !== 404) break;
+      }
+
+      if (response?.ok) break;
+
+      const msg = String(data?.message || "").toLowerCase();
+      const isChatAgentError = msg.includes("chat agent");
+      const canTryFallback = candidateAgentId === requestedAgentId && candidateAgentId !== fallbackAgentId;
+      if (!(isChatAgentError && canTryFallback)) break;
     }
 
     if (!response || !response.ok) {
       const hint = lastStatus === 404
         ? "Verify RETELL_API_KEY and that agent_id exists in the same Retell workspace."
+        : String(data?.message || "").toLowerCase().includes("chat agent")
+          ? "Use a Retell voice agent (not chat agent). Set RETELL_AGENT_ID in Vercel env with a valid voice agent id."
         : undefined;
 
       return res.status(lastStatus || 500).json({
@@ -77,7 +100,10 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({ access_token: data.access_token });
+    return res.status(200).json({
+      access_token: data.access_token,
+      agent_id: chosenAgentId,
+    });
   } catch (error) {
     console.error("create-call handler error:", error);
     return res.status(500).json({
