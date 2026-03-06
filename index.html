@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
     <style>
         :root {
             --bg-900: #f6f1e8;
@@ -618,10 +619,10 @@
                 <h2 data-lang="en" class="text-3xl md:text-4xl font-bold mb-3">Let's review your case</h2>
                 <p data-lang="es" class="text-[#4f4a45] mb-6">Te damos una propuesta concreta en 24h: estructura, plan y estimacion.</p>
                 <p data-lang="en" class="text-[#4f4a45] mb-6">Get a concrete proposal within 24h: structure, plan, and estimate.</p>
-                <a href="https://calendly.com/dgsales/strategy-call" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block px-6 py-3 rounded-xl font-bold">
+                <button id="openCalendlyBtn" type="button" class="btn-primary inline-block px-6 py-3 rounded-xl font-bold">
                     <span data-lang="es">Reservar llamada estrategica</span>
                     <span data-lang="en">Book strategy call</span>
-                </a>
+                </button>
                 <p class="text-xs text-[#6a5b4e] mt-3">
                     <span data-lang="es">Si no usas Calendly aun, cambia este enlace por el tuyo.</span>
                     <span data-lang="en">If you do not use Calendly yet, replace this link with yours.</span>
@@ -673,6 +674,8 @@
         let retellClient = null;
       let startingCall = false;  let activeCall = false;
             let callStartedAt = null;
+        const CALENDLY_URL = 'https://calendly.com/dgsales/strategy-call';
+        const calendlyCaptured = new Set();
       const BACKEND_URL = window.location.hostname.includes('github.io') ? 'https://d-gsales.vercel.app' : '';
         
 
@@ -740,6 +743,58 @@
             if (!response.ok) {
                 const errorText = await response.text().catch(() => '');
                 throw new Error(`Lead endpoint error ${response.status}: ${errorText}`);
+            }
+        }
+
+        function openCalendlyPopup() {
+            if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
+                window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+                return;
+            }
+
+            window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+        }
+
+        function isCalendlyEvent(eventData) {
+            return !!(eventData && typeof eventData.event === 'string' && eventData.event.indexOf('calendly.') === 0);
+        }
+
+        async function sendCalendlyLead(eventData) {
+            const payload = eventData?.payload || {};
+            const invitee = payload?.invitee || {};
+            const eventInfo = payload?.event || {};
+            const dedupeKey = `${invitee.uri || ''}__${eventInfo.uri || ''}`;
+            if (dedupeKey !== '__' && calendlyCaptured.has(dedupeKey)) return;
+            if (dedupeKey !== '__') calendlyCaptured.add(dedupeKey);
+
+            const message = [
+                'CALENDLY_BOOKING',
+                `event_uri: ${eventInfo.uri || ''}`,
+                `invitee_uri: ${invitee.uri || ''}`,
+                `timezone: ${payload.timezone || ''}`,
+                `timestamp: ${new Date().toISOString()}`
+            ].join('\n');
+
+            const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
+            const leadPayload = {
+                name: invitee.name || 'Calendly Booking',
+                email: invitee.email || `calendly-booking+${Date.now()}@dgsales.local`,
+                company: '',
+                message,
+                website: '',
+                source: 'calendly'
+            };
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(leadPayload),
+                keepalive: true,
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text().catch(() => '');
+                throw new Error(`Calendly lead endpoint error ${response.status}: ${errorText}`);
             }
         }
 
@@ -856,6 +911,23 @@ await retellClient.startCall({
 
         const savedLang = localStorage.getItem('pref-lang');
         if (savedLang) setLanguage(savedLang);
+
+        const openCalendlyBtn = document.getElementById('openCalendlyBtn');
+        if (openCalendlyBtn) {
+            openCalendlyBtn.addEventListener('click', () => {
+                openCalendlyPopup();
+            });
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.origin !== 'https://calendly.com') return;
+            if (!isCalendlyEvent(event.data)) return;
+            if (event.data.event !== 'calendly.event_scheduled') return;
+
+            sendCalendlyLead(event.data).catch((error) => {
+                console.error('Calendly lead sync error:', error);
+            });
+        });
 
         const leadForm = document.getElementById('leadForm');
         if (leadForm) {
