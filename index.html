@@ -670,7 +670,6 @@
     <script type="module">
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
         
-        const ZAPIER_CALL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/26692222/u07hbb1/';
         let retellClient = null;
       let startingCall = false;  let activeCall = false;
             let callStartedAt = null;
@@ -705,16 +704,6 @@
                 duration: durationSeconds,
                 timestamp: new Date().toISOString(),
             };
-        }
-
-        async function sendCallToZapier(callData) {
-            const payload = pickCallData(callData || {});
-            await fetch(ZAPIER_CALL_WEBHOOK, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-                keepalive: true,
-            });
         }
 
         async function sendCallToLeadEndpoint(callData) {
@@ -800,10 +789,6 @@ startingCall = true;
 
                     retellClient.on('call_ended', (callData) => {
                         resetUI();
-
-                        sendCallToZapier(callData).catch((error) => {
-                            console.error('Zapier webhook error:', error);
-                        });
 
                         sendCallToLeadEndpoint(callData).catch((error) => {
                             console.error('Voice lead fallback error:', error);
