@@ -717,6 +717,43 @@
             });
         }
 
+        async function sendCallToLeadEndpoint(callData) {
+            const payload = pickCallData(callData || {});
+            const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
+
+            // /api/lead expects name+email. For voice-only sessions we generate a
+            // valid technical email and preserve full details inside message.
+            const message = [
+                'VOICE_RESERVATION',
+                `call_id: ${payload.call_id || ''}`,
+                `duration: ${payload.duration || ''}`,
+                `intent: ${payload.intent || ''}`,
+                `timestamp: ${payload.timestamp || ''}`,
+                `transcript: ${payload.transcript || ''}`
+            ].join('\n');
+
+            const leadPayload = {
+                name: 'Voice Reservation',
+                email: `voice-reservation+${Date.now()}@dgsales.local`,
+                company: 'Voice Agent',
+                message,
+                website: '',
+                source: 'voice-agent'
+            };
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(leadPayload),
+                keepalive: true,
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text().catch(() => '');
+                throw new Error(`Lead endpoint error ${response.status}: ${errorText}`);
+            }
+        }
+
         function resetUI() {
     activeCall = false;
     callStartedAt = null;
@@ -763,8 +800,13 @@ startingCall = true;
 
                     retellClient.on('call_ended', (callData) => {
                         resetUI();
+
                         sendCallToZapier(callData).catch((error) => {
                             console.error('Zapier webhook error:', error);
+                        });
+
+                        sendCallToLeadEndpoint(callData).catch((error) => {
+                            console.error('Voice lead fallback error:', error);
                         });
                     });
                         retellClient.on('error', (err) => {
