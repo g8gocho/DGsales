@@ -16,6 +16,7 @@ export default async function handler(req, res) {
       }
     }
 
+    const source = String(body?.source || "website").trim().toLowerCase();
     const name = String(body?.name || "").trim();
     const email = String(body?.email || "").trim().toLowerCase();
     const company = String(body?.company || "").trim();
@@ -25,21 +26,28 @@ export default async function handler(req, res) {
     // Basic honeypot anti-spam field: real users leave it empty.
     if (website) return res.status(200).json({ ok: true });
 
+    const isVoiceSource = source.includes("voice");
+
     if (!name || !email) {
-      return res.status(400).json({ error: "Missing required fields: name and email" });
+      if (!isVoiceSource) {
+        return res.status(400).json({ error: "Missing required fields: name and email" });
+      }
     }
 
-    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const normalizedName = name || "Voice Reservation";
+    const normalizedEmail = email || `voice-reservation+${Date.now()}@dgsales.local`;
+
+    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail);
     if (!validEmail) {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
     const lead = {
-      name,
-      email,
+      name: normalizedName,
+      email: normalizedEmail,
       company,
       message,
-      source: "website",
+      source,
       created_at: new Date().toISOString(),
     };
 
@@ -53,18 +61,48 @@ export default async function handler(req, res) {
 
       if (!webhookRes.ok) {
         const details = await webhookRes.text().catch(() => "");
-        return res.status(502).json({
-          error: "Lead webhook error",
-          status: webhookRes.status,
-          details,
-        });
+        console.error("lead webhook error", webhookRes.status, details);
+      }
+    }
+
+    // Optional direct Google Sheets forwarding.
+    const googleScriptUrl =
+      process.env.GOOGLE_SCRIPT_URL ||
+      "https://script.google.com/macros/s/AKfycbxEQI6Y9tOKqthfHtdz1kORFsX5o-jFFH5UXmGXhByltRi7VPvwnFFXcjPLRVoRFwbkzQ/exec";
+
+    if (googleScriptUrl) {
+      const sheetsPayload = {
+        date: lead.created_at,
+        source: lead.source,
+        name: lead.name,
+        email: lead.email,
+        phone: "",
+        company: lead.company,
+        notes: lead.message,
+      };
+
+      // Apps Script deployments may reject POST depending on deployment mode.
+      let sheetsRes = await fetch(googleScriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sheetsPayload),
+      });
+
+      if (!sheetsRes.ok && sheetsRes.status === 405) {
+        const query = new URLSearchParams(sheetsPayload).toString();
+        sheetsRes = await fetch(`${googleScriptUrl}?${query}`, { method: "GET" });
+      }
+
+      if (!sheetsRes.ok) {
+        const details = await sheetsRes.text().catch(() => "");
+        console.error("google script request failed", sheetsRes.status, details);
       }
     }
 
     // Keep minimal server log for backup visibility in Vercel logs.
     console.log("new_lead", lead);
 
-    return res.status(200).json({ ok: true, message: "Lead received" });
+    return res.status(200).json({ ok: true, message: "Lead received", source: lead.source });
   } catch (error) {
     console.error("lead handler error:", error);
     return res.status(500).json({
