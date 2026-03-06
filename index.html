@@ -684,11 +684,179 @@
             if(statusEl) statusEl.textContent = msg;
         }
 
+        function readPath(obj, path) {
+            return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+        }
+
+        function cleanString(value) {
+            if (value === undefined || value === null) return '';
+            const normalized = String(value).trim();
+            return normalized;
+        }
+
+        function pickFirstString(obj, paths) {
+            for (const path of paths) {
+                const value = cleanString(readPath(obj, path));
+                if (value) return value;
+            }
+            return '';
+        }
+
+        function extractEmailFromText(text) {
+            const match = String(text || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+            return match ? match[0] : '';
+        }
+
+        function extractSpokenEmail(text) {
+            const base = String(text || '').toLowerCase();
+            const compact = base
+                .replace(/\s+arroba\s+/g, '@')
+                .replace(/\s+at\s+/g, '@')
+                .replace(/\s+punto\s+/g, '.')
+                .replace(/\s+dot\s+/g, '.')
+                .replace(/\s+/g, '');
+            return extractEmailFromText(compact);
+        }
+
+        function extractPhoneFromText(text) {
+            const candidates = String(text || '').match(/\+?[0-9][0-9\s().-]{6,}[0-9]/g) || [];
+            for (const candidate of candidates) {
+                const compact = candidate.replace(/\D/g, '');
+                if (compact.length >= 7) return candidate.trim();
+            }
+            return '';
+        }
+
+        function cleanPhone(phone) {
+            const raw = cleanString(phone);
+            if (!raw) return '';
+            const normalized = raw.replace(/[^\d+().\s-]/g, '').trim();
+            const digits = normalized.replace(/\D/g, '');
+            return digits.length >= 7 ? normalized : '';
+        }
+
+        function normalizeTranscript(rawTranscript) {
+            if (!rawTranscript) return '';
+            if (typeof rawTranscript === 'string') return rawTranscript;
+            if (Array.isArray(rawTranscript)) {
+                return rawTranscript
+                    .map((item) => {
+                        if (typeof item === 'string') return item;
+                        return item?.text || item?.content || item?.message || item?.transcript || '';
+                    })
+                    .filter(Boolean)
+                    .join(' ')
+                    .trim();
+            }
+            if (typeof rawTranscript === 'object') {
+                return rawTranscript?.text || rawTranscript?.content || rawTranscript?.transcript || JSON.stringify(rawTranscript);
+            }
+            return String(rawTranscript);
+        }
+
+        function extractNameFromTranscript(transcript) {
+            const text = String(transcript || '');
+            const patterns = [
+                /(?:mi nombre es|me llamo|soy)\s+([A-Za-zÀ-ÿ' -]{2,60})/i,
+                /(?:my name is|i am|this is)\s+([A-Za-zÀ-ÿ' -]{2,60})/i
+            ];
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) return match[1].trim();
+            }
+            return '';
+        }
+
+        function extractCompanyFromTranscript(transcript) {
+            const text = String(transcript || '');
+            const patterns = [
+                /(?:mi empresa es|la empresa es|de la empresa)\s+([A-Za-zÀ-ÿ0-9'&., -]{2,80})/i,
+                /(?:my company is|company name is|from)\s+([A-Za-zÀ-ÿ0-9'&., -]{2,80})/i
+            ];
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) return match[1].trim();
+            }
+            return '';
+        }
+
+        function extractVoiceContact(callData, transcript) {
+            const name = pickFirstString(callData, [
+                'name',
+                'contact_name',
+                'full_name',
+                'customer_name',
+                'collected_data.name',
+                'collected_data.full_name',
+                'analysis.name',
+                'analysis.full_name',
+                'call_analysis.name',
+                'call_analysis.full_name',
+                'call_analysis.custom_analysis_data.name',
+                'call_analysis.custom_analysis_data.full_name',
+                'metadata.name',
+                'dynamic_variables.name',
+                'retell_llm_dynamic_variables.name',
+                'variables.name'
+            ]) || extractNameFromTranscript(transcript);
+
+            const email = pickFirstString(callData, [
+                'email',
+                'contact_email',
+                'collected_data.email',
+                'analysis.email',
+                'call_analysis.email',
+                'call_analysis.custom_analysis_data.email',
+                'metadata.email',
+                'dynamic_variables.email',
+                'retell_llm_dynamic_variables.email',
+                'variables.email'
+            ]) || extractEmailFromText(transcript) || extractSpokenEmail(transcript);
+
+            const phone = cleanPhone(
+                pickFirstString(callData, [
+                    'phone',
+                    'phone_number',
+                    'contact_phone',
+                    'collected_data.phone',
+                    'collected_data.phone_number',
+                    'analysis.phone',
+                    'call_analysis.phone',
+                    'call_analysis.custom_analysis_data.phone',
+                    'metadata.phone',
+                    'dynamic_variables.phone',
+                    'retell_llm_dynamic_variables.phone',
+                    'variables.phone'
+                ]) || extractPhoneFromText(transcript)
+            );
+
+            const company = pickFirstString(callData, [
+                'company',
+                'company_name',
+                'business_name',
+                'collected_data.company',
+                'collected_data.company_name',
+                'analysis.company',
+                'call_analysis.company',
+                'call_analysis.custom_analysis_data.company',
+                'metadata.company',
+                'dynamic_variables.company',
+                'retell_llm_dynamic_variables.company',
+                'variables.company'
+            ]) || extractCompanyFromTranscript(transcript);
+
+            return { name, email, phone, company };
+        }
+
         function pickCallData(callData) {
-            const transcript = callData?.transcript
+            const transcript = normalizeTranscript(
+                callData?.transcript
                 || callData?.call_analysis?.transcript
                 || callData?.analysis?.transcript
-                || '';
+                || callData?.conversation
+                || callData?.messages
+                || ''
+            );
 
             const intent = callData?.intent
                 || callData?.call_analysis?.intent
@@ -700,12 +868,15 @@
                 || (callData?.duration_ms ? Math.round(callData.duration_ms / 1000) : null)
                 || (callStartedAt ? Math.max(1, Math.round((Date.now() - callStartedAt) / 1000)) : null);
 
+            const contact = extractVoiceContact(callData, transcript);
+
             return {
                 call_id: callData?.call_id || callData?.callId || callData?.id || null,
                 transcript,
                 intent,
                 duration: durationSeconds,
                 timestamp: new Date().toISOString(),
+                contact,
             };
         }
 
@@ -720,14 +891,19 @@
                 `call_id: ${payload.call_id || ''}`,
                 `duration: ${payload.duration || ''}`,
                 `intent: ${payload.intent || ''}`,
+                `name: ${payload.contact?.name || ''}`,
+                `email: ${payload.contact?.email || ''}`,
+                `phone: ${payload.contact?.phone || ''}`,
+                `company: ${payload.contact?.company || ''}`,
                 `timestamp: ${payload.timestamp || ''}`,
                 `transcript: ${payload.transcript || ''}`
             ].join('\n');
 
             const leadPayload = {
-                name: 'Voice Reservation',
-                email: `voice-reservation+${Date.now()}@dgsales.local`,
-                company: 'Voice Agent',
+                name: payload.contact?.name || 'Voice Reservation',
+                email: payload.contact?.email || `voice-reservation+${Date.now()}@dgsales.local`,
+                phone: payload.contact?.phone || '',
+                company: payload.contact?.company || 'Voice Agent',
                 message,
                 website: '',
                 source: 'voice-agent'
@@ -763,15 +939,29 @@
             const payload = eventData?.payload || {};
             const invitee = payload?.invitee || {};
             const eventInfo = payload?.event || {};
+            const tracking = eventData?.payload || {};
             const dedupeKey = `${invitee.uri || ''}__${eventInfo.uri || ''}`;
             if (dedupeKey !== '__' && calendlyCaptured.has(dedupeKey)) return;
             if (dedupeKey !== '__') calendlyCaptured.add(dedupeKey);
+
+            const qaPairs = Array.isArray(invitee.questions_and_answers)
+                ? invitee.questions_and_answers
+                : (Array.isArray(payload.questions_and_answers) ? payload.questions_and_answers : []);
+
+            const phoneAnswer = qaPairs.find((qa) => {
+                const q = String(qa?.question || '').toLowerCase();
+                return q.includes('phone') || q.includes('telefono') || q.includes('teléfono') || q.includes('mobile');
+            })?.answer || '';
 
             const message = [
                 'CALENDLY_BOOKING',
                 `event_uri: ${eventInfo.uri || ''}`,
                 `invitee_uri: ${invitee.uri || ''}`,
+                `scheduled_start: ${eventInfo.start_time || payload.event_start_time || ''}`,
                 `timezone: ${payload.timezone || ''}`,
+                `utm_source: ${tracking.utm?.utm_source || ''}`,
+                `utm_medium: ${tracking.utm?.utm_medium || ''}`,
+                `utm_campaign: ${tracking.utm?.utm_campaign || ''}`,
                 `timestamp: ${new Date().toISOString()}`
             ].join('\n');
 
@@ -779,6 +969,7 @@
             const leadPayload = {
                 name: invitee.name || 'Calendly Booking',
                 email: invitee.email || `calendly-booking+${Date.now()}@dgsales.local`,
+                phone: phoneAnswer || '',
                 company: '',
                 message,
                 website: '',
