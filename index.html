@@ -10,20 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-900: #f4f7fb;
-            --bg-800: #eaf0f7;
+            --bg-900: #f6f1e8;
+            --bg-800: #efe5d8;
             --surface: #ffffff;
-            --line: #d8e2ef;
-            --text: #132238;
-            --muted: #4f6786;
-            --accent: #245fbf;
-            --accent-strong: #2c6dd9;
-            --accent-deep: #1a4c9f;
+            --line: #9a7a5f;
+            --text: #171513;
+            --muted: #4f4a45;
+            --accent: #111111;
+            --accent-strong: #111111;
+            --accent-deep: #76543b;
         }
         * { box-sizing: border-box; }
         body {
             font-family: 'IBM Plex Sans', sans-serif;
-            background: linear-gradient(180deg, var(--bg-900) 0%, #eef3f9 100%);
+            background: linear-gradient(180deg, var(--bg-900) 0%, #f0e7db 100%);
             color: var(--text);
             scroll-behavior: smooth;
             min-height: 100vh;
@@ -36,92 +36,93 @@
         html[data-lang="en"] [data-lang="es"] { display: none; }
         html[data-lang="en"] [data-lang="en"] { display: block; }
         .lang-switch {
-            background: rgba(255, 255, 255, 0.94);
+            background: #000000;
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--line);
+            border-bottom: 1px solid rgba(154, 122, 95, 0.4);
         }
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+            background: #111111;
             color: #ffffff;
             transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
-            box-shadow: 0 10px 26px rgba(36, 95, 191, 0.22);
+            box-shadow: 0 8px 20px rgba(28, 20, 13, 0.12);
             min-height: 48px;
             -webkit-tap-highlight-color: transparent;
         }
         .btn-primary:hover {
-            filter: brightness(1.05);
+            background: #76543b;
+            filter: none;
             transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(36, 95, 191, 0.3);
+            box-shadow: 0 14px 28px rgba(28, 20, 13, 0.18);
         }
         .card {
             background: var(--surface);
             border: 1px solid var(--line);
-            box-shadow: 0 12px 24px rgba(18, 40, 72, 0.08);
+            box-shadow: 0 8px 20px rgba(28, 20, 13, 0.08);
             transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
         .card:hover {
-            border-color: #aac0df;
+            border-color: #b59072;
             transform: translateY(-4px);
-            box-shadow: 0 16px 30px rgba(18, 40, 72, 0.12);
+            box-shadow: 0 12px 26px rgba(28, 20, 13, 0.12);
         }
         .logo-pill {
-            border: 1px solid #d8e2ef;
+            border: 1px solid rgba(154, 122, 95, 0.38);
             background: #ffffff;
-            color: #3f5878;
+            color: #4f4a45;
             font-weight: 600;
             border-radius: 999px;
             padding: 0.55rem 1rem;
             letter-spacing: 0.02em;
             font-size: 0.8rem;
         }
-        .kpi-value { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #163968; }
+        .kpi-value { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #171513; }
         .case-note {
-            border-left: 3px solid #2c6dd9;
-            background: #f5f9ff;
+            border-left: 3px solid #9a7a5f;
+            background: #f9f3ea;
         }
         .contact-panel {
             background: #ffffff;
-            border: 1px solid #d8e2ef;
+            border: 1px solid rgba(154, 122, 95, 0.35);
             border-radius: 1.25rem;
-            box-shadow: 0 12px 24px rgba(18, 40, 72, 0.08);
+            box-shadow: 0 8px 20px rgba(28, 20, 13, 0.08);
         }
         .field {
             width: 100%;
-            border: 1px solid #ced9e9;
-            background: #f6f9fd;
-            color: #132238;
+            border: 1px solid rgba(154, 122, 95, 0.45);
+            background: #fbf8f2;
+            color: #171513;
             border-radius: 0.75rem;
             padding: 0.8rem 0.9rem;
             font-size: 0.95rem;
         }
         .field:focus {
             outline: none;
-            border-color: #2c6dd9;
-            box-shadow: 0 0 0 3px rgba(44, 109, 217, 0.14);
+            border-color: #9a7a5f;
+            box-shadow: 0 0 0 3px rgba(154, 122, 95, 0.18);
         }
         .plans-wrap {
-            background: #f7faff;
-            border: 1px solid #d8e2ef;
+            background: #f9f4ec;
+            border: 1px solid rgba(154, 122, 95, 0.35);
             border-radius: 1.4rem;
             padding: 1.25rem;
         }
         .product-card {
             position: relative;
-            border: 1px solid #d3dfef;
+            border: 1px solid rgba(154, 122, 95, 0.32);
             border-radius: 1.2rem;
             background: #ffffff;
-            box-shadow: 0 14px 28px rgba(18, 40, 72, 0.08);
+            box-shadow: 0 10px 22px rgba(28, 20, 13, 0.08);
             padding: 1.35rem;
         }
         .product-card.featured {
-            border: 2px solid #2c6dd9;
-            box-shadow: 0 18px 34px rgba(25, 78, 158, 0.16);
+            border: 2px solid #9a7a5f;
+            box-shadow: 0 14px 28px rgba(28, 20, 13, 0.14);
         }
         .product-badge {
             position: absolute;
             top: -0.72rem;
             right: 1rem;
-            background: #2c6dd9;
+            background: #111111;
             color: #fff;
             font-size: 0.7rem;
             font-weight: 700;
@@ -132,7 +133,7 @@
         .price-main {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
-            color: #153a69;
+            color: #171513;
             font-size: clamp(1.8rem, 4vw, 2.2rem);
             line-height: 1.05;
         }
@@ -140,7 +141,7 @@
             margin-top: 1rem;
             display: grid;
             gap: 0.58rem;
-            color: #334f74;
+            color: #4f4a45;
             font-size: 0.95rem;
         }
         .plan-item {
@@ -152,8 +153,8 @@
             width: 1.2rem;
             height: 1.2rem;
             border-radius: 999px;
-            background: #e8f0ff;
-            color: #1a4c9f;
+            background: #f0e7dc;
+            color: #76543b;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
@@ -164,8 +165,8 @@
         }
         .cta-secondary {
             width: 100%;
-            border: 1px solid #c2d2e8;
-            color: #21466f;
+            border: 1px solid #9a7a5f;
+            color: #171513;
             border-radius: 0.85rem;
             padding: 0.8rem 1rem;
             font-weight: 700;
@@ -174,10 +175,10 @@
             min-height: 48px;
             -webkit-tap-highlight-color: transparent;
         }
-        .cta-secondary:hover { border-color: #2c6dd9; background: #f3f8ff; }
+        .cta-secondary:hover { border-color: #9a7a5f; background: #f3f8ff; }
         .comparison-wrap {
             margin-top: 1rem;
-            border: 1px solid #d8e2ef;
+            border: 1px solid rgba(154, 122, 95, 0.35);
             border-radius: 1rem;
             overflow: hidden;
             background: #fff;
@@ -190,17 +191,17 @@
         .comparison-table th,
         .comparison-table td {
             padding: 0.75rem 0.7rem;
-            border-bottom: 1px solid #e3ebf5;
+            border-bottom: 1px solid rgba(154, 122, 95, 0.2);
             text-align: left;
-            color: #355175;
+            color: #4f4a45;
         }
         .comparison-table th {
-            background: #f4f8fe;
-            color: #1d3f68;
+            background: #f7efe5;
+            color: #171513;
             font-weight: 700;
         }
         .comparison-mobile { display: none; }
-        .comparison-cell-ok { color: #1a4c9f; font-weight: 700; }
+        .comparison-cell-ok { color: #76543b; font-weight: 700; }
         .comparison-cell-muted { color: #6d829e; }
         .pricing-grid {
             display: grid;
@@ -209,10 +210,10 @@
         }
         .plan-card-pro {
             background: #ffffff;
-            border: 1px solid #d4e0f0;
+            border: 1px solid rgba(154, 122, 95, 0.32);
             border-radius: 1.15rem;
             padding: 1.2rem;
-            box-shadow: 0 14px 26px rgba(14, 34, 62, 0.08);
+            box-shadow: 0 10px 22px rgba(28, 20, 13, 0.08);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -220,13 +221,13 @@
         }
         .plan-card-pro:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 34px rgba(14, 34, 62, 0.12);
-            border-color: #b8cde7;
+            box-shadow: 0 16px 30px rgba(28, 20, 13, 0.12);
+            border-color: #9a7a5f;
         }
         .plan-card-pro.featured {
-            border: 2px solid #2c6dd9;
-            box-shadow: 0 18px 34px rgba(30, 84, 167, 0.18);
-            background: linear-gradient(180deg, #f9fcff 0%, #eef5ff 100%);
+            border: 2px solid #9a7a5f;
+            box-shadow: 0 15px 30px rgba(28, 20, 13, 0.14);
+            background: linear-gradient(180deg, #fdf8f1 0%, #f7efe5 100%);
         }
         .plan-chip-row {
             display: flex;
@@ -235,28 +236,28 @@
             margin: 0.85rem 0 0.95rem;
         }
         .plan-chip {
-            border: 1px solid #d8e3f3;
-            background: #f6f9fe;
-            color: #355478;
+            border: 1px solid #ccb39a;
+            background: #f7efe4;
+            color: #5a4e43;
             border-radius: 999px;
             padding: 0.2rem 0.55rem;
             font-size: 0.73rem;
             font-weight: 700;
             letter-spacing: 0.02em;
         }
-        .plan-title { font-size: 1.4rem; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #14355f; }
+        .plan-title { font-size: 1.4rem; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #171513; }
         .plan-topline {
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
             font-size: 0.74rem;
             font-weight: 800;
-            color: #2a5da6;
+            color: #76543b;
             letter-spacing: 0.05em;
             text-transform: uppercase;
             margin-bottom: 0.4rem;
-            background: #edf3ff;
-            border: 1px solid #d6e4f8;
+            background: #f3e9dd;
+            border: 1px solid #ccb39a;
             border-radius: 999px;
             padding: 0.26rem 0.62rem;
             width: fit-content;
@@ -319,7 +320,7 @@
             color: #214b79;
             background: #ffffff;
         }
-        .plan-cta-secondary:hover { background: #f3f8ff; border-color: #2c6dd9; }
+        .plan-cta-secondary:hover { background: #f3f8ff; border-color: #9a7a5f; }
         .plan-cta-note {
             margin-top: 0.45rem;
             color: #607a99;
@@ -328,7 +329,7 @@
         }
         .mini-compare {
             margin-top: 1rem;
-            border: 1px solid #d8e2ef;
+            border: 1px solid #c8af97;
             border-radius: 1rem;
             padding: 0.75rem;
             background: #ffffff;
@@ -343,7 +344,7 @@
             border: 1px solid #e3ebf5;
             border-radius: 0.7rem;
             padding: 0.5rem 0.55rem;
-            background: #fbfdff;
+            background: #fdf8f2;
             font-size: 0.81rem;
         }
         .mini-compare-label { color: #345173; font-weight: 700; }
@@ -387,13 +388,13 @@
                 padding: 0.7rem;
             }
             .comparison-mobile-row {
-                border: 1px solid #dde7f4;
+                border: 1px solid #d8c3ad;
                 border-radius: 0.75rem;
                 padding: 0.65rem 0.75rem;
-                background: #fbfdff;
+                background: #fdf8f2;
             }
             .comparison-mobile-label {
-                color: #355175;
+                color: #4f4a45;
                 font-weight: 700;
                 margin-bottom: 0.38rem;
                 font-size: 0.83rem;
@@ -404,8 +405,8 @@
                 gap: 0.6rem;
                 font-size: 0.8rem;
             }
-            .comparison-mobile-values span:first-child { color: #1d3f68; font-weight: 700; }
-            .comparison-mobile-values span:last-child { color: #1a4c9f; font-weight: 700; }
+            .comparison-mobile-values span:first-child { color: #171513; font-weight: 700; }
+            .comparison-mobile-values span:last-child { color: #76543b; font-weight: 700; }
             .pricing-grid { grid-template-columns: 1fr; }
             .mini-compare-row { grid-template-columns: 1fr; gap: 0.3rem; }
             .mini-compare-value { padding-left: 0.1rem; }
@@ -415,10 +416,10 @@
 <body>
     <!-- Lang Switcher -->
     <nav class="lang-switch fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center">
-        <div class="text-xl font-bold tracking-tighter text-[#12253f]">DG<span class="accent-text">sales</span></div>
+        <div class="text-xl font-bold tracking-tighter text-white">DG<span class="accent-text">sales</span></div>
         <div class="flex gap-2">
-            <button onclick="setLanguage('es')" class="px-3 py-1 rounded border border-[#cad6e6] text-xs text-[#27476e] hover:border-[#2c6dd9] hover:bg-[#edf3fd] transition">ES</button>
-            <button onclick="setLanguage('en')" class="px-3 py-1 rounded border border-[#cad6e6] text-xs text-[#27476e] hover:border-[#2c6dd9] hover:bg-[#edf3fd] transition">EN</button>
+            <button onclick="setLanguage('es')" class="px-3 py-1 rounded border border-[#9a7a5f] text-xs text-[#f3e8db] hover:border-[#d9bf9f] hover:bg-[#3b2d22] transition">ES</button>
+            <button onclick="setLanguage('en')" class="px-3 py-1 rounded border border-[#9a7a5f] text-xs text-[#f3e8db] hover:border-[#d9bf9f] hover:bg-[#3b2d22] transition">EN</button>
         </div>
     </nav>
 
@@ -426,11 +427,11 @@
     <header class="pt-32 pb-20 px-6 text-center max-w-5xl mx-auto">
         <div data-lang="es">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Vende más con <span class="accent-text">IA de Voz</span></h1>
-            <p class="text-[#4f6786] text-lg md:text-xl mb-10 max-w-3xl mx-auto">Automatizamos tu negocio con una infraestructura comercial completa: web de conversion, cualificacion por voz y procesos conectados.</p>
+            <p class="text-[#4f4a45] text-lg md:text-xl mb-10 max-w-3xl mx-auto">Automatizamos tu negocio con una infraestructura comercial completa: web de conversion, cualificacion por voz y procesos conectados.</p>
         </div>
         <div data-lang="en">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Sell more with <span class="accent-text">Voice AI</span></h1>
-            <p class="text-[#4f6786] text-lg md:text-xl mb-10 max-w-3xl mx-auto">We build a complete growth stack: conversion-focused pages, AI voice qualification, and integrated business workflows.</p>
+            <p class="text-[#4f4a45] text-lg md:text-xl mb-10 max-w-3xl mx-auto">We build a complete growth stack: conversion-focused pages, AI voice qualification, and integrated business workflows.</p>
         </div>
         <a href="#agente" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-block">
             <span data-lang="es">Probar Agente Gratis</span>
@@ -440,7 +441,7 @@
 
     <!-- Trust Strip -->
     <section class="px-6 pb-10 max-w-6xl mx-auto">
-        <div class="text-center mb-5 text-[#5c7392] text-sm font-semibold tracking-wide">
+        <div class="text-center mb-5 text-[#6a5b4e] text-sm font-semibold tracking-wide">
             <span data-lang="es">Confianza para equipos comerciales y operaciones</span>
             <span data-lang="en">Trusted by sales and operations teams</span>
         </div>
@@ -458,25 +459,25 @@
         <div class="grid md:grid-cols-3 gap-5 mb-8">
             <div class="card p-6 rounded-2xl">
                 <div class="kpi-value text-4xl">+38%</div>
-                <p data-lang="es" class="text-[#4f6786] mt-2">Incremento medio de leads cualificados en 60 dias.</p>
-                <p data-lang="en" class="text-[#4f6786] mt-2">Average increase in qualified leads within 60 days.</p>
+                <p data-lang="es" class="text-[#4f4a45] mt-2">Incremento medio de leads cualificados en 60 dias.</p>
+                <p data-lang="en" class="text-[#4f4a45] mt-2">Average increase in qualified leads within 60 days.</p>
             </div>
             <div class="card p-6 rounded-2xl">
                 <div class="kpi-value text-4xl">-42%</div>
-                <p data-lang="es" class="text-[#4f6786] mt-2">Reduccion del tiempo de respuesta comercial.</p>
-                <p data-lang="en" class="text-[#4f6786] mt-2">Reduction in commercial response time.</p>
+                <p data-lang="es" class="text-[#4f4a45] mt-2">Reduccion del tiempo de respuesta comercial.</p>
+                <p data-lang="en" class="text-[#4f4a45] mt-2">Reduction in commercial response time.</p>
             </div>
             <div class="card p-6 rounded-2xl">
                 <div class="kpi-value text-4xl">24/7</div>
-                <p data-lang="es" class="text-[#4f6786] mt-2">Atencion automatizada sin ampliar equipo interno.</p>
-                <p data-lang="en" class="text-[#4f6786] mt-2">Automated coverage without expanding internal team.</p>
+                <p data-lang="es" class="text-[#4f4a45] mt-2">Atencion automatizada sin ampliar equipo interno.</p>
+                <p data-lang="en" class="text-[#4f4a45] mt-2">Automated coverage without expanding internal team.</p>
             </div>
         </div>
         <div class="case-note rounded-2xl p-6">
             <h3 data-lang="es" class="text-2xl font-bold mb-2">Caso Real: Clinica Privada</h3>
             <h3 data-lang="en" class="text-2xl font-bold mb-2">Case Study: Private Clinic</h3>
-            <p data-lang="es" class="text-[#476182]">En 8 semanas, combinando landing + agente de voz, pasaron de perder llamadas en horas pico a captar 31 citas extra al mes.</p>
-            <p data-lang="en" class="text-[#476182]">In 8 weeks, by combining a conversion page with a voice agent, they moved from missed peak-hour calls to 31 additional monthly bookings.</p>
+            <p data-lang="es" class="text-[#4f4a45]">En 8 semanas, combinando landing + agente de voz, pasaron de perder llamadas en horas pico a captar 31 citas extra al mes.</p>
+            <p data-lang="en" class="text-[#4f4a45]">In 8 weeks, by combining a conversion page with a voice agent, they moved from missed peak-hour calls to 31 additional monthly bookings.</p>
         </div>
     </section>
 
@@ -486,34 +487,34 @@
             <div class="text-4xl mb-4">🌐</div>
             <h3 data-lang="es" class="text-xl font-bold mb-2">Webs de Alto Impacto</h3>
             <h3 data-lang="en" class="text-xl font-bold mb-2">High-Impact Websites</h3>
-            <p data-lang="es" class="text-[#4f6786]">Disenamos paginas orientadas a resultados, con arquitectura clara y foco en conversion B2B.</p>
-            <p data-lang="en" class="text-[#4f6786]">We design performance-focused pages with clear architecture and B2B conversion intent.</p>
+            <p data-lang="es" class="text-[#4f4a45]">Disenamos paginas orientadas a resultados, con arquitectura clara y foco en conversion B2B.</p>
+            <p data-lang="en" class="text-[#4f4a45]">We design performance-focused pages with clear architecture and B2B conversion intent.</p>
         </div>
         <div class="card p-8 rounded-2xl">
             <div class="text-4xl mb-4">📞</div>
             <h3 data-lang="es" class="text-xl font-bold mb-2">Agentes de Voz AI</h3>
             <h3 data-lang="en" class="text-xl font-bold mb-2">Voice AI Agents</h3>
-            <p data-lang="es" class="text-[#4f6786]">Atencion, pre-cualificacion y seguimiento automatico para no perder oportunidades.</p>
-            <p data-lang="en" class="text-[#4f6786]">Automated support, lead qualification, and follow-up so opportunities do not leak.</p>
+            <p data-lang="es" class="text-[#4f4a45]">Atencion, pre-cualificacion y seguimiento automatico para no perder oportunidades.</p>
+            <p data-lang="en" class="text-[#4f4a45]">Automated support, lead qualification, and follow-up so opportunities do not leak.</p>
         </div>
         <div class="card p-8 rounded-2xl">
             <div class="text-4xl mb-4">⚡</div>
             <h3 data-lang="es" class="text-xl font-bold mb-2">Automatización Full</h3>
             <h3 data-lang="en" class="text-xl font-bold mb-2">Full Automation</h3>
-            <p data-lang="es" class="text-[#4f6786]">Conectamos CRM, agenda y operaciones para escalar sin friccion.</p>
-            <p data-lang="en" class="text-[#4f6786]">We connect CRM, scheduling, and operations to scale without friction.</p>
+            <p data-lang="es" class="text-[#4f4a45]">Conectamos CRM, agenda y operaciones para escalar sin friccion.</p>
+            <p data-lang="en" class="text-[#4f4a45]">We connect CRM, scheduling, and operations to scale without friction.</p>
         </div>
     </section>
 
     <!-- Voice Agent Demo -->
-    <section id="agente" class="py-24 bg-[#edf3fb] border-y border-[#d8e2ef] text-center px-6">
+    <section id="agente" class="py-24 bg-[#f8efe4] border-y border-[#9a7a5f]/30 text-center px-6">
         <h2 data-lang="es" class="text-3xl md:text-5xl font-bold mb-8">Habla con nuestro Agente</h2>
         <h2 data-lang="en" class="text-3xl md:text-5xl font-bold mb-8">Talk to our Agent</h2>
         
-        <p data-lang="es" class="text-[#4f6786] max-w-2xl mx-auto mb-12 text-lg">
+        <p data-lang="es" class="text-[#4f4a45] max-w-2xl mx-auto mb-12 text-lg">
             Vendemos agentes personalizados como este para atender las llamadas, ventas y reservas de tu negocio. Pruébalo ahora mismo:
         </p>
-        <p data-lang="en" class="text-[#4f6786] max-w-2xl mx-auto mb-12 text-lg">
+        <p data-lang="en" class="text-[#4f4a45] max-w-2xl mx-auto mb-12 text-lg">
             We sell custom agents like this one to handle your business calls, sales, and bookings. Try it right now:
         </p>
 
@@ -525,7 +526,7 @@
                 </span>
             </button>
             <p id="status" class="font-medium h-6"></p>
-            <p class="text-xs text-[#5e7391] mt-2">
+            <p class="text-xs text-[#6a5b4e] mt-2">
                 * <span data-lang="es">Requiere permiso de micrófono</span>
                 <span data-lang="en">Microphone permission required</span>
             </p>
@@ -549,7 +550,7 @@
                     <span class="plan-chip" data-lang="es">Implementacion rapida</span>
                     <span class="plan-chip" data-lang="en">Fast launch</span>
                 </div>
-                <div class="plan-price">EUR499 <span class="text-sm font-semibold text-[#7088a5]">/one-time</span></div>
+                <div class="plan-price">EUR499 <span class="text-sm font-semibold text-[#6a5b4e]">/one-time</span></div>
                 <div class="plan-list-pro">
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Diseño premium orientado a conversion</span><span data-lang="en">Premium conversion-oriented design</span></div>
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Copy comercial + estructura de oferta</span><span data-lang="en">Sales copy + offer structure</span></div>
@@ -576,7 +577,7 @@
                     <span class="plan-chip" data-lang="es">Ventas por voz</span>
                     <span class="plan-chip" data-lang="en">Voice sales</span>
                 </div>
-                <div class="plan-price">EUR999 <span class="text-sm font-semibold text-[#7088a5]">/set-up</span></div>
+                <div class="plan-price">EUR999 <span class="text-sm font-semibold text-[#6a5b4e]">/set-up</span></div>
                 <div class="plan-list-pro">
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Agente de voz estable para ventas y soporte</span><span data-lang="en">Stable voice agent for sales and support</span></div>
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Sincronizacion de agenda y reservas</span><span data-lang="en">Calendar and booking sync</span></div>
@@ -615,13 +616,13 @@
             <div>
                 <h2 data-lang="es" class="text-3xl md:text-4xl font-bold mb-3">Hablemos de tu caso</h2>
                 <h2 data-lang="en" class="text-3xl md:text-4xl font-bold mb-3">Let's review your case</h2>
-                <p data-lang="es" class="text-[#4f6786] mb-6">Te damos una propuesta concreta en 24h: estructura, plan y estimacion.</p>
-                <p data-lang="en" class="text-[#4f6786] mb-6">Get a concrete proposal within 24h: structure, plan, and estimate.</p>
+                <p data-lang="es" class="text-[#4f4a45] mb-6">Te damos una propuesta concreta en 24h: estructura, plan y estimacion.</p>
+                <p data-lang="en" class="text-[#4f4a45] mb-6">Get a concrete proposal within 24h: structure, plan, and estimate.</p>
                 <a href="https://calendly.com/dgsales/strategy-call" target="_blank" rel="noopener noreferrer" class="btn-primary inline-block px-6 py-3 rounded-xl font-bold">
                     <span data-lang="es">Reservar llamada estrategica</span>
                     <span data-lang="en">Book strategy call</span>
                 </a>
-                <p class="text-xs text-[#5e7391] mt-3">
+                <p class="text-xs text-[#6a5b4e] mt-3">
                     <span data-lang="es">Si no usas Calendly aun, cambia este enlace por el tuyo.</span>
                     <span data-lang="en">If you do not use Calendly yet, replace this link with yours.</span>
                 </p>
@@ -637,29 +638,29 @@
                         <span data-lang="es">Solicitar propuesta</span>
                         <span data-lang="en">Request proposal</span>
                     </button>
-                    <p class="text-xs text-[#5e7391]">
+                    <p class="text-xs text-[#6a5b4e]">
                         <span data-lang="es">Tus datos se envian de forma segura y te respondemos en menos de 24h.</span>
                         <span data-lang="en">Your details are securely submitted and we reply in under 24h.</span>
                     </p>
-                    <p id="leadStatus" class="text-sm text-[#2b4f7c] h-5"></p>
+                    <p id="leadStatus" class="text-sm text-[#6a5b4e] h-5"></p>
                 </form>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-[#d8e2ef] text-center text-[#546c8c] text-sm">
+    <footer class="py-12 px-6 border-t border-[#c8af97] text-center text-[#6a5b4e] text-sm">
         <p>&copy; 2024 DGsales - Smart AI Automation. Amsterdam | Barcelona.</p>
     </footer>
 
     <!-- Exit Popup -->
     <div id="exitPopup" class="fixed inset-0 z-[100] items-center justify-center p-6">
-        <div class="bg-white p-10 rounded-3xl max-w-md w-full border border-[#d8e2ef] shadow-2xl relative">
-            <button onclick="closePopup()" class="absolute top-4 right-4 text-[#7f94af] hover:text-[#12253f]">×</button>
+        <div class="bg-white p-10 rounded-3xl max-w-md w-full border border-[#c8af97] shadow-2xl relative">
+            <button onclick="closePopup()" class="absolute top-4 right-4 text-[#8a735f] hover:text-[#171513]">×</button>
             <h2 data-lang="es" class="text-2xl font-bold mb-4">¿Quieres ver cómo funciona en TU negocio?</h2>
             <h2 data-lang="en" class="text-2xl font-bold mb-4">Want to see how it works for YOUR business?</h2>
-            <p class="text-[#4f6786] mb-8">Dejanos tu email y te enviamos una demo personalizada gratis.</p>
-            <input type="email" placeholder="Email" class="w-full bg-[#f3f7fc] border border-[#d8e2ef] p-3 rounded-lg mb-4 text-[#132238]">
+            <p class="text-[#4f4a45] mb-8">Dejanos tu email y te enviamos una demo personalizada gratis.</p>
+            <input type="email" placeholder="Email" class="w-full bg-[#f7efe4] border border-[#c8af97] p-3 rounded-lg mb-4 text-[#171513]">
             <button class="w-full btn-primary py-3 rounded-lg font-bold">
                 <span data-lang="es">Enviar Demo</span><span data-lang="en">Send Demo</span>
             </button>
