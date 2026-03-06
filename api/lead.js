@@ -93,9 +93,31 @@ export default async function handler(req, res) {
         sheetsRes = await fetch(`${googleScriptUrl}?${query}`, { method: "GET" });
       }
 
+      const sheetsText = await sheetsRes.text().catch(() => "");
+      let sheetsJson = null;
+      try {
+        sheetsJson = sheetsText ? JSON.parse(sheetsText) : null;
+      } catch (_) {
+        sheetsJson = null;
+      }
+
       if (!sheetsRes.ok) {
-        const details = await sheetsRes.text().catch(() => "");
-        console.error("google script request failed", sheetsRes.status, details);
+        return res.status(502).json({
+          ok: false,
+          error: "Google Sheets request failed",
+          status: sheetsRes.status,
+          details: sheetsText,
+          source: lead.source,
+        });
+      }
+
+      if (sheetsJson && sheetsJson.ok === false) {
+        return res.status(502).json({
+          ok: false,
+          error: "Google Sheets logical failure",
+          details: sheetsJson,
+          source: lead.source,
+        });
       }
     }
 
