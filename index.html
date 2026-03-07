@@ -886,6 +886,39 @@
             };
         }
 
+        function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        async function postLeadWithRetry(endpoint, leadPayload, maxAttempts = 3) {
+            let lastError = null;
+
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(leadPayload),
+                        keepalive: true,
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text().catch(() => '');
+                        throw new Error(`Lead endpoint error ${response.status}: ${errorText}`);
+                    }
+
+                    return true;
+                } catch (error) {
+                    lastError = error;
+                    if (attempt < maxAttempts) {
+                        await sleep(350 * attempt);
+                    }
+                }
+            }
+
+            throw lastError || new Error('Lead submit failed after retries');
+        }
+
         async function sendCallToLeadEndpoint(callData) {
             const payload = pickCallData(callData || {});
             const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
@@ -920,17 +953,7 @@
                 source: 'voice-agent'
             };
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(leadPayload),
-                keepalive: true,
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text().catch(() => '');
-                throw new Error(`Lead endpoint error ${response.status}: ${errorText}`);
-            }
+            await postLeadWithRetry(endpoint, leadPayload, 3);
         }
 
         function openCalendlyPopup() {
@@ -987,17 +1010,7 @@
                 source: 'calendly'
             };
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(leadPayload),
-                keepalive: true,
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text().catch(() => '');
-                throw new Error(`Calendly lead endpoint error ${response.status}: ${errorText}`);
-            }
+            await postLeadWithRetry(endpoint, leadPayload, 3);
         }
 
         function resetUI() {
