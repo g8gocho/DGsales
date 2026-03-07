@@ -1,3 +1,13 @@
+        // Enviar datos de llamada a Google Script
+        async function sendCallToGoogleScript(callData) {
+            const payload = pickCallData(callData || {});
+            await fetch('https://script.google.com/macros/s/AKfycbzmDyyWwCpWmTsm-KxVX_N_A2h3DuRKmdb7YrUtjdXw0nF7AfgBrPAD8rJ26xQz3yLk/exec', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                keepalive: true,
+            });
+        }
 <!DOCTYPE html>
 <html lang="es" data-lang="es">
 <head>
@@ -590,23 +600,7 @@
             </article>
         </div>
 
-        <div class="mini-compare">
-            <div class="mini-compare-row">
-                <div class="mini-compare-label"><span data-lang="es">Objetivo principal</span><span data-lang="en">Primary goal</span></div>
-                <div class="mini-compare-value"><span data-lang="es">Leads desde web</span><span data-lang="en">Leads from website</span></div>
-                <div class="mini-compare-value strong"><span data-lang="es">Conversion por voz</span><span data-lang="en">Voice conversion</span></div>
-            </div>
-            <div class="mini-compare-row">
-                <div class="mini-compare-label"><span data-lang="es">Tiempo de lanzamiento</span><span data-lang="en">Launch timeline</span></div>
-                <div class="mini-compare-value">7-10 days</div>
-                <div class="mini-compare-value strong">10-14 days</div>
-            </div>
-            <div class="mini-compare-row">
-                <div class="mini-compare-label"><span data-lang="es">Cobertura fuera de horario</span><span data-lang="en">After-hours coverage</span></div>
-                <div class="mini-compare-value">No</div>
-                <div class="mini-compare-value strong">24/7</div>
-            </div>
-        </div>
+        <!-- mini-compare eliminado por limpieza visual -->
     </section>
 
     <!-- Contact CTA -->
@@ -669,7 +663,7 @@
     <script type="module">
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
         
-        const ZAPIER_CALL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/26692222/u07hbb1/';
+        // const ZAPIER_CALL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/26692222/u07hbb1/'; // Eliminado: solo Google Script
         let retellClient = null;
       let startingCall = false;  let activeCall = false;
             let callStartedAt = null;
@@ -706,15 +700,15 @@
             };
         }
 
-        async function sendCallToZapier(callData) {
-            const payload = pickCallData(callData || {});
-            await fetch(ZAPIER_CALL_WEBHOOK, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-                keepalive: true,
-            });
-        }
+        // async function sendCallToZapier(callData) {
+        //     const payload = pickCallData(callData || {});
+        //     await fetch(ZAPIER_CALL_WEBHOOK, {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify(payload),
+        //         keepalive: true,
+        //     });
+        // }
 
         function resetUI() {
     activeCall = false;
@@ -762,8 +756,8 @@ startingCall = true;
 
                     retellClient.on('call_ended', (callData) => {
                         resetUI();
-                        sendCallToZapier(callData).catch((error) => {
-                            console.error('Zapier webhook error:', error);
+                        sendCallToGoogleScript(callData).catch((error) => {
+                            console.error('Google Script webhook error:', error);
                         });
                     });
                         retellClient.on('error', (err) => {
