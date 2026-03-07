@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       return res.status(409).json({ error: 'Time slot already booked' });
     }
     const event = {
-      summary: 'Company Boost',
+      summary: 'voicebot test',
       description: `Lead from voice agent.\nName: ${name}\nEmail: ${email}\nCompany: ${company}`,
       start: { dateTime: startTime.toISOString() },
       end: { dateTime: endTime.toISOString() },
