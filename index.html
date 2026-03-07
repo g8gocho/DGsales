@@ -1,3 +1,4 @@
+<!-- Forzar redeploy: commit técnico -->
 <!DOCTYPE html>
 <html lang="es" data-lang="es">
 <head>
@@ -593,28 +594,27 @@
             <span data-lang="es">Ejemplos de webs para tu sector</span>
             <span data-lang="en">Website Examples by Industry</span>
         </h2>
-        <div class="relative flex flex-col items-center mt-2 md:mt-4">
+        <div class="relative flex flex-col items-center mt-2 md:mt-4" aria-label="Carrusel de ejemplos de webs" role="region">
             <div class="flex items-center gap-4 mb-6">
-                <button id="carousel-prev" aria-label="Anterior" class="p-3 rounded-full bg-[#f7efe5] hover:bg-[#e9e2d6] focus:outline-none focus:ring-2 focus:ring-[#76543b]">
+                <button id="carousel-prev" aria-label="Anterior" class="p-3 rounded-full bg-[#f7efe5] hover:bg-[#e9e2d6] focus:outline-none focus:ring-2 focus:ring-[#76543b] text-2xl transition-transform duration-200 active:scale-90">
                     &#8592;
                 </button>
-                <div id="carousel-content" class="w-[320px] md:w-[480px] h-[220px] md:h-[320px] flex items-center justify-center bg-[#f9f4ec] rounded-2xl shadow-lg">
-                    <!-- Aquí se mostrará el ejemplo activo -->
+                <div id="carousel-content" class="w-[320px] md:w-[480px] h-[260px] md:h-[340px] flex items-center justify-center bg-[#f7efe5] rounded-3xl shadow-2xl transition-all duration-500 overflow-hidden relative">
+                    <!-- Aquí se mostrará el ejemplo activo con animación -->
                 </div>
-                <button id="carousel-next" aria-label="Siguiente" class="p-3 rounded-full bg-[#f7efe5] hover:bg-[#e9e2d6] focus:outline-none focus:ring-2 focus:ring-[#76543b]">
+                <button id="carousel-next" aria-label="Siguiente" class="p-3 rounded-full bg-[#f7efe5] hover:bg-[#e9e2d6] focus:outline-none focus:ring-2 focus:ring-[#76543b] text-2xl transition-transform duration-200 active:scale-90">
                     &#8594;
                 </button>
             </div>
-            <div id="carousel-description" class="text-center mt-2 text-[#4f4a45] min-h-[48px]">
+            <div id="carousel-description" class="text-center mt-2 text-[#4f4a45] min-h-[48px] text-base md:text-lg">
                 <!-- Aquí se mostrará la descripción del ejemplo activo -->
             </div>
-            <div class="flex gap-2 mt-4 justify-center">
-                <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Hotel"></button>
-                <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Peluquería"></button>
-                <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Restaurante"></button>
-                <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Tattoo Studio"></button>
+            <div class="flex gap-2 mt-4 justify-center" role="tablist" aria-label="Selector de ejemplo">
+                <!-- Los dots se generan dinámicamente -->
             </div>
+            <button id="show-all-examples" class="mt-8 px-6 py-3 rounded-full font-bold text-base bg-[#111111] text-[#f7efe5] shadow-md hover:bg-[#171513] transition">Ver todos los ejemplos</button>
         </div>
+        <div id="examples-grid" class="hidden mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"></div>
     </section>
 
     <!-- Features -->
@@ -802,82 +802,280 @@
                 const examples = [
                     {
                         key: 'hotel',
-                        label: { es: 'Hotel', en: 'Hotel' },
+                        label: { es: 'Hotel Boutique', en: 'Boutique Hotel' },
                         img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Reservas online integradas', 'Galería visual de alta calidad', 'Testimonios de huéspedes'],
+                            en: ['Integrated online booking', 'High-quality visual gallery', 'Guest testimonials']
+                        },
                         desc: {
-                            es: 'Web elegante para hoteles boutique: reservas online, galería visual y testimonios de huéspedes. Transmite confianza y convierte visitas en reservas.',
-                            en: 'Elegant website for boutique hotels: online booking, visual gallery, and guest testimonials. Build trust and turn visits into bookings.'
+                            es: 'Transmite confianza y convierte visitas en reservas.',
+                            en: 'Build trust and turn visits into bookings.'
                         }
                     },
                     {
                         key: 'peluqueria',
-                        label: { es: 'Peluquería', en: 'Hair Salon' },
+                        label: { es: 'Peluquería Moderna', en: 'Modern Hair Salon' },
                         img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Agenda de citas digital', 'Catálogo de estilos', 'WhatsApp directo'],
+                            en: ['Digital appointment booking', 'Style catalog', 'Direct WhatsApp']
+                        },
                         desc: {
-                            es: 'Sitio moderno para peluquerías: agenda de citas, catálogo de estilos y WhatsApp directo. Haz que tus clientes reserven en segundos.',
-                            en: 'Modern site for hair salons: appointment booking, style catalog, and direct WhatsApp. Let your clients book in seconds.'
+                            es: 'Haz que tus clientes reserven en segundos.',
+                            en: 'Let your clients book in seconds.'
                         }
                     },
                     {
                         key: 'restaurante',
-                        label: { es: 'Restaurante', en: 'Restaurant' },
+                        label: { es: 'Restaurante Gourmet', en: 'Gourmet Restaurant' },
                         img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Menú digital', 'Reservas online', 'Fotos de alta calidad'],
+                            en: ['Digital menu', 'Online reservations', 'High-quality photos']
+                        },
                         desc: {
-                            es: 'Web gourmet para restaurantes: menú digital, reservas online y fotos de alta calidad. Aumenta reservas y muestra tu propuesta gastronómica.',
-                            en: 'Gourmet website for restaurants: digital menu, online reservations, and high-quality photos. Boost bookings and showcase your cuisine.'
+                            es: 'Aumenta reservas y muestra tu propuesta gastronómica.',
+                            en: 'Boost bookings and showcase your cuisine.'
                         }
                     },
                     {
                         key: 'tattoo',
-                        label: { es: 'Tattoo Studio', en: 'Tattoo Studio' },
+                        label: { es: 'Estudio de Tattoo', en: 'Tattoo Studio' },
                         img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Galería de trabajos', 'Reservas online', 'Perfil de artistas'],
+                            en: ['Work gallery', 'Online bookings', 'Artist profiles']
+                        },
                         desc: {
-                            es: 'Portfolio visual para estudios de tattoo: galería de trabajos, reservas y perfil de artistas. Convierte seguidores en clientes.',
-                            en: 'Visual portfolio for tattoo studios: work gallery, bookings, and artist profiles. Turn followers into clients.'
+                            es: 'Convierte seguidores en clientes.',
+                            en: 'Turn followers into clients.'
+                        }
+                    },
+                    {
+                        key: 'consultorio',
+                        label: { es: 'Consultorio Médico', en: 'Medical Practice' },
+                        img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd07?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Reserva de citas online', 'Información de servicios', 'Formulario de contacto seguro'],
+                            en: ['Online appointment booking', 'Service information', 'Secure contact form']
+                        },
+                        desc: {
+                            es: 'Facilita la gestión de pacientes y la captación de nuevos.',
+                            en: 'Streamline patient management and attract new clients.'
+                        }
+                    },
+                    {
+                        key: 'fisioterapia',
+                        label: { es: 'Fisioterapia', en: 'Physiotherapy' },
+                        img: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Agenda online', 'Testimonios de pacientes', 'Blog de consejos'],
+                            en: ['Online scheduling', 'Patient testimonials', 'Advice blog']
+                        },
+                        desc: {
+                            es: 'Aumenta la confianza y la conversión de nuevos pacientes.',
+                            en: 'Increase trust and convert new patients.'
+                        }
+                    },
+                    {
+                        key: 'inmobiliaria',
+                        label: { es: 'Inmobiliaria', en: 'Real Estate' },
+                        img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Catálogo de propiedades', 'Visitas virtuales', 'Formulario de interés'],
+                            en: ['Property catalog', 'Virtual tours', 'Interest form']
+                        },
+                        desc: {
+                            es: 'Genera más contactos y destaca tus propiedades.',
+                            en: 'Generate more leads and showcase your properties.'
+                        }
+                    },
+                    {
+                        key: 'educacion',
+                        label: { es: 'Academia/Educación', en: 'Academy/Education' },
+                        img: 'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Cursos online', 'Inscripción fácil', 'Testimonios de alumnos'],
+                            en: ['Online courses', 'Easy enrollment', 'Student testimonials']
+                        },
+                        desc: {
+                            es: 'Impulsa la captación y la retención de alumnos.',
+                            en: 'Boost student acquisition and retention.'
+                        }
+                    },
+                    {
+                        key: 'ecommerce',
+                        label: { es: 'Tienda Online', en: 'Ecommerce' },
+                        img: 'https://images.unsplash.com/photo-1515168833906-d2a3b82b302b?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Catálogo de productos', 'Pago seguro', 'Soporte en vivo'],
+                            en: ['Product catalog', 'Secure payment', 'Live support']
+                        },
+                        desc: {
+                            es: 'Convierte visitantes en compradores con confianza.',
+                            en: 'Convert visitors into buyers with confidence.'
+                        }
+                    },
+                    {
+                        key: 'abogados',
+                        label: { es: 'Despacho de Abogados', en: 'Law Firm' },
+                        img: 'https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Servicios legales claros', 'Formulario de consulta', 'Blog de casos de éxito'],
+                            en: ['Clear legal services', 'Consultation form', 'Success stories blog']
+                        },
+                        desc: {
+                            es: 'Transmite profesionalidad y capta nuevos clientes.',
+                            en: 'Showcase professionalism and attract new clients.'
+                        }
+                    },
+                    {
+                        key: 'coaching',
+                        label: { es: 'Coaching/Consultoría', en: 'Coaching/Consulting' },
+                        img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Agenda de sesiones', 'Testimonios', 'Recursos descargables'],
+                            en: ['Session booking', 'Testimonials', 'Downloadable resources']
+                        },
+                        desc: {
+                            es: 'Impulsa tu marca personal y la captación de clientes.',
+                            en: 'Boost your personal brand and client acquisition.'
+                        }
+                    },
+                    {
+                        key: 'eventos',
+                        label: { es: 'Eventos', en: 'Events' },
+                        img: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Calendario de eventos', 'Venta de entradas', 'Galería de fotos'],
+                            en: ['Event calendar', 'Ticket sales', 'Photo gallery']
+                        },
+                        desc: {
+                            es: 'Facilita la gestión y promoción de tus eventos.',
+                            en: 'Easily manage and promote your events.'
+                        }
+                    },
+                    {
+                        key: 'veterinaria',
+                        label: { es: 'Clínica Veterinaria', en: 'Veterinary Clinic' },
+                        img: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80',
+                        bullets: {
+                            es: ['Reserva de citas', 'Información de servicios', 'Testimonios de clientes'],
+                            en: ['Appointment booking', 'Service info', 'Client testimonials']
+                        },
+                        desc: {
+                            es: 'Aumenta la confianza y la captación de clientes.',
+                            en: 'Increase trust and attract new clients.'
                         }
                     }
                 ];
                 let currentExample = 0;
-                function updateCarousel() {
+                let animating = false;
+                const carouselContent = document.getElementById('carousel-content');
+                const carouselDotsContainer = document.querySelector('#web-examples .flex.gap-2');
+                const showAllBtn = document.getElementById('show-all-examples');
+                const examplesGrid = document.getElementById('examples-grid');
+                function renderBullets(bullets, lang) {
+                    return `<ul class='text-left mb-2 pl-5 list-disc text-[#6a5b4e] text-base md:text-lg'>${bullets[lang].map(b => `<li>${b}</li>`).join('')}</ul>`;
+                }
+                function animateContent(newHTML) {
+                    if (!carouselContent) return;
+                    carouselContent.classList.add('opacity-0', 'translate-y-4');
+                    setTimeout(() => {
+                        carouselContent.innerHTML = newHTML;
+                        carouselContent.classList.remove('opacity-0', 'translate-y-4');
+                        carouselContent.classList.add('opacity-100', 'translate-y-0');
+                        setTimeout(() => {
+                            carouselContent.classList.remove('opacity-100', 'translate-y-0');
+                        }, 400);
+                    }, 200);
+                }
+                function updateCarousel(focusDot = false) {
                     const lang = document.documentElement.getAttribute('data-lang') || 'es';
-                    const content = document.getElementById('carousel-content');
-                    const desc = document.getElementById('carousel-description');
-                    if (content) {
-                        content.innerHTML = `
-                            <div class='flex flex-col items-center w-full'>
-                                <img src='${examples[currentExample].img}' alt='${examples[currentExample].label[lang]}' class='rounded-xl shadow-md mb-3 w-full h-[140px] md:h-[220px] object-cover' style='max-width:420px;'>
-                                <div class='text-xl md:text-2xl text-[#111111] font-bold mt-1 mb-2'>${examples[currentExample].label[lang]}</div>
-                                <div class='text-[#111111] bg-[#f7efe5] rounded-lg px-4 py-2 mb-3 text-center font-medium shadow-sm'>${examples[currentExample].desc[lang]}</div>
-                                <a href="#contacto" class="btn-primary px-5 py-2 rounded-full font-bold text-sm mt-1" style="background:#111111;color:#f7efe5;">${lang === 'es' ? 'Solicita una demo para este sector' : 'Request a demo for this industry'}</a>
-                            </div>
-                        `;
-                    }
-                    if (desc) {
-                        desc.textContent = '';
-                    }
-                    // Actualizar dots
-                    document.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
-                        dot.style.background = idx === currentExample ? '#111111' : '#f7efe5';
-                        dot.style.border = '1.5px solid #ccb39a';
+                    const ex = examples[currentExample];
+                    const newHTML = `
+                        <div class='flex flex-col items-center w-full'>
+                            <img src='${ex.img}' alt='${ex.label[lang]}' class='rounded-xl shadow-md mb-3 w-full h-[140px] md:h-[220px] object-cover' style='max-width:420px;'>
+                            <div class='text-xl md:text-2xl text-[#111111] font-bold mt-1 mb-2'>${ex.label[lang]}</div>
+                            ${renderBullets(ex.bullets, lang)}
+                            <div class='text-[#111111] bg-[#f7efe5] rounded-lg px-4 py-2 mb-3 text-center font-medium shadow-sm'>${ex.desc[lang]}</div>
+                            <a href="#contacto" class="btn-primary px-5 py-2 rounded-full font-bold text-sm mt-1 flex items-center gap-2 group" style="background:#111111;color:#f7efe5;transition:background 0.2s;">
+                                <svg width="18" height="18" fill="none" stroke="#f7efe5" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                ${lang === 'es' ? 'Solicita una demo para este sector' : 'Request a demo for this industry'}
+                            </a>
+                        </div>
+                    `;
+                    animateContent(newHTML);
+                    // Dots
+                    const dots = Array.from({length: examples.length}, (_, idx) =>
+                        `<button class="carousel-dot w-3 h-3 rounded-full focus:outline-none mx-1 ${idx === currentExample ? 'ring-2 ring-[#ccb39a]' : ''}"
+                            aria-label="${examples[idx].label[lang]}"
+                            aria-current="${idx === currentExample ? 'true' : 'false'}"
+                            tabindex="0"
+                            style="background:${idx === currentExample ? '#111111' : '#f7efe5'};border:1.5px solid #ccb39a;transition:background 0.2s;"
+                            data-idx="${idx}"></button>`
+                    ).join('');
+                    carouselDotsContainer.innerHTML = dots;
+                    carouselDotsContainer.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
+                        dot.addEventListener('click', () => { if (!animating) { currentExample = idx; updateCarousel(true); }});
+                        dot.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && !animating) { currentExample = idx; updateCarousel(true); }});
+                        if (focusDot && idx === currentExample) dot.focus();
+                        dot.title = examples[idx].label[lang];
                     });
                 }
+                // Swipe navigation (mobile)
+                let startX = null;
+                carouselContent.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+                carouselContent.addEventListener('touchend', e => {
+                    if (startX === null) return;
+                    const dx = e.changedTouches[0].clientX - startX;
+                    if (Math.abs(dx) > 40) {
+                        if (dx < 0) document.getElementById('carousel-next').click();
+                        else document.getElementById('carousel-prev').click();
+                    }
+                    startX = null;
+                });
                 document.getElementById('carousel-prev')?.addEventListener('click', () => {
+                    if (animating) return;
+                    animating = true;
                     currentExample = (currentExample - 1 + examples.length) % examples.length;
-                    updateCarousel();
+                    updateCarousel(true);
+                    setTimeout(() => { animating = false; }, 500);
                 });
                 document.getElementById('carousel-next')?.addEventListener('click', () => {
+                    if (animating) return;
+                    animating = true;
                     currentExample = (currentExample + 1) % examples.length;
-                    updateCarousel();
-                });
-                document.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
-                    dot.addEventListener('click', () => {
-                        currentExample = idx;
-                        updateCarousel();
-                    });
+                    updateCarousel(true);
+                    setTimeout(() => { animating = false; }, 500);
                 });
                 // Cambia el ejemplo si cambia el idioma
-                const observer = new MutationObserver(updateCarousel);
+                const observer = new MutationObserver(() => updateCarousel());
                 observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-lang'] });
+                // Mostrar todos los ejemplos en grid
+                showAllBtn.addEventListener('click', () => {
+                    if (examplesGrid.classList.contains('hidden')) {
+                        const lang = document.documentElement.getAttribute('data-lang') || 'es';
+                        examplesGrid.innerHTML = examples.map(ex => `
+                            <div class='bg-[#f7efe5] rounded-2xl shadow-lg p-5 flex flex-col items-center transition hover:scale-105'>
+                                <img src='${ex.img}' alt='${ex.label[lang]}' class='rounded-xl shadow mb-3 w-full h-[140px] md:h-[180px] object-cover' style='max-width:340px;'>
+                                <div class='text-lg md:text-xl text-[#111111] font-bold mb-1 mt-1'>${ex.label[lang]}</div>
+                                ${renderBullets(ex.bullets, lang)}
+                                <div class='text-[#111111] bg-[#f7efe5] rounded-lg px-3 py-2 mb-2 text-center font-medium shadow-sm'>${ex.desc[lang]}</div>
+                                <a href="#contacto" class="btn-primary px-4 py-2 rounded-full font-bold text-sm mt-1 flex items-center gap-2 group" style="background:#111111;color:#f7efe5;transition:background 0.2s;">
+                                    <svg width="16" height="16" fill="none" stroke="#f7efe5" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                    ${lang === 'es' ? 'Solicita demo' : 'Request demo'}
+                                </a>
+                            </div>
+                        `).join('');
+                        examplesGrid.classList.remove('hidden');
+                        showAllBtn.textContent = lang === 'es' ? 'Ocultar catálogo' : 'Hide catalog';
+                    } else {
+                        examplesGrid.classList.add('hidden');
+                        showAllBtn.textContent = lang === 'es' ? 'Ver todos los ejemplos' : 'Show all examples';
+                    }
+                });
                 // Inicializar
                 updateCarousel();
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
