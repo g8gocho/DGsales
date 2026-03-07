@@ -742,10 +742,13 @@
                 return rawTranscript
                     .map((item) => {
                         if (typeof item === 'string') return item;
-                        return item?.text || item?.content || item?.message || item?.transcript || '';
+                        const text = item?.text || item?.content || item?.message || item?.transcript || '';
+                        const speaker = item?.speaker || item?.role || item?.source || '';
+                        if (!text) return '';
+                        return speaker ? `${speaker}: ${text}` : text;
                     })
                     .filter(Boolean)
-                    .join(' ')
+                    .join('\n')
                     .trim();
             }
             if (typeof rawTranscript === 'object') {
@@ -852,7 +855,9 @@
             const transcript = normalizeTranscript(
                 callData?.transcript
                 || callData?.call_analysis?.transcript
+                || callData?.call_analysis?.full_transcript
                 || callData?.analysis?.transcript
+                || callData?.dialog
                 || callData?.conversation
                 || callData?.messages
                 || ''
@@ -877,6 +882,7 @@
                 duration: durationSeconds,
                 timestamp: new Date().toISOString(),
                 contact,
+                raw_call_data: callData || {},
             };
         }
 
@@ -908,6 +914,7 @@
                 intent: payload.intent || '',
                 duration: payload.duration || '',
                 transcript: payload.transcript || '',
+                call_data: payload.raw_call_data || {},
                 message,
                 website: '',
                 source: 'voice-agent'
@@ -1076,7 +1083,8 @@ const data = await response.json();
 
 await retellClient.startCall({
     accessToken: data.access_token,
-    sampleRate: 44100 // Optimized for iPhone hardware
+    // Lower sample rate reduces network/encoding pressure and improves perceived call startup.
+    sampleRate: 24000
 });
 
            } catch (err) {
