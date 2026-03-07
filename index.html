@@ -857,7 +857,8 @@
                     }
                     // Actualizar dots
                     document.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
-                        dot.style.background = idx === currentExample ? '#10407a' : '#ccb39a';
+                        dot.style.background = idx === currentExample ? '#111111' : '#f7efe5';
+                        dot.style.border = '1.5px solid #ccb39a';
                     });
                 }
                 document.getElementById('carousel-prev')?.addEventListener('click', () => {
