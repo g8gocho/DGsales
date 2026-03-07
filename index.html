@@ -10,7 +10,408 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
     <style>
-        /* ... (puedes pegar aquí tu CSS original) ... */
+        :root {
+            --bg-900: #f6f1e8;
+            --bg-800: #efe5d8;
+            --surface: #ffffff;
+            --line: #9a7a5f;
+            --text: #171513;
+            --muted: #4f4a45;
+            --accent: #111111;
+            --accent-strong: #111111;
+            --accent-deep: #76543b;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: linear-gradient(180deg, var(--bg-900) 0%, #f0e7db 100%);
+            color: var(--text);
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
+        .accent-text { color: var(--accent-strong); }
+        [data-lang="es"] { display: block; }
+        [data-lang="en"] { display: none; }
+        html[data-lang] { display: block !important; }
+        html[data-lang="en"] [data-lang="es"] { display: none; }
+        html[data-lang="en"] [data-lang="en"] { display: block; }
+        .lang-switch {
+            background: #000000;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(154, 122, 95, 0.4);
+        }
+        .btn-primary {
+            background: #111111;
+            color: #ffffff;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+            box-shadow: 0 8px 20px rgba(28, 20, 13, 0.12);
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-primary:hover {
+            background: #76543b;
+            filter: none;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(28, 20, 13, 0.18);
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            box-shadow: 0 8px 20px rgba(28, 20, 13, 0.08);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card:hover {
+            border-color: #b59072;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 26px rgba(28, 20, 13, 0.12);
+        }
+        .logo-pill {
+            border: 1px solid rgba(154, 122, 95, 0.38);
+            background: #ffffff;
+            color: #4f4a45;
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 0.55rem 1rem;
+            letter-spacing: 0.02em;
+            font-size: 0.8rem;
+        }
+        .kpi-value { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #171513; }
+        .case-note {
+            border-left: 3px solid #9a7a5f;
+            background: #f9f3ea;
+        }
+        .contact-panel {
+            background: #ffffff;
+            border: 1px solid rgba(154, 122, 95, 0.35);
+            border-radius: 1.25rem;
+            box-shadow: 0 8px 20px rgba(28, 20, 13, 0.08);
+        }
+        .field {
+            width: 100%;
+            border: 1px solid rgba(154, 122, 95, 0.45);
+            background: #fbf8f2;
+            color: #171513;
+            border-radius: 0.75rem;
+            padding: 0.8rem 0.9rem;
+            font-size: 0.95rem;
+        }
+        .field:focus {
+            outline: none;
+            border-color: #9a7a5f;
+            box-shadow: 0 0 0 3px rgba(154, 122, 95, 0.18);
+        }
+        .plans-wrap {
+            background: #f9f4ec;
+            border: 1px solid rgba(154, 122, 95, 0.35);
+            border-radius: 1.4rem;
+            padding: 1.25rem;
+        }
+        .product-card {
+            position: relative;
+            border: 1px solid rgba(154, 122, 95, 0.32);
+            border-radius: 1.2rem;
+            background: #ffffff;
+            box-shadow: 0 10px 22px rgba(28, 20, 13, 0.08);
+            padding: 1.35rem;
+        }
+        .product-card.featured {
+            border: 2px solid #9a7a5f;
+            box-shadow: 0 14px 28px rgba(28, 20, 13, 0.14);
+        }
+        .product-badge {
+            position: absolute;
+            top: -0.72rem;
+            right: 1rem;
+            background: #111111;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.26rem 0.62rem;
+            letter-spacing: 0.04em;
+        }
+        .price-main {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            color: #171513;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            line-height: 1.05;
+        }
+        .plan-list {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.58rem;
+            color: #4f4a45;
+            font-size: 0.95rem;
+        }
+        .plan-item {
+            display: flex;
+            gap: 0.55rem;
+            align-items: flex-start;
+        }
+        .plan-check {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 999px;
+            background: #f0e7dc;
+            color: #76543b;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+            font-size: 0.75rem;
+        }
+        .cta-secondary {
+            width: 100%;
+            border: 1px solid #9a7a5f;
+            color: #171513;
+            border-radius: 0.85rem;
+            padding: 0.8rem 1rem;
+            font-weight: 700;
+            background: #fff;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .cta-secondary:hover { border-color: #9a7a5f; background: #f3f8ff; }
+        .comparison-wrap {
+            margin-top: 1rem;
+            border: 1px solid rgba(154, 122, 95, 0.35);
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #fff;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem 0.7rem;
+            border-bottom: 1px solid rgba(154, 122, 95, 0.2);
+            text-align: left;
+            color: #4f4a45;
+        }
+        .comparison-table th {
+            background: #f7efe5;
+            color: #171513;
+            font-weight: 700;
+        }
+        .comparison-mobile { display: none; }
+        .comparison-cell-ok { color: #76543b; font-weight: 700; }
+        .comparison-cell-muted { color: #6d829e; }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .plan-card-pro {
+            background: #ffffff;
+            border: 1px solid rgba(154, 122, 95, 0.32);
+            border-radius: 1.15rem;
+            padding: 1.2rem;
+            box-shadow: 0 10px 22px rgba(28, 20, 13, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .plan-card-pro:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px rgba(28, 20, 13, 0.12);
+            border-color: #9a7a5f;
+        }
+        .plan-card-pro.featured {
+            border: 2px solid #9a7a5f;
+            box-shadow: 0 15px 30px rgba(28, 20, 13, 0.14);
+            background: linear-gradient(180deg, #fdf8f1 0%, #f7efe5 100%);
+        }
+        .plan-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin: 0.85rem 0 0.95rem;
+        }
+        .plan-chip {
+            border: 1px solid #ccb39a;
+            background: #f7efe4;
+            color: #5a4e43;
+            border-radius: 999px;
+            padding: 0.2rem 0.55rem;
+            font-size: 0.73rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .plan-title { font-size: 1.4rem; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #171513; }
+        .plan-topline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #76543b;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+            background: #f3e9dd;
+            border: 1px solid #ccb39a;
+            border-radius: 999px;
+            padding: 0.26rem 0.62rem;
+            width: fit-content;
+        }
+        .plan-price {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(1.85rem, 4vw, 2.25rem);
+            line-height: 1.05;
+            color: #133865;
+            font-weight: 800;
+            margin: 0.8rem 0;
+        }
+        .plan-card-pro.featured .plan-price { color: #10407a; }
+        .plan-sub { color: #5a7698; font-size: 0.95rem; }
+        .plan-kicker {
+            margin-top: 0.2rem;
+            color: #2b507c;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .plan-list-pro { display: grid; gap: 0.58rem; margin: 0.85rem 0 1rem; }
+        .plan-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: start;
+            gap: 0.5rem;
+            color: #2f4f74;
+            font-size: 0.93rem;
+        }
+        .plan-mark {
+            width: 1.15rem;
+            height: 1.15rem;
+            border-radius: 999px;
+            background: #e9f1ff;
+            color: #1c4e9d;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.1rem;
+        }
+        .plan-cta-primary,
+        .plan-cta-secondary {
+            width: 100%;
+            min-height: 50px;
+            border-radius: 0.85rem;
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-top: 0.35rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .plan-cta-secondary {
+            border: 1px solid #bfd1e8;
+            color: #214b79;
+            background: #ffffff;
+        }
+        .plan-cta-secondary:hover { background: #f3f8ff; border-color: #9a7a5f; }
+        .plan-cta-note {
+            margin-top: 0.45rem;
+            color: #607a99;
+            font-size: 0.78rem;
+            text-align: center;
+        }
+        .mini-compare {
+            margin-top: 1rem;
+            border: 1px solid #c8af97;
+            border-radius: 1rem;
+            padding: 0.75rem;
+            background: #ffffff;
+            display: grid;
+            gap: 0.55rem;
+        }
+        .mini-compare-row {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr 1fr;
+            gap: 0.45rem;
+            align-items: center;
+            border: 1px solid #e3ebf5;
+            border-radius: 0.7rem;
+            padding: 0.5rem 0.55rem;
+            background: #fdf8f2;
+            font-size: 0.81rem;
+        }
+        .mini-compare-label { color: #345173; font-weight: 700; }
+        .mini-compare-value { color: #5e7898; font-weight: 600; }
+        .mini-compare-value.strong { color: #1c4e9d; font-weight: 800; }
+        header, section, footer { animation: fadeUp 0.7s ease both; }
+        section:nth-of-type(2) { animation-delay: 0.08s; }
+        section:nth-of-type(3) { animation-delay: 0.14s; }
+        section:nth-of-type(4) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.07s; }
+        .card:nth-child(3) { animation-delay: 0.14s; }
+        .card:nth-child(4) { animation-delay: 0.21s; }
+        .btn-call {
+            min-width: min(92vw, 420px);
+            justify-content: center;
+            border: 1px solid rgba(44, 109, 217, 0.28);
+        }
+        .btn-call.active {
+            background: linear-gradient(135deg, #ff6b58 0%, #ef4444 100%) !important;
+            border-color: #ef4444;
+            color: #fff;
+        }
+        .btn-call.active { background-color: #ef4444 !important; border-color: #ef4444; }
+        #status { color: var(--accent-deep); }
+        #exitPopup { display: none; background: rgba(11, 24, 41, 0.45); backdrop-filter: blur(6px); }
+        #exitPopup.show { display: flex; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            header { padding-top: 7rem !important; }
+            h1 { line-height: 1.06; }
+            .btn-primary { width: 100%; max-width: 340px; }
+            .plans-wrap { padding: 0.9rem; }
+            .product-card { padding: 1rem; }
+            .comparison-table { display: none; }
+            .comparison-mobile {
+                display: grid;
+                gap: 0.6rem;
+                padding: 0.7rem;
+            }
+            .comparison-mobile-row {
+                border: 1px solid #d8c3ad;
+                border-radius: 0.75rem;
+                padding: 0.65rem 0.75rem;
+                background: #fdf8f2;
+            }
+            .comparison-mobile-label {
+                color: #4f4a45;
+                font-weight: 700;
+                margin-bottom: 0.38rem;
+                font-size: 0.83rem;
+            }
+            .comparison-mobile-values {
+                display: flex;
+                justify-content: space-between;
+                gap: 0.6rem;
+                font-size: 0.8rem;
+            }
+            .comparison-mobile-values span:first-child { color: #171513; font-weight: 700; }
+            .comparison-mobile-values span:last-child { color: #76543b; font-weight: 700; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .mini-compare-row { grid-template-columns: 1fr; gap: 0.3rem; }
+            .mini-compare-value { padding-left: 0.1rem; }
+        }
     </style>
 </head>
 <body>
@@ -22,11 +423,237 @@
             <button onclick="setLanguage('en')" class="px-3 py-1 rounded border border-[#9a7a5f] text-xs text-[#f3e8db] hover:border-[#d9bf9f] hover:bg-[#3b2d22] transition">EN</button>
         </div>
     </nav>
-    <!-- ...aquí va el resto de tu HTML de contenido, secciones, formularios, etc... -->
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 px-6 text-center max-w-5xl mx-auto">
+        <div data-lang="es">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Vende más con <span class="accent-text">IA de Voz</span></h1>
+            <p class="text-[#4f4a45] text-lg md:text-xl mb-10 max-w-3xl mx-auto">Automatizamos tu negocio con una infraestructura comercial completa: web de conversion, cualificacion por voz y procesos conectados.</p>
+        </div>
+        <div data-lang="en">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Sell more with <span class="accent-text">Voice AI</span></h1>
+            <p class="text-[#4f4a45] text-lg md:text-xl mb-10 max-w-3xl mx-auto">We build a complete growth stack: conversion-focused pages, AI voice qualification, and integrated business workflows.</p>
+        </div>
+        <a href="#agente" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-block">
+            <span data-lang="es">Probar Agente Gratis</span>
+            <span data-lang="en">Try Agent for Free</span>
+        </a>
+    </header>
+
+    <!-- Trust Strip -->
+    <section class="px-6 pb-10 max-w-6xl mx-auto">
+        <div class="text-center mb-5 text-[#6a5b4e] text-sm font-semibold tracking-wide">
+            <span data-lang="es">Confianza para equipos comerciales y operaciones</span>
+            <span data-lang="en">Trusted by sales and operations teams</span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-3">
+            <span class="logo-pill">B2B SERVICES</span>
+            <span class="logo-pill">CLINICS</span>
+            <span class="logo-pill">REAL ESTATE</span>
+            <span class="logo-pill">EDTECH</span>
+            <span class="logo-pill">HOSPITALITY</span>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section class="py-8 px-6 max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-5 mb-8">
+            <div class="card p-6 rounded-2xl">
+                <div class="kpi-value text-4xl">+38%</div>
+                <p data-lang="es" class="text-[#4f4a45] mt-2">Incremento medio de leads cualificados en 60 dias.</p>
+                <p data-lang="en" class="text-[#4f4a45] mt-2">Average increase in qualified leads within 60 days.</p>
+            </div>
+            <div class="card p-6 rounded-2xl">
+                <div class="kpi-value text-4xl">-42%</div>
+                <p data-lang="es" class="text-[#4f4a45] mt-2">Reduccion del tiempo de respuesta comercial.</p>
+                <p data-lang="en" class="text-[#4f4a45] mt-2">Reduction in commercial response time.</p>
+            </div>
+            <div class="card p-6 rounded-2xl">
+                <div class="kpi-value text-4xl">24/7</div>
+                <p data-lang="es" class="text-[#4f4a45] mt-2">Atencion automatizada sin ampliar equipo interno.</p>
+                <p data-lang="en" class="text-[#4f4a45] mt-2">Automated coverage without expanding internal team.</p>
+            </div>
+        </div>
+        <div class="case-note rounded-2xl p-6">
+            <h3 data-lang="es" class="text-2xl font-bold mb-2">Caso Real: Clinica Privada</h3>
+            <h3 data-lang="en" class="text-2xl font-bold mb-2">Case Study: Private Clinic</h3>
+            <p data-lang="es" class="text-[#4f4a45]">En 8 semanas, combinando landing + agente de voz, pasaron de perder llamadas en horas pico a captar 31 citas extra al mes.</p>
+            <p data-lang="en" class="text-[#4f4a45]">In 8 weeks, by combining a conversion page with a voice agent, they moved from missed peak-hour calls to 31 additional monthly bookings.</p>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-20 px-6 max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+        <div class="card p-8 rounded-2xl">
+            <div class="text-4xl mb-4">🌐</div>
+            <h3 data-lang="es" class="text-xl font-bold mb-2">Webs de Alto Impacto</h3>
+            <h3 data-lang="en" class="text-xl font-bold mb-2">High-Impact Websites</h3>
+            <p data-lang="es" class="text-[#4f4a45]">Disenamos paginas orientadas a resultados, con arquitectura clara y foco en conversion B2B.</p>
+            <p data-lang="en" class="text-[#4f4a45]">We design performance-focused pages with clear architecture and B2B conversion intent.</p>
+        </div>
+        <div class="card p-8 rounded-2xl">
+            <div class="text-4xl mb-4">📞</div>
+            <h3 data-lang="es" class="text-xl font-bold mb-2">Agentes de Voz AI</h3>
+            <h3 data-lang="en" class="text-xl font-bold mb-2">Voice AI Agents</h3>
+            <p data-lang="es" class="text-[#4f4a45]">Atencion, pre-cualificacion y seguimiento automatico para no perder oportunidades.</p>
+            <p data-lang="en" class="text-[#4f4a45]">Automated support, lead qualification, and follow-up so opportunities do not leak.</p>
+        </div>
+        <div class="card p-8 rounded-2xl">
+            <div class="text-4xl mb-4">⚡</div>
+            <h3 data-lang="es" class="text-xl font-bold mb-2">Automatización Full</h3>
+            <h3 data-lang="en" class="text-xl font-bold mb-2">Full Automation</h3>
+            <p data-lang="es" class="text-[#4f4a45]">Conectamos CRM, agenda y operaciones para escalar sin friccion.</p>
+            <p data-lang="en" class="text-[#4f4a45]">We connect CRM, scheduling, and operations to scale without friction.</p>
+        </div>
+    </section>
+
+    <!-- Voice Agent Demo -->
+    <section id="agente" class="py-24 bg-[#f8efe4] border-y border-[#9a7a5f]/30 text-center px-6">
+        <h2 data-lang="es" class="text-3xl md:text-5xl font-bold mb-8">Habla con nuestro Agente</h2>
+        <h2 data-lang="en" class="text-3xl md:text-5xl font-bold mb-8">Talk to our Agent</h2>
+        
+        <p data-lang="es" class="text-[#4f4a45] max-w-2xl mx-auto mb-12 text-lg">
+            Vendemos agentes personalizados como este para atender las llamadas, ventas y reservas de tu negocio. Pruébalo ahora mismo:
+        </p>
+        <p data-lang="en" class="text-[#4f4a45] max-w-2xl mx-auto mb-12 text-lg">
+            We sell custom agents like this one to handle your business calls, sales, and bookings. Try it right now:
+        </p>
+
+        <div class="flex flex-col items-center gap-4">
+            <button id="btn-call" onclick="handleCall(this)" class="btn-primary btn-call px-12 py-6 rounded-full font-bold text-2xl flex items-center gap-3 shadow-2xl shadow-gold/20">
+                <span id="btn-text">
+                    <span data-lang="es">📞 Llamar ahora</span>
+                    <span data-lang="en">📞 Call now</span>
+                </span>
+            </button>
+            <p id="status" class="font-medium h-6"></p>
+            <p class="text-xs text-[#6a5b4e] mt-2">
+                * <span data-lang="es">Requiere permiso de micrófono</span>
+                <span data-lang="en">Microphone permission required</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Plans -->
+    <section class="py-24 px-6 max-w-6xl mx-auto">
+        <h2 data-lang="es" class="text-4xl font-bold text-center mb-16">Planes</h2>
+        <h2 data-lang="en" class="text-4xl font-bold text-center mb-16">Pricing Plans</h2>
+        <div class="pricing-grid">
+            <article class="plan-card-pro">
+                <div class="plan-topline">Launch Package</div>
+                <h3 class="plan-title">Web Starter</h3>
+                <div class="plan-kicker" data-lang="es">Ideal para validar oferta rapido</div>
+                <div class="plan-kicker" data-lang="en">Ideal to validate your offer fast</div>
+                <p data-lang="es" class="plan-sub">Landing de alto rendimiento para convertir visitas en oportunidades comerciales.</p>
+                <p data-lang="en" class="plan-sub">High-performance landing page to turn visits into qualified opportunities.</p>
+                <div class="plan-chip-row">
+                    <span class="plan-chip">B2B</span>
+                    <span class="plan-chip" data-lang="es">Implementacion rapida</span>
+                    <span class="plan-chip" data-lang="en">Fast launch</span>
+                </div>
+                <div class="plan-price">EUR499 <span class="text-sm font-semibold text-[#6a5b4e]">/one-time</span></div>
+                <div class="plan-list-pro">
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Diseño premium orientado a conversion</span><span data-lang="en">Premium conversion-oriented design</span></div>
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Copy comercial + estructura de oferta</span><span data-lang="en">Sales copy + offer structure</span></div>
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Captura de leads integrada</span><span data-lang="en">Integrated lead capture</span></div>
+                </div>
+                <a href="#contacto" class="plan-cta-secondary mt-auto">
+                    <span data-lang="es">Empezar con Web Starter</span>
+                    <span data-lang="en">Start with Web Starter</span>
+                </a>
+                <div class="plan-cta-note"><span data-lang="es">Entrega inicial en 7-10 dias</span><span data-lang="en">Initial delivery in 7-10 days</span></div>
+            </article>
+
+            <article class="plan-card-pro featured">
+                <div class="product-badge">RECOMMENDED</div>
+                <div class="plan-topline">Growth Engine</div>
+                <h3 class="plan-title">AI Agent Pro</h3>
+                <div class="plan-kicker" data-lang="es">La opcion elegida por equipos comerciales</div>
+                <div class="plan-kicker" data-lang="en">Top choice for commercial teams</div>
+                <p data-lang="es" class="plan-sub">Automatiza llamadas, filtrado de leads y reservas sin depender del horario del equipo.</p>
+                <p data-lang="en" class="plan-sub">Automate calls, lead qualification, and bookings beyond team working hours.</p>
+                <div class="plan-chip-row">
+                    <span class="plan-chip">24/7</span>
+                    <span class="plan-chip">ES / EN</span>
+                    <span class="plan-chip" data-lang="es">Ventas por voz</span>
+                    <span class="plan-chip" data-lang="en">Voice sales</span>
+                </div>
+                <div class="plan-price">EUR999 <span class="text-sm font-semibold text-[#6a5b4e]">/set-up</span></div>
+                <div class="plan-list-pro">
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Agente de voz estable para ventas y soporte</span><span data-lang="en">Stable voice agent for sales and support</span></div>
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Sincronizacion de agenda y reservas</span><span data-lang="en">Calendar and booking sync</span></div>
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Registro de llamada + automatizaciones</span><span data-lang="en">Call logs + automation hooks</span></div>
+                </div>
+                <a href="#contacto" class="btn-primary plan-cta-primary mt-auto">
+                    <span data-lang="es">Activar AI Agent Pro</span>
+                    <span data-lang="en">Activate AI Agent Pro</span>
+                </a>
+                <div class="plan-cta-note"><span data-lang="es">Incluye configuracion y go-live guiado</span><span data-lang="en">Includes setup and guided go-live</span></div>
+            </article>
+        </div>
+
+        <div class="mini-compare">
+            <div class="mini-compare-row">
+                <div class="mini-compare-label"><span data-lang="es">Objetivo principal</span><span data-lang="en">Primary goal</span></div>
+                <div class="mini-compare-value"><span data-lang="es">Leads desde web</span><span data-lang="en">Leads from website</span></div>
+                <div class="mini-compare-value strong"><span data-lang="es">Conversion por voz</span><span data-lang="en">Voice conversion</span></div>
+            </div>
+            <div class="mini-compare-row">
+                <div class="mini-compare-label"><span data-lang="es">Tiempo de lanzamiento</span><span data-lang="en">Launch timeline</span></div>
+                <div class="mini-compare-value">7-10 days</div>
+                <div class="mini-compare-value strong">10-14 days</div>
+            </div>
+            <div class="mini-compare-row">
+                <div class="mini-compare-label"><span data-lang="es">Cobertura fuera de horario</span><span data-lang="en">After-hours coverage</span></div>
+                <div class="mini-compare-value">No</div>
+                <div class="mini-compare-value strong">24/7</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contacto" class="py-10 px-6 max-w-6xl mx-auto">
+        <div class="contact-panel p-8 md:p-10 grid md:grid-cols-2 gap-8">
+            <div>
+                <h2 data-lang="es" class="text-3xl md:text-4xl font-bold mb-3">Hablemos de tu caso</h2>
+                <h2 data-lang="en" class="text-3xl md:text-4xl font-bold mb-3">Let's review your case</h2>
+                <p data-lang="es" class="text-[#4f4a45] mb-6">Te damos una propuesta concreta en 24h: estructura, plan y estimacion.</p>
+                <p data-lang="en" class="text-[#4f4a45] mb-6">Get a concrete proposal within 24h: structure, plan, and estimate.</p>
+                <button id="openCalendlyBtn" type="button" class="btn-primary inline-block px-6 py-3 rounded-xl font-bold">
+                    <span data-lang="es">Reservar llamada estrategica</span>
+                    <span data-lang="en">Book strategy call</span>
+                </button>
+                <p class="text-xs text-[#6a5b4e] mt-3">
+                    <span data-lang="es">Si no usas Calendly aun, cambia este enlace por el tuyo.</span>
+                    <span data-lang="en">If you do not use Calendly yet, replace this link with yours.</span>
+                </p>
+            </div>
+            <div>
+                <form id="leadForm" class="space-y-3">
+                    <input id="leadName" class="field" type="text" required placeholder="Nombre / Name">
+                    <input id="leadEmail" class="field" type="email" required placeholder="Email">
+                    <input id="leadCompany" class="field" type="text" placeholder="Empresa / Company">
+                    <input id="leadWebsite" class="hidden" type="text" autocomplete="off" tabindex="-1" aria-hidden="true">
+                    <textarea id="leadMessage" class="field min-h-[120px]" placeholder="Cuéntanos tu objetivo principal / Tell us your main goal"></textarea>
+                    <button id="leadSubmit" type="submit" class="btn-primary w-full py-3 rounded-xl font-bold">
+                        <span data-lang="es">Solicitar propuesta</span>
+                        <span data-lang="en">Request proposal</span>
+                    </button>
+                    <p class="text-xs text-[#6a5b4e]">
+                        <span data-lang="es">Tus datos se envian de forma segura y te respondemos en menos de 24h.</span>
+                        <span data-lang="en">Your details are securely submitted and we reply in under 24h.</span>
+                    </p>
+                    <p id="leadStatus" class="text-sm text-[#6a5b4e] h-5"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="py-12 px-6 border-t border-[#c8af97] text-center text-[#6a5b4e] text-sm">
         <p>&copy; 2024 DGsales - Smart AI Automation. Amsterdam | Barcelona.</p>
     </footer>
+
     <!-- Exit Popup -->
     <div id="exitPopup" class="fixed inset-0 z-[100] items-center justify-center p-6">
         <div class="bg-white p-10 rounded-3xl max-w-md w-full border border-[#c8af97] shadow-2xl relative">
@@ -40,8 +667,583 @@
             </button>
         </div>
     </div>
+
     <script type="module">
-        // ...aquí van tus scripts JavaScript originales, asegurando que estén dentro de <script>...
+        import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
+        
+        let retellClient = null;
+      let startingCall = false;  let activeCall = false;
+            let callStartedAt = null;
+        const CALENDLY_URL = 'https://calendly.com/dgaisales';
+        const calendlyCaptured = new Set();
+      const BACKEND_URL = window.location.hostname.includes('github.io') ? 'https://d-gsales.vercel.app' : '';
+        
+
+        function setStatus(msg) {
+            const statusEl = document.getElementById('status');
+            if(statusEl) statusEl.textContent = msg;
+        }
+
+        function readPath(obj, path) {
+            return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+        }
+
+        function cleanString(value) {
+            if (value === undefined || value === null) return '';
+            const normalized = String(value).trim();
+            return normalized;
+        }
+
+        function pickFirstString(obj, paths) {
+            for (const path of paths) {
+                const value = cleanString(readPath(obj, path));
+                if (value) return value;
+            }
+            return '';
+        }
+
+        function extractEmailFromText(text) {
+            const match = String(text || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+            return match ? match[0] : '';
+        }
+
+        function extractSpokenEmail(text) {
+            const base = String(text || '').toLowerCase();
+            const compact = base
+                .replace(/\s+arroba\s+/g, '@')
+                .replace(/\s+at\s+/g, '@')
+                .replace(/\s+punto\s+/g, '.')
+                .replace(/\s+dot\s+/g, '.')
+                .replace(/\s+/g, '');
+            return extractEmailFromText(compact);
+        }
+
+        function extractPhoneFromText(text) {
+            const candidates = String(text || '').match(/\+?[0-9][0-9\s().-]{6,}[0-9]/g) || [];
+            for (const candidate of candidates) {
+                const compact = candidate.replace(/\D/g, '');
+                if (compact.length >= 7) return candidate.trim();
+            }
+            return '';
+        }
+
+        function cleanPhone(phone) {
+            const raw = cleanString(phone);
+            if (!raw) return '';
+            const normalized = raw.replace(/[^\d+().\s-]/g, '').trim();
+            const digits = normalized.replace(/\D/g, '');
+            return digits.length >= 7 ? normalized : '';
+        }
+
+        function normalizeTranscript(rawTranscript) {
+            if (!rawTranscript) return '';
+            if (typeof rawTranscript === 'string') return rawTranscript;
+            if (Array.isArray(rawTranscript)) {
+                return rawTranscript
+                    .map((item) => {
+                        if (typeof item === 'string') return item;
+                        const text = item?.text || item?.content || item?.message || item?.transcript || '';
+                        const speaker = item?.speaker || item?.role || item?.source || '';
+                        if (!text) return '';
+                        return speaker ? `${speaker}: ${text}` : text;
+                    })
+                    .filter(Boolean)
+                    .join('\n')
+                    .trim();
+            }
+            if (typeof rawTranscript === 'object') {
+                return rawTranscript?.text || rawTranscript?.content || rawTranscript?.transcript || JSON.stringify(rawTranscript);
+            }
+            return String(rawTranscript);
+        }
+
+        function extractNameFromTranscript(transcript) {
+            const text = String(transcript || '');
+            const patterns = [
+                /(?:mi nombre es|me llamo|soy)\s+([A-Za-zÀ-ÿ' -]{2,60})/i,
+                /(?:my name is|i am|this is)\s+([A-Za-zÀ-ÿ' -]{2,60})/i
+            ];
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) return match[1].trim();
+            }
+            return '';
+        }
+
+        function extractCompanyFromTranscript(transcript) {
+            const text = String(transcript || '');
+            const patterns = [
+                /(?:mi empresa es|la empresa es|de la empresa)\s+([A-Za-zÀ-ÿ0-9'&., -]{2,80})/i,
+                /(?:my company is|company name is|from)\s+([A-Za-zÀ-ÿ0-9'&., -]{2,80})/i
+            ];
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) return match[1].trim();
+            }
+            return '';
+        }
+
+        function extractVoiceContact(callData, transcript) {
+            const name = pickFirstString(callData, [
+                'name',
+                'contact_name',
+                'full_name',
+                'customer_name',
+                'collected_data.name',
+                'collected_data.full_name',
+                'analysis.name',
+                'analysis.full_name',
+                'call_analysis.name',
+                'call_analysis.full_name',
+                'call_analysis.custom_analysis_data.name',
+                'call_analysis.custom_analysis_data.full_name',
+                'metadata.name',
+                'dynamic_variables.name',
+                'retell_llm_dynamic_variables.name',
+                'variables.name'
+            ]) || extractNameFromTranscript(transcript);
+
+            const email = pickFirstString(callData, [
+                'email',
+                'contact_email',
+                'collected_data.email',
+                'analysis.email',
+                'call_analysis.email',
+                'call_analysis.custom_analysis_data.email',
+                'metadata.email',
+                'dynamic_variables.email',
+                'retell_llm_dynamic_variables.email',
+                'variables.email'
+            ]) || extractEmailFromText(transcript) || extractSpokenEmail(transcript);
+
+            const phone = cleanPhone(
+                pickFirstString(callData, [
+                    'phone',
+                    'phone_number',
+                    'contact_phone',
+                    'collected_data.phone',
+                    'collected_data.phone_number',
+                    'analysis.phone',
+                    'call_analysis.phone',
+                    'call_analysis.custom_analysis_data.phone',
+                    'metadata.phone',
+                    'dynamic_variables.phone',
+                    'retell_llm_dynamic_variables.phone',
+                    'variables.phone'
+                ]) || extractPhoneFromText(transcript)
+            );
+
+            const company = pickFirstString(callData, [
+                'company',
+                'company_name',
+                'business_name',
+                'collected_data.company',
+                'collected_data.company_name',
+                'analysis.company',
+                'call_analysis.company',
+                'call_analysis.custom_analysis_data.company',
+                'metadata.company',
+                'dynamic_variables.company',
+                'retell_llm_dynamic_variables.company',
+                'variables.company'
+            ]) || extractCompanyFromTranscript(transcript);
+
+            return { name, email, phone, company };
+        }
+
+        function pickCallData(callData) {
+            const transcript = normalizeTranscript(
+                callData?.transcript
+                || callData?.call_analysis?.transcript
+                || callData?.call_analysis?.full_transcript
+                || callData?.analysis?.transcript
+                || callData?.dialog
+                || callData?.conversation
+                || callData?.messages
+                || ''
+            );
+
+            const intent = callData?.intent
+                || callData?.call_analysis?.intent
+                || callData?.analysis?.intent
+                || null;
+
+            const durationSeconds = callData?.duration
+                || callData?.duration_sec
+                || (callData?.duration_ms ? Math.round(callData.duration_ms / 1000) : null)
+                || (callStartedAt ? Math.max(1, Math.round((Date.now() - callStartedAt) / 1000)) : null);
+
+            const contact = extractVoiceContact(callData, transcript);
+
+            return {
+                call_id: callData?.call_id || callData?.callId || callData?.id || null,
+                transcript,
+                intent,
+                duration: durationSeconds,
+                timestamp: new Date().toISOString(),
+                contact,
+                raw_call_data: callData || {},
+            };
+        }
+
+        function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        async function createCallTokenWithRetry(endpoint, payload, maxAttempts = 3) {
+            let lastError = null;
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`API connection failed (${response.status})`);
+                    const data = await response.json();
+                    if (!data?.access_token) throw new Error('Missing access token');
+                    return data;
+                } catch (error) {
+                    lastError = error;
+                    if (attempt < maxAttempts) await sleep(350 * attempt);
+                }
+            }
+            throw lastError || new Error('Failed to create call token');
+        }
+
+        async function startCallWithRetry(client, token, maxAttempts = 2) {
+            let lastError = null;
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    await client.startCall({ accessToken: token });
+                    return;
+                } catch (error) {
+                    lastError = error;
+                    if (attempt < maxAttempts) await sleep(300 * attempt);
+                }
+            }
+            throw lastError || new Error('Failed to start call');
+        }
+
+        async function postLeadWithRetry(endpoint, leadPayload, maxAttempts = 3) {
+            let lastError = null;
+
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(leadPayload),
+                        keepalive: true,
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text().catch(() => '');
+                        throw new Error(`Lead endpoint error ${response.status}: ${errorText}`);
+                    }
+
+                    return true;
+                } catch (error) {
+                    lastError = error;
+                    if (attempt < maxAttempts) {
+                        await sleep(350 * attempt);
+                    }
+                }
+            }
+
+            throw lastError || new Error('Lead submit failed after retries');
+        }
+
+        async function sendCallToLeadEndpoint(callData) {
+            const payload = pickCallData(callData || {});
+            const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
+
+            // /api/lead expects name+email. For voice-only sessions we generate a
+            // valid technical email and preserve full details inside message.
+            const message = [
+                'VOICE_RESERVATION',
+                `call_id: ${payload.call_id || ''}`,
+                `duration: ${payload.duration || ''}`,
+                `intent: ${payload.intent || ''}`,
+                `name: ${payload.contact?.name || ''}`,
+                `email: ${payload.contact?.email || ''}`,
+                `phone: ${payload.contact?.phone || ''}`,
+                `company: ${payload.contact?.company || ''}`,
+                `timestamp: ${payload.timestamp || ''}`,
+                `transcript: ${payload.transcript || ''}`
+            ].join('\n');
+
+            const leadPayload = {
+                name: payload.contact?.name || 'Voice Reservation',
+                email: payload.contact?.email || `voice-reservation+${Date.now()}@dgsales.local`,
+                phone: payload.contact?.phone || '',
+                company: payload.contact?.company || 'Voice Agent',
+                call_id: payload.call_id || '',
+                intent: payload.intent || '',
+                duration: payload.duration || '',
+                transcript: payload.transcript || '',
+                call_data: payload.raw_call_data || {},
+                message,
+                website: '',
+                source: 'voice-agent'
+            };
+
+            await postLeadWithRetry(endpoint, leadPayload, 3);
+        }
+
+        function openCalendlyPopup() {
+            if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
+                window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+                return;
+            }
+
+            window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+        }
+
+        function isCalendlyEvent(eventData) {
+            return !!(eventData && typeof eventData.event === 'string' && eventData.event.indexOf('calendly.') === 0);
+        }
+
+        async function sendCalendlyLead(eventData) {
+            const payload = eventData?.payload || {};
+            const invitee = payload?.invitee || {};
+            const eventInfo = payload?.event || {};
+            const tracking = eventData?.payload || {};
+            const dedupeKey = `${invitee.uri || ''}__${eventInfo.uri || ''}`;
+            if (dedupeKey !== '__' && calendlyCaptured.has(dedupeKey)) return;
+            if (dedupeKey !== '__') calendlyCaptured.add(dedupeKey);
+
+            const qaPairs = Array.isArray(invitee.questions_and_answers)
+                ? invitee.questions_and_answers
+                : (Array.isArray(payload.questions_and_answers) ? payload.questions_and_answers : []);
+
+            const phoneAnswer = qaPairs.find((qa) => {
+                const q = String(qa?.question || '').toLowerCase();
+                return q.includes('phone') || q.includes('telefono') || q.includes('teléfono') || q.includes('mobile');
+            })?.answer || '';
+
+            const message = [
+                'CALENDLY_BOOKING',
+                `event_uri: ${eventInfo.uri || ''}`,
+                `invitee_uri: ${invitee.uri || ''}`,
+                `scheduled_start: ${eventInfo.start_time || payload.event_start_time || ''}`,
+                `timezone: ${payload.timezone || ''}`,
+                `utm_source: ${tracking.utm?.utm_source || ''}`,
+                `utm_medium: ${tracking.utm?.utm_medium || ''}`,
+                `utm_campaign: ${tracking.utm?.utm_campaign || ''}`,
+                `timestamp: ${new Date().toISOString()}`
+            ].join('\n');
+
+            const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
+            const leadPayload = {
+                name: invitee.name || 'Calendly Booking',
+                email: invitee.email || `calendly-booking+${Date.now()}@dgsales.local`,
+                phone: phoneAnswer || '',
+                company: '',
+                message,
+                website: '',
+                source: 'calendly'
+            };
+
+            await postLeadWithRetry(endpoint, leadPayload, 3);
+        }
+
+        function resetUI() {
+    activeCall = false;
+    callStartedAt = null;
+      
+          
+       
+            const btn = document.getElementById('btn-call');
+            if (!btn) return;
+            btn.classList.remove('active');
+            btn.disabled = false;
+            const lang = document.documentElement.getAttribute('data-lang');
+            const btnText = document.getElementById('btn-text');
+            if(btnText) {
+            btnText.innerHTML = '<span data-lang="es">📞 Llamar ahora</span><span data-lang="en">📞 Call now</span>';            }
+            setStatus('');
+        }
+
+        async function handleCall(btn) {
+            if (activeCall) {
+                if (retellClient) retellClient.stopCall();
+                return;
+            }
+    if (startingCall) return;
+startingCall = true;
+
+            
+            try {
+                btn.disabled = true;
+                const textEl = document.getElementById('btn-text');
+        if(textEl) textEl.innerHTML = '<span data-lang="es">...</span><span data-lang="en">...</span>';                
+                // CRITICAL FOR IPHONE:
+                // Initialize Client and Resume Context immediately within the click event
+                if (!retellClient) {
+                    retellClient = new RetellWebClient();
+                    
+                    retellClient.on('call_started', () => {
+                        callStartedAt = Date.now();
+                        activeCall = true;
+                        btn.classList.add('active');
+                        btn.disabled = false;
+                        const lang = document.documentElement.getAttribute('data-lang');
+        if(textEl) textEl.innerHTML = '<span data-lang="es">⏹ Finalizar</span><span data-lang="en">⏹ End call</span>';                        setStatus(lang === 'es' ? 'Llamada activa' : 'Call active');
+                    });
+
+                    retellClient.on('call_ended', (callData) => {
+                        resetUI();
+
+                        sendCallToLeadEndpoint(callData).catch((error) => {
+                            console.error('Voice lead fallback error:', error);
+                        });
+                    });
+                        retellClient.on('error', (err) => {
+            console.error('Retell Error:', err);
+            resetUI();
+            alert(
+                document.documentElement.getAttribute('data-lang') === 'es'
+                    ? 'Se produjo un error al gestionar la llamada. Comprueba tu conexión y permisos de audio.'
+                    : 'An error occurred handling the call. Please check your connection and audio permissions.'
+            );
+        });
+ 
+                }
+
+                // iPhone Safari requires resuming context inside the gesture
+                if (retellClient.audioContext) {
+                    await retellClient.audioContext.resume();
+                }
+
+                // Prime browser microphone pipeline to improve pickup consistency.
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    const micStream = await navigator.mediaDevices.getUserMedia({
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            autoGainControl: true
+                        }
+                    });
+                    micStream.getTracks().forEach((track) => track.stop());
+                }
+
+                setStatus('Conectando...');
+
+          
+                 const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
+        const preferredLanguage = document.documentElement.getAttribute('data-lang') || 'en';
+const data = await createCallTokenWithRetry(endpoint, { language: preferredLanguage }, 3);
+
+await startCallWithRetry(retellClient, data.access_token, 2);
+
+           } catch (err) {
+  console.error(err);
+  resetUI();
+  alert(
+    document.documentElement.getAttribute('data-lang') === 'es'
+      ? 'Se produjo un error. Asegúrate de permitir el micrófono y tener una conexión estable.'
+      : 'An error occurred. Please ensure you allow microphone access and have a stable connection.'
+  );
+} finally {
+  startingCall = false;
+}
+        }            
+        window.handleCall = handleCall;
+
+        window.setLanguage = function(lang) {
+            document.documentElement.setAttribute('data-lang', lang);
+            localStorage.setItem('pref-lang', lang);
+            if (!activeCall) {
+                const btnText = document.getElementById('btn-text');
+                if(btnText) {
+                    btnText.innerHTML = lang === 'es' ? '📞 Llamar ahora' : '📞 Call now';
+                }
+            }
+        }
+
+        const savedLang = localStorage.getItem('pref-lang');
+        if (savedLang) setLanguage(savedLang);
+
+        const openCalendlyBtn = document.getElementById('openCalendlyBtn');
+        if (openCalendlyBtn) {
+            openCalendlyBtn.addEventListener('click', () => {
+                openCalendlyPopup();
+            });
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.origin !== 'https://calendly.com') return;
+            if (!isCalendlyEvent(event.data)) return;
+            if (event.data.event !== 'calendly.event_scheduled') return;
+
+            sendCalendlyLead(event.data).catch((error) => {
+                console.error('Calendly lead sync error:', error);
+            });
+        });
+
+        const leadForm = document.getElementById('leadForm');
+        if (leadForm) {
+            leadForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const name = document.getElementById('leadName')?.value?.trim() || '';
+                const email = document.getElementById('leadEmail')?.value?.trim() || '';
+                const company = document.getElementById('leadCompany')?.value?.trim() || '';
+                const message = document.getElementById('leadMessage')?.value?.trim() || '';
+                const website = document.getElementById('leadWebsite')?.value?.trim() || '';
+                const leadStatus = document.getElementById('leadStatus');
+                const submitBtn = document.getElementById('leadSubmit');
+                const lang = document.documentElement.getAttribute('data-lang');
+
+                if (leadStatus) leadStatus.textContent = lang === 'es' ? 'Enviando...' : 'Sending...';
+                if (submitBtn) submitBtn.disabled = true;
+
+                try {
+                    const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, company, message, website })
+                    });
+
+                    const result = await response.json().catch(() => ({}));
+                    if (!response.ok || !result?.ok) {
+                        throw new Error(result?.error || 'Lead submit failed');
+                    }
+
+                    leadForm.reset();
+                    if (leadStatus) {
+                        leadStatus.textContent = lang === 'es'
+                            ? 'Recibido. Te contactamos en menos de 24h.'
+                            : 'Received. We will contact you within 24h.';
+                    }
+                } catch (error) {
+                    console.error('Lead form error:', error);
+                    if (leadStatus) {
+                        leadStatus.textContent = lang === 'es'
+                            ? 'No se pudo enviar ahora. Intentalo de nuevo.'
+                            : 'Could not submit now. Please try again.';
+                    }
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            });
+        }
+
+        window.showPopup = function() { document.getElementById('exitPopup').classList.add('show'); }
+        window.closePopup = function() { document.getElementById('exitPopup').classList.remove('show'); }
     </script>
+  <!-- Google Sheets Integration -->
+  <section id="google-sheet" style="padding: 2rem; background: #f4f7fb;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <h2 style="font-family: 'IBM Plex Sans', sans-serif; color: #132238; margin-bottom: 1rem;">📊 Sales Dashboard</h2>
+            <p style="margin: 0 0 0.85rem; color: #4f4a45; font-size: 0.92rem;">
+                Si el panel no carga dentro de la web por cookies del navegador, abre la hoja directa aqui:
+                <a href="https://docs.google.com/spreadsheets/d/1Uf6RWft6yoKih3WQgkQkPBZiOx4NAKxS0n_1yfwirMQ/edit" target="_blank" rel="noopener noreferrer" style="color:#133865; font-weight:700; text-decoration:underline;">Abrir Google Sheet</a>
+            </p>
+            <iframe src="https://docs.google.com/spreadsheets/d/1Uf6RWft6yoKih3WQgkQkPBZiOx4NAKxS0n_1yfwirMQ/pubhtml?widget=true&amp;headers=false&amp;single=true&amp;sheet=Leads" style="width:100%; height:600px; border:none; border-radius:8px; box-shadow:0 2px 16px rgba(0,0,0,0.08);" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </section>
+    <!-- deploy-trigger: 2026-03-06T21:58:00Z calendly=dgaisales gas=new -->
 </body>
 </html>
