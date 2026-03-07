@@ -51,6 +51,23 @@ export default async function handler(req, res) {
       created_at: new Date().toISOString(),
     };
 
+    // Si el lead viene del agente de voz, crear evento en Google Calendar
+    if (isVoiceSource) {
+      try {
+        await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/api/create-calendar-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: normalizedName,
+            email: normalizedEmail,
+            company
+          }),
+        });
+      } catch (err) {
+        console.error('Calendar event creation failed:', err);
+      }
+    }
+
     // Optional CRM/Webhook forwarding without code changes.
     if (process.env.LEAD_WEBHOOK_URL) {
       const webhookRes = await fetch(process.env.LEAD_WEBHOOK_URL, {
@@ -76,7 +93,6 @@ export default async function handler(req, res) {
         source: lead.source,
         name: lead.name,
         email: lead.email,
-        phone: "",
         company: lead.company,
         notes: lead.message,
       };

@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Webs, automatización y agentes de voz AI para pymes. Consigue más clientes y ahorra tiempo con soluciones profesionales en español e inglés.">
+    <meta name="keywords" content="IA, voz, automatización, webs, ventas, pymes, inteligencia artificial, agentes, leads, reservas, español, inglés, B2B, CRM, calendario, DGsales">
+    <link rel="alternate" hreflang="es" href="https://g8gocho.github.io/DGsales/" />
+    <link rel="alternate" hreflang="en" href="https://g8gocho.github.io/DGsales/?lang=en" />
     <title>DGsales - Webs + Automatización con IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -415,7 +419,34 @@
     </style>
 </head>
 <body>
+    <a href="#agente" class="skip-link">Skip to main content</a>
     <!-- Lang Switcher -->
+            .skip-link {
+                position: absolute;
+                left: -999px;
+                top: auto;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                z-index: 1000;
+                background: #fff;
+                color: #111;
+                padding: 0.5em 1em;
+                border-radius: 0.5em;
+                font-weight: bold;
+            }
+            .skip-link:focus {
+                left: 1em;
+                top: 1em;
+                width: auto;
+                height: auto;
+                outline: 3px solid #76543b;
+                box-shadow: 0 0 0 4px #f9f3ea;
+            }
+            :focus-visible {
+                outline: 2px solid #76543b;
+                outline-offset: 2px;
+            }
     <nav class="lang-switch fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center">
         <div class="text-xl font-bold tracking-tighter text-white">DG<span class="accent-text">sales</span></div>
         <div class="flex gap-2">
@@ -440,8 +471,8 @@
             </div>
         </div>
         <div data-lang="en">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Boost your sales with <span class="accent-text">Voice AI</span></h1>
-            <p class="text-[#4f4a45] text-lg md:text-xl mb-10 max-w-3xl mx-auto">We deliver a full growth stack: high-converting websites, AI voice qualification, and seamless business automation.</p>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Accelerate your business with <span class="accent-text">Voice AI</span></h1>
+            <p class="text-[#4f4a45] text-lg md:text-xl mb-10 max-w-3xl mx-auto">We deliver a complete growth stack: high-converting websites, AI voice qualification, and seamless business automation.</p>
         </div>
         <a href="#agente" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-block">
             <span data-lang="es">Probar Agente Gratis</span>
@@ -454,7 +485,7 @@
     <section class="px-6 pb-10 max-w-6xl mx-auto">
         <div class="text-center mb-5 text-[#6a5b4e] text-sm font-semibold tracking-wide">
             <span data-lang="es">Confianza para equipos comerciales y operaciones</span>
-            <span data-lang="en">Trusted by sales and operations teams</span>
+            <span data-lang="en">Trusted by commercial and operations teams</span>
         </div>
         <div class="flex flex-wrap justify-center gap-3">
             <span class="logo-pill">B2B SERVICES</span>
@@ -494,9 +525,9 @@
                 </div>
                 <a href="#contacto" class="plan-cta-secondary mt-auto">
                     <span data-lang="es">Empezar con Web Starter</span>
-                    <span data-lang="en">Start with Web Starter</span>
+                    <span data-lang="en">Get Started with Web Starter</span>
                 </a>
-                <div class="plan-cta-note"><span data-lang="es">Entrega inicial en 7-10 dias</span><span data-lang="en">Initial delivery in 7-10 days</span></div>
+                <div class="plan-cta-note"><span data-lang="es">Entrega inicial en 7-10 dias</span><span data-lang="en">Delivered in 7-10 days</span></div>
             </article>
 
             <article class="plan-card-pro featured">
@@ -523,7 +554,7 @@
                     <span data-lang="es">Activar AI Agent Pro</span>
                     <span data-lang="en">Activate AI Agent Pro</span>
                 </a>
-                <div class="plan-cta-note"><span data-lang="es">Incluye configuracion y go-live guiado</span><span data-lang="en">Includes setup and guided go-live</span></div>
+                <div class="plan-cta-note"><span data-lang="es">Incluye configuracion y go-live guiado</span><span data-lang="en">Includes setup and guided launch</span></div>
             </article>
         </div>
         <!-- KPIs -->
@@ -618,7 +649,7 @@
                 <div class="plan-kicker" data-lang="es">Ideal para validar oferta rapido</div>
                 <div class="plan-kicker" data-lang="en">Ideal to validate your offer fast</div>
                 <p data-lang="es" class="plan-sub">Página web optimizada para captar clientes y mostrar tu propuesta de valor de forma clara y profesional.</p>
-                <p data-lang="en" class="plan-sub">High-performance landing page to turn visits into qualified opportunities.</p>
+                <p data-lang="en" class="plan-sub">A high-converting website to showcase your value and attract new clients.</p>
                 <div class="plan-chip-row">
                     <span class="plan-chip">B2B</span>
                     <span class="plan-chip" data-lang="es">Implementación rápida</span>
@@ -627,7 +658,7 @@
                 <div class="plan-price">EUR499 <span class="text-sm font-semibold text-[#6a5b4e]">/one-time</span></div>
                 <div class="plan-list-pro">
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Diseño profesional enfocado en conversión</span><span data-lang="en">Professional, results-driven design</span></div>
-                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Mensaje claro y persuasivo</span><span data-lang="en">Clear, persuasive copy</span></div>
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Mensaje claro y persuasivo</span><span data-lang="en">Clear, persuasive messaging</span></div>
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Formulario de contacto y captación</span><span data-lang="en">Integrated contact and lead form</span></div>
                 </div>
                 <a href="#contacto" class="plan-cta-secondary mt-auto">
@@ -644,7 +675,7 @@
                 <div class="plan-kicker" data-lang="es">La opcion elegida por equipos comerciales</div>
                 <div class="plan-kicker" data-lang="en">Top choice for commercial teams</div>
                 <p data-lang="es" class="plan-sub">Automatiza llamadas, atención, reservas en calendario, registro de llamadas y datos, y envío de correos. Tu pyme opera como una gran empresa, sin complicaciones.</p>
-                <p data-lang="en" class="plan-sub">Automate calls, lead qualification, and bookings beyond team working hours.</p>
+                <p data-lang="en" class="plan-sub">Automate calls, bookings, data capture, and emails. Your business runs like a big company, effortlessly.</p>
                 <div class="plan-chip-row">
                     <span class="plan-chip">24/7</span>
                     <span class="plan-chip">ES / EN</span>
@@ -654,8 +685,8 @@
                 <div class="plan-price">EUR999 <span class="text-sm font-semibold text-[#6a5b4e]">/set-up</span></div>
                 <div class="plan-list-pro">
                     <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Atiende y filtra llamadas automáticamente</span><span data-lang="en">Automatically answers and filters calls</span></div>
-                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Reserva citas en tu calendario sin intervención manual</span><span data-lang="en">Books appointments in your calendar automatically</span></div>
-                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Registra datos y llamadas, y envía correos automáticos</span><span data-lang="en">Logs calls/data and sends automated emails</span></div>
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Reserva citas en tu calendario sin intervención manual</span><span data-lang="en">Schedules appointments in your calendar</span></div>
+                    <div class="plan-row"><span class="plan-mark">✓</span><span data-lang="es">Registra datos y llamadas, y envía correos automáticos</span><span data-lang="en">Captures data and sends automated emails</span></div>
                 </div>
                 <a href="#contacto" class="btn-primary plan-cta-primary mt-auto">
                     <span data-lang="es">Activar AI Agent Pro</span>
@@ -691,14 +722,14 @@
                 <h2 data-lang="es" class="text-3xl md:text-4xl font-bold mb-3">Hablemos de tu caso</h2>
                 <h2 data-lang="en" class="text-3xl md:text-4xl font-bold mb-3">Let's review your case</h2>
                 <p data-lang="es" class="text-[#4f4a45] mb-6">Te damos una propuesta concreta en 24h: estructura, plan y estimacion.</p>
-                <p data-lang="en" class="text-[#4f4a45] mb-6">Get a concrete proposal within 24h: structure, plan, and estimate.</p>
+                <p data-lang="en" class="text-[#4f4a45] mb-6">Receive a concrete proposal in 24h: structure, plan, and estimate.</p>
                 <button id="openCalendlyBtn" type="button" class="btn-primary inline-block px-6 py-3 rounded-xl font-bold">
                     <span data-lang="es">Reservar llamada estrategica</span>
                     <span data-lang="en">Book strategy call</span>
                 </button>
                 <p class="text-xs text-[#6a5b4e] mt-3">
                     <span data-lang="es">Si no usas Calendly aun, cambia este enlace por el tuyo.</span>
-                    <span data-lang="en">If you do not use Calendly yet, update this link with your own.</span>
+                    <span data-lang="en">If you do not use Calendly yet, replace this link with your own.</span>
                 </p>
             </div>
             <div>
@@ -710,11 +741,11 @@
                     <textarea id="leadMessage" class="field min-h-[120px]" placeholder="Cuéntanos tu objetivo principal / Tell us your main goal"></textarea>
                     <button id="leadSubmit" type="submit" class="btn-primary w-full py-3 rounded-xl font-bold">
                         <span data-lang="es">Solicitar propuesta</span>
-                        <span data-lang="en">Request proposal</span>
+                        <span data-lang="en">Request a proposal</span>
                     </button>
                     <p class="text-xs text-[#6a5b4e]">
                         <span data-lang="es">Tus datos se envian de forma segura y te respondemos en menos de 24h.</span>
-                        <span data-lang="en">Your details are securely submitted and we reply in under 24h.</span>
+                        <span data-lang="en">Your details are securely submitted and we reply within 24h.</span>
                     </p>
                     <p id="leadStatus" class="text-sm text-[#6a5b4e] h-5"></p>
                 </form>
@@ -723,25 +754,98 @@
     </section>
 
     <!-- Footer -->
+        <!-- Blog/Resources Section -->
+            <!-- Ejemplos Interactivos de Webs -->
+            <section id="web-examples" class="py-20 px-6 max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-[#133865]">
+                    <span data-lang="es">Ejemplos de webs para tu sector</span>
+                    <span data-lang="en">Website Examples by Industry</span>
+                </h2>
+                <div class="relative flex flex-col items-center">
+                    <div class="flex items-center gap-4 mb-6">
+                        <button id="carousel-prev" aria-label="Anterior" class="p-3 rounded-full bg-[#f7efe5] hover:bg-[#e9e2d6] focus:outline-none focus:ring-2 focus:ring-[#76543b]">
+                            &#8592;
+                        </button>
+                        <div id="carousel-content" class="w-[320px] md:w-[480px] h-[220px] md:h-[320px] flex items-center justify-center bg-[#f9f4ec] rounded-2xl shadow-lg">
+                            <!-- Aquí se mostrará el ejemplo activo -->
+                        </div>
+                        <button id="carousel-next" aria-label="Siguiente" class="p-3 rounded-full bg-[#f7efe5] hover:bg-[#e9e2d6] focus:outline-none focus:ring-2 focus:ring-[#76543b]">
+                            &#8594;
+                        </button>
+                    </div>
+                    <div id="carousel-description" class="text-center mt-2 text-[#4f4a45] min-h-[48px]">
+                        <!-- Aquí se mostrará la descripción del ejemplo activo -->
+                    </div>
+                    <div class="flex gap-2 mt-4 justify-center">
+                        <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Hotel"></button>
+                        <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Peluquería"></button>
+                        <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Restaurante"></button>
+                        <button class="carousel-dot w-3 h-3 rounded-full bg-[#ccb39a] focus:outline-none" aria-label="Tattoo Studio"></button>
+                    </div>
+                </div>
+            </section>
+        <section id="blog" class="py-20 px-6 max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-[#133865]">
+                <span data-lang="es">Recursos y Blog</span>
+                <span data-lang="en">Resources & Blog</span>
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <article class="card p-6 rounded-2xl flex flex-col">
+                    <h3 class="font-bold text-xl mb-2" data-lang="es">Cómo la IA de voz está cambiando las ventas B2B</h3>
+                    <h3 class="font-bold text-xl mb-2" data-lang="en">How Voice AI is Transforming B2B Sales</h3>
+                    <p class="text-[#4f4a45] mb-4" data-lang="es">Descubre casos reales y estrategias para automatizar la captación y gestión de leads con agentes de voz inteligentes.</p>
+                    <p class="text-[#4f4a45] mb-4" data-lang="en">Discover real-world cases and strategies to automate lead capture and management with smart voice agents.</p>
+                    <a href="#" class="text-[#10407a] font-semibold underline" data-lang="es">Leer más</a>
+                    <a href="#" class="text-[#10407a] font-semibold underline" data-lang="en">Read more</a>
+                </article>
+                <article class="card p-6 rounded-2xl flex flex-col">
+                    <h3 class="font-bold text-xl mb-2" data-lang="es">Checklist: Prepara tu web para captar más clientes</h3>
+                    <h3 class="font-bold text-xl mb-2" data-lang="en">Checklist: Prepare Your Website to Capture More Clients</h3>
+                    <p class="text-[#4f4a45] mb-4" data-lang="es">Guía práctica para optimizar tu web y aumentar la conversión de visitantes en oportunidades reales.</p>
+                    <p class="text-[#4f4a45] mb-4" data-lang="en">A practical guide to optimize your website and increase conversion from visitors to real opportunities.</p>
+                    <a href="#" class="text-[#10407a] font-semibold underline" data-lang="es">Leer más</a>
+                    <a href="#" class="text-[#10407a] font-semibold underline" data-lang="en">Read more</a>
+                </article>
+            </div>
+        </section>
     <!-- FAQ -->
     <section class="py-16 px-6 max-w-3xl mx-auto">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center text-[#133865]">Preguntas frecuentes</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center text-[#133865]">
+            <span data-lang="es">Preguntas frecuentes</span>
+            <span data-lang="en">Frequently Asked Questions</span>
+        </h2>
         <div class="space-y-6">
-            <div>
+            <div data-lang="es">
                 <h3 class="font-semibold text-[#171513] mb-2">¿Qué tareas automatiza el sistema?</h3>
                 <p class="text-[#4f4a45]">Gestiona llamadas, agenda reservas, registra datos de clientes y envía correos automáticos, todo sin intervención manual.</p>
             </div>
-            <div>
+            <div data-lang="en">
+                <h3 class="font-semibold text-[#171513] mb-2">What tasks does the system automate?</h3>
+                <p class="text-[#4f4a45]">It handles calls, schedules bookings, records client data, and sends automated emails—all without manual intervention.</p>
+            </div>
+            <div data-lang="es">
                 <h3 class="font-semibold text-[#171513] mb-2">¿Es difícil de implementar?</h3>
                 <p class="text-[#4f4a45]">No, nos encargamos de la configuración y personalización para que empieces a usarlo en pocos días.</p>
             </div>
-            <div>
+            <div data-lang="en">
+                <h3 class="font-semibold text-[#171513] mb-2">Is it difficult to implement?</h3>
+                <p class="text-[#4f4a45]">No, we handle setup and customization so you can start using it in just a few days.</p>
+            </div>
+            <div data-lang="es">
                 <h3 class="font-semibold text-[#171513] mb-2">¿Funciona fuera de horario?</h3>
                 <p class="text-[#4f4a45]">Sí, el agente responde y agenda 24/7, sin depender del equipo humano.</p>
             </div>
-            <div>
+            <div data-lang="en">
+                <h3 class="font-semibold text-[#171513] mb-2">Does it work after hours?</h3>
+                <p class="text-[#4f4a45]">Yes, the agent answers and schedules 24/7, without relying on your team.</p>
+            </div>
+            <div data-lang="es">
                 <h3 class="font-semibold text-[#171513] mb-2">¿Qué soporte ofrecen?</h3>
                 <p class="text-[#4f4a45]">Soporte personalizado y acompañamiento en todo el proceso, desde la puesta en marcha hasta el día a día.</p>
+            </div>
+            <div data-lang="en">
+                <h3 class="font-semibold text-[#171513] mb-2">What support do you offer?</h3>
+                <p class="text-[#4f4a45]">Personalized support and guidance throughout the process, from launch to daily operations.</p>
             </div>
         </div>
     </section>
@@ -765,6 +869,87 @@
     </div>
 
     <script type="module">
+                // Carrusel de ejemplos de webs (estructura base)
+                const examples = [
+                    {
+                        key: 'hotel',
+                        label: { es: 'Hotel', en: 'Hotel' },
+                        img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
+                        desc: {
+                            es: 'Web elegante para hoteles boutique: reservas online, galería visual y testimonios de huéspedes. Transmite confianza y convierte visitas en reservas.',
+                            en: 'Elegant website for boutique hotels: online booking, visual gallery, and guest testimonials. Build trust and turn visits into bookings.'
+                        }
+                    },
+                    {
+                        key: 'peluqueria',
+                        label: { es: 'Peluquería', en: 'Hair Salon' },
+                        img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+                        desc: {
+                            es: 'Sitio moderno para peluquerías: agenda de citas, catálogo de estilos y WhatsApp directo. Haz que tus clientes reserven en segundos.',
+                            en: 'Modern site for hair salons: appointment booking, style catalog, and direct WhatsApp. Let your clients book in seconds.'
+                        }
+                    },
+                    {
+                        key: 'restaurante',
+                        label: { es: 'Restaurante', en: 'Restaurant' },
+                        img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+                        desc: {
+                            es: 'Web gourmet para restaurantes: menú digital, reservas online y fotos de alta calidad. Aumenta reservas y muestra tu propuesta gastronómica.',
+                            en: 'Gourmet website for restaurants: digital menu, online reservations, and high-quality photos. Boost bookings and showcase your cuisine.'
+                        }
+                    },
+                    {
+                        key: 'tattoo',
+                        label: { es: 'Tattoo Studio', en: 'Tattoo Studio' },
+                        img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80',
+                        desc: {
+                            es: 'Portfolio visual para estudios de tattoo: galería de trabajos, reservas y perfil de artistas. Convierte seguidores en clientes.',
+                            en: 'Visual portfolio for tattoo studios: work gallery, bookings, and artist profiles. Turn followers into clients.'
+                        }
+                    }
+                ];
+                let currentExample = 0;
+                function updateCarousel() {
+                    const lang = document.documentElement.getAttribute('data-lang') || 'es';
+                    const content = document.getElementById('carousel-content');
+                    const desc = document.getElementById('carousel-description');
+                    if (content) {
+                        content.innerHTML = `
+                            <div class='flex flex-col items-center w-full'>
+                                <img src='${examples[currentExample].img}' alt='${examples[currentExample].label[lang]}' class='rounded-xl shadow-md mb-3 w-full h-[140px] md:h-[220px] object-cover' style='max-width:420px;'>
+                                <div class='text-xl md:text-2xl text-[#133865] font-bold mt-1 mb-2'>${examples[currentExample].label[lang]}</div>
+                                <div class='text-[#10407a] bg-[#f7efe5] rounded-lg px-4 py-2 mb-3 text-center font-medium shadow-sm'>${examples[currentExample].desc[lang]}</div>
+                                <a href="#contacto" class="btn-primary px-5 py-2 rounded-full font-bold text-sm mt-1" style="background:#10407a;">${lang === 'es' ? 'Solicita una demo para este sector' : 'Request a demo for this industry'}</a>
+                            </div>
+                        `;
+                    }
+                    if (desc) {
+                        desc.textContent = '';
+                    }
+                    // Actualizar dots
+                    document.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
+                        dot.style.background = idx === currentExample ? '#10407a' : '#ccb39a';
+                    });
+                }
+                document.getElementById('carousel-prev')?.addEventListener('click', () => {
+                    currentExample = (currentExample - 1 + examples.length) % examples.length;
+                    updateCarousel();
+                });
+                document.getElementById('carousel-next')?.addEventListener('click', () => {
+                    currentExample = (currentExample + 1) % examples.length;
+                    updateCarousel();
+                });
+                document.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
+                    dot.addEventListener('click', () => {
+                        currentExample = idx;
+                        updateCarousel();
+                    });
+                });
+                // Cambia el ejemplo si cambia el idioma
+                const observer = new MutationObserver(updateCarousel);
+                observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-lang'] });
+                // Inicializar
+                updateCarousel();
         import { RetellWebClient } from 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@latest/+esm';
         
         let retellClient = null;
