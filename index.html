@@ -890,6 +890,41 @@
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
 
+        async function createCallTokenWithRetry(endpoint, payload, maxAttempts = 3) {
+            let lastError = null;
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`API connection failed (${response.status})`);
+                    const data = await response.json();
+                    if (!data?.access_token) throw new Error('Missing access token');
+                    return data;
+                } catch (error) {
+                    lastError = error;
+                    if (attempt < maxAttempts) await sleep(350 * attempt);
+                }
+            }
+            throw lastError || new Error('Failed to create call token');
+        }
+
+        async function startCallWithRetry(client, token, maxAttempts = 2) {
+            let lastError = null;
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                try {
+                    await client.startCall({ accessToken: token });
+                    return;
+                } catch (error) {
+                    lastError = error;
+                    if (attempt < maxAttempts) await sleep(300 * attempt);
+                }
+            }
+            throw lastError || new Error('Failed to start call');
+        }
+
         async function postLeadWithRetry(endpoint, leadPayload, maxAttempts = 3) {
             let lastError = null;
 
@@ -1096,19 +1131,11 @@ startingCall = true;
                 setStatus('Conectando...');
 
           
-         const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
-    const preferredLanguage = document.documentElement.getAttribute('data-lang') || 'en';
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ language: preferredLanguage })
-});
-if (!response.ok) throw new Error('API connection failed');
-const data = await response.json();
+                 const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
+        const preferredLanguage = document.documentElement.getAttribute('data-lang') || 'en';
+const data = await createCallTokenWithRetry(endpoint, { language: preferredLanguage }, 3);
 
-await retellClient.startCall({
-    accessToken: data.access_token
-});
+await startCallWithRetry(retellClient, data.access_token, 2);
 
            } catch (err) {
   console.error(err);
