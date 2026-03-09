@@ -1,4 +1,5 @@
-import { google } from 'googleapis';
+
+const { google } = require('googleapis');
 
 export default async function handler(req, res) {
   console.log('METHOD:', req.method);
@@ -117,6 +118,7 @@ export default async function handler(req, res) {
       });
     }
 
+
     const jwtClient = new google.auth.JWT(
       serviceAccount.client_email,
       null,
@@ -126,7 +128,10 @@ export default async function handler(req, res) {
 
     await jwtClient.authorize();
 
-    const calendar = google.calendar({ version: 'v3', auth: jwtClient });
+    const calendar = google.calendar({
+      version: 'v3',
+      auth: jwtClient
+    });
 
     const existing = await calendar.events.list({
       calendarId: GOOGLE_CALENDAR_ID,
