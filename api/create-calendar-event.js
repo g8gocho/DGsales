@@ -10,35 +10,40 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Validate required env vars
+
+  // Diagnostics for Google env vars
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
   const privateKeyRaw = process.env.GOOGLE_PRIVATE_KEY;
   const calendarId = process.env.GOOGLE_CALENDAR_ID;
 
-  if (!clientEmail) {
-    console.error("Missing GOOGLE_CLIENT_EMAIL");
-    return res.status(500).json({ error: "Missing GOOGLE_CLIENT_EMAIL" });
-  }
-  if (!privateKeyRaw) {
-    console.error("Missing GOOGLE_PRIVATE_KEY");
-    return res.status(500).json({ error: "Missing GOOGLE_PRIVATE_KEY" });
-  }
-  if (!calendarId) {
-    console.error("Missing GOOGLE_CALENDAR_ID");
-    return res.status(500).json({ error: "Missing GOOGLE_CALENDAR_ID" });
+  const missing = [];
+  if (!clientEmail) missing.push("GOOGLE_CLIENT_EMAIL");
+  if (!privateKeyRaw) missing.push("GOOGLE_PRIVATE_KEY");
+  if (!calendarId) missing.push("GOOGLE_CALENDAR_ID");
+
+  // Secure logs
+  console.log("GOOGLE_CLIENT_EMAIL present:", !!clientEmail);
+  console.log("GOOGLE_PRIVATE_KEY present:", !!privateKeyRaw);
+  console.log("GOOGLE_PRIVATE_KEY length:", privateKeyRaw ? privateKeyRaw.length : 0);
+  console.log("GOOGLE_PRIVATE_KEY includes \\n:", privateKeyRaw ? privateKeyRaw.includes("\\n") : false);
+  console.log("GOOGLE_CALENDAR_ID present:", !!calendarId);
+
+  if (missing.length > 0) {
+    return res.status(500).json({
+      error: "Missing Google env vars",
+      missing
+    });
   }
 
-  // Rebuild private key
-  const privateKey = privateKeyRaw.replace(/\\n/g, "\n");
-  if (!privateKey.includes("BEGIN PRIVATE KEY") || !privateKey.includes("END PRIVATE KEY")) {
-    console.error("GOOGLE_PRIVATE_KEY does not look like a valid private key");
-    return res.status(500).json({ error: "GOOGLE_PRIVATE_KEY is not a valid private key" });
-  }
+  // JWT Auth as specified
+  const auth = new google.auth.JWT(
+    process.env.GOOGLE_CLIENT_EMAIL,
+    null,
+    process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    ["https://www.googleapis.com/auth/calendar"]
+  );
 
-  // Log useful info (never log full private key)
-  console.log("Google Calendar Auth: using client_email:", clientEmail);
-  console.log("Google Calendar Auth: calendarId:", calendarId);
-  console.log("Google Calendar Auth: privateKey length:", privateKey.length);
+  const calendar = google.calendar({ version: "v3", auth });
 
   let body = req.body;
   if (typeof body === "string") {
