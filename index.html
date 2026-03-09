@@ -1196,15 +1196,18 @@ startingCall = true;
                 setStatus('Conectando...');
 
           
-         const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : '/api/create-call';
+         const endpoint = BACKEND_URL ? BACKEND_URL + '/api/create-call' : 'https://d-gsales.vercel.app/api/create-call';
     const preferredLanguage = document.documentElement.getAttribute('data-lang') || 'en';
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ language: preferredLanguage })
-});
-if (!response.ok) throw new Error('API connection failed');
-const data = await response.json();
+    });
+    console.log("token response status:", response.status);
+    const data = await response.json();
+    console.log("token response json:", data);
+    if (!response.ok) throw new Error('API connection failed');
 
 await retellClient.startCall({
     accessToken: data.access_token,
