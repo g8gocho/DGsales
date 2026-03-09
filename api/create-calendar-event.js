@@ -80,6 +80,7 @@ export default async function handler(req, res) {
       });
     }
 
+
     console.log('Creating calendar event with payload:', {
       name,
       email,
@@ -88,10 +89,32 @@ export default async function handler(req, res) {
       end: endTime.toISOString(),
     });
 
+
+    // DEBUG LOGS before JWT creation
+    console.log("HAS GOOGLE_CLIENT_EMAIL:", !!process.env.GOOGLE_CLIENT_EMAIL);
+    console.log("HAS GOOGLE_PRIVATE_KEY:", !!process.env.GOOGLE_PRIVATE_KEY);
+    console.log("PRIVATE KEY LENGTH:", process.env.GOOGLE_PRIVATE_KEY?.length || 0);
+    console.log("HAS GOOGLE_CALENDAR_ID:", !!process.env.GOOGLE_CALENDAR_ID);
+
+    // Safe private key handling
+    const privateKey = process.env.GOOGLE_PRIVATE_KEY
+      ? process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
+      : null;
+
+    console.log("PRIVATE KEY AFTER REPLACE LENGTH:", privateKey?.length || 0);
+    console.log("PRIVATE KEY HAS BEGIN:", privateKey?.includes("BEGIN PRIVATE KEY") || false);
+    console.log("PRIVATE KEY HAS END:", privateKey?.includes("END PRIVATE KEY") || false);
+
+    if (!privateKey) {
+      return res.status(500).json({
+        error: "GOOGLE_PRIVATE_KEY is missing at runtime"
+      });
+    }
+
     const jwtClient = new google.auth.JWT(
-      GOOGLE_CLIENT_EMAIL,
+      process.env.GOOGLE_CLIENT_EMAIL,
       null,
-      GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      privateKey,
       ['https://www.googleapis.com/auth/calendar']
     );
 
