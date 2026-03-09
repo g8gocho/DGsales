@@ -1,3 +1,4 @@
+
 import { google } from "googleapis";
 
 export default async function handler(req, res) {
@@ -10,68 +11,61 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  // 1. Read and validate env vars
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  const privateKeyRaw = process.env.GOOGLE_PRIVATE_KEY;
+  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  const missing = [];
+  if (!clientEmail) missing.push("GOOGLE_CLIENT_EMAIL");
+  if (!privateKeyRaw) missing.push("GOOGLE_PRIVATE_KEY");
+  if (!calendarId) missing.push("GOOGLE_CALENDAR_ID");
+
+  // 2. Debugging logs for env vars
+  console.log("GOOGLE_CLIENT_EMAIL present:", !!clientEmail);
+  console.log("GOOGLE_PRIVATE_KEY present:", !!privateKeyRaw);
+  console.log("GOOGLE_PRIVATE_KEY length:", privateKeyRaw ? privateKeyRaw.length : 0);
+  console.log("GOOGLE_PRIVATE_KEY includes \\n:", privateKeyRaw ? privateKeyRaw.includes("\\n") : false);
+  console.log("GOOGLE_CALENDAR_ID present:", !!calendarId);
+
+  if (missing.length > 0) {
+    return res.status(500).json({
+      error: "Missing Google env vars",
+      missing,
+    });
+  }
+
+  // 3. Convert escaped newlines in private key
+  const privateKey = privateKeyRaw.replace(/\\n/g, "\n");
+
+  // 4. Create JWT auth client with correct scope
+  const auth = new google.auth.JWT(
+    clientEmail,
+    null,
+    privateKey,
+    ["https://www.googleapis.com/auth/calendar.events"]
+  );
+
+  // 5. Debug log client email and private key length
+  console.log("Google JWT client email:", clientEmail);
+  console.log("Google JWT private key length:", privateKey.length);
+
+  // 6. Explicitly authorize JWT and handle errors
   try {
-    const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-    const privateKeyRaw = process.env.GOOGLE_PRIVATE_KEY;
-    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    await auth.authorize();
+    console.log("Google JWT authorized successfully");
+  } catch (authError) {
+    console.error("Google JWT authorization failed:", authError);
+    return res.status(500).json({
+      error: "Google JWT authorization failed",
+      details: authError?.message || authError,
+    });
+  }
 
-    const missing = [];
-    if (!clientEmail) missing.push("GOOGLE_CLIENT_EMAIL");
-    if (!privateKeyRaw) missing.push("GOOGLE_PRIVATE_KEY");
-    if (!calendarId) missing.push("GOOGLE_CALENDAR_ID");
+  // 7. Create calendar client (no duplicate instances)
+  const calendar = google.calendar({ version: "v3", auth });
 
-    console.log("GOOGLE_CLIENT_EMAIL present:", !!clientEmail);
-    console.log("GOOGLE_PRIVATE_KEY present:", !!privateKeyRaw);
-    console.log("GOOGLE_PRIVATE_KEY length:", privateKeyRaw ? privateKeyRaw.length : 0);
-    console.log("GOOGLE_PRIVATE_KEY includes \\n:", privateKeyRaw ? privateKeyRaw.includes("\\n") : false);
-    console.log("GOOGLE_CALENDAR_ID present:", !!calendarId);
-
-    if (missing.length > 0) {
-      return res.status(500).json({
-        error: "Missing Google env vars",
-        missing,
-      });
-    }
-
-    const privateKey = privateKeyRaw.replace(/\\n/g, "\n");
-
-    const auth = new google.auth.JWT(
-      clientEmail,
-      null,
-      privateKey,
-      ["https://www.googleapis.com/auth/calendar"]
-    );
-
-    // Explicitly authorize the JWT client and catch errors
-    try {
-      await auth.authorize();
-      console.log("Google JWT authorized successfully");
-    } catch (authError) {
-      console.error("Google JWT authorization failed:", authError);
-      return res.status(500).json({
-        error: "Google JWT authorization failed",
-        details: authError?.message || authError,
-      });
-    }
-
-    const calendar = google.calendar({ version: "v3", auth });
-
-    let body = req.body;
-    if (typeof body === "string") {
-      try {
-        body = JSON.parse(body);
-      } catch {
-        body = {};
-      }
-    }
-
-    const { name, email, company, start, end, date } = body;
-
-    if (!name || !email) {
-      return res.status(400).json({
-        error: "Missing required fields: name and email",
-      });
-    }
+  try {
+    // ...existing code...
 
     let startTime;
     let endTime;
