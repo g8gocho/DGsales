@@ -42,6 +42,18 @@ export default async function handler(req, res) {
       ["https://www.googleapis.com/auth/calendar"]
     );
 
+    // Explicitly authorize the JWT client and catch errors
+    try {
+      await auth.authorize();
+      console.log("Google JWT authorized successfully");
+    } catch (authError) {
+      console.error("Google JWT authorization failed:", authError);
+      return res.status(500).json({
+        error: "Google JWT authorization failed",
+        details: authError?.message || authError,
+      });
+    }
+
     const calendar = google.calendar({ version: "v3", auth });
 
     let body = req.body;
