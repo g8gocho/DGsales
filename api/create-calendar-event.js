@@ -1,13 +1,6 @@
-
-const { google } = require('googleapis');
+import { google } from 'googleapis';
 
 export default async function handler(req, res) {
-  console.log('METHOD:', req.method);
-  console.log('BODY:', req.body);
-  console.log('HAS GOOGLE_CLIENT_EMAIL:', !!process.env.GOOGLE_CLIENT_EMAIL);
-  console.log('HAS GOOGLE_PRIVATE_KEY:', !!process.env.GOOGLE_PRIVATE_KEY);
-  console.log('HAS GOOGLE_CALENDAR_ID:', !!process.env.GOOGLE_CALENDAR_ID);
-
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -18,26 +11,35 @@ export default async function handler(req, res) {
   }
 
   try {
-    const {
-      GOOGLE_CLIENT_EMAIL,
-      GOOGLE_PRIVATE_KEY,
-      GOOGLE_CALENDAR_ID,
-    } = process.env;
+    const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
 
-    console.log('typeof GOOGLE_PRIVATE_KEY:', typeof GOOGLE_PRIVATE_KEY);
-    if (GOOGLE_PRIVATE_KEY) {
-      console.log(
-        'GOOGLE_PRIVATE_KEY includes BEGIN:',
-        GOOGLE_PRIVATE_KEY.includes('BEGIN PRIVATE KEY')
-      );
-      console.log(
-        'GOOGLE_PRIVATE_KEY includes END:',
-        GOOGLE_PRIVATE_KEY.includes('END PRIVATE KEY')
-      );
+    if (!raw) {
+      return res.status(500).json({ error: 'Missing GOOGLE_SERVICE_ACCOUNT_JSON' });
     }
 
-    if (!GOOGLE_CLIENT_EMAIL || !GOOGLE_PRIVATE_KEY || !GOOGLE_CALENDAR_ID) {
-      return res.status(500).json({ error: 'Missing Google Calendar credentials' });
+    if (!calendarId) {
+      return res.status(500).json({ error: 'Missing GOOGLE_CALENDAR_ID' });
+    }
+
+    let serviceAccount;
+    try {
+      serviceAccount = JSON.parse(raw);
+    } catch (e) {
+      return res.status(500).json({
+        error: 'Invalid GOOGLE_SERVICE_ACCOUNT_JSON',
+        details: e.message,
+      });
+    }
+
+    const privateKey = serviceAccount.private_key
+      ? serviceAccount.private_key.replace(/\\n/g, '\n')
+      : null;
+
+    if (!serviceAccount.client_email || !privateKey) {
+      return res.status(500).json({
+        error: 'Service account JSON missing client_email or private_key',
+      });
     }
 
     let body = req.body;
@@ -49,17 +51,14 @@ export default async function handler(req, res) {
       }
     }
 
-
     const { name, email, company, start, end, date } = body;
 
     if (!name || !email) {
-      return res.status(400).json({ error: 'Missing required fields: name, email' });
+      return res.status(400).json({
+        error: 'Missing required fields: name and email',
+      });
     }
 
-    // 1. Use start/end from req.body if present.
-    // 2. If start/end are missing, use date from req.body and default to 30 minutes duration.
-    // 3. If no date/start/end is provided, return 400 instead of creating the event "now".
-    // 4. Validate invalid dates and return 400.
     let startTime;
     let endTime;
 
@@ -68,56 +67,18 @@ export default async function handler(req, res) {
       endTime = new Date(end);
     } else if (date) {
       startTime = new Date(date);
-      endTime = new Date(startTime.getTime() + 30 * 60000);
+      endTime = new Date(startTime.getTime() + 30 * 60 * 1000);
     } else {
       return res.status(400).json({
-        error: 'Missing reservation time. Send start/end or date',
+        error: 'Missing reservation time. Send date or start/end',
       });
     }
 
     if (Number.isNaN(startTime.getTime()) || Number.isNaN(endTime.getTime())) {
       return res.status(400).json({
-        error: 'Invalid date format. Use ISO 8601',
+        error: 'Invalid date format',
       });
     }
-
-
-    console.log('Creating calendar event with payload:', {
-      name,
-      email,
-      company,
-      start: startTime.toISOString(),
-      end: endTime.toISOString(),
-    });
-
-
-    // Use GOOGLE_SERVICE_ACCOUNT_JSON for auth
-    const serviceAccountRaw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-    console.log("HAS SERVICE ACCOUNT JSON:", !!serviceAccountRaw);
-    if (!serviceAccountRaw) {
-      return res.status(500).json({ error: "Missing GOOGLE_SERVICE_ACCOUNT_JSON" });
-    }
-
-    let serviceAccount;
-    try {
-      serviceAccount = JSON.parse(serviceAccountRaw);
-    } catch (e) {
-      return res.status(500).json({
-        error: "Invalid GOOGLE_SERVICE_ACCOUNT_JSON",
-        details: e.message
-      });
-    }
-
-    const privateKey = serviceAccount.private_key?.replace(/\\n/g, '\n');
-    console.log("SERVICE ACCOUNT EMAIL:", serviceAccount?.client_email || null);
-    console.log("PRIVATE KEY LENGTH:", privateKey?.length || 0);
-
-    if (!privateKey || !serviceAccount.client_email) {
-      return res.status(500).json({
-        error: "Service account JSON missing private_key or client_email"
-      });
-    }
-
 
     const jwtClient = new google.auth.JWT(
       serviceAccount.client_email,
@@ -130,11 +91,11 @@ export default async function handler(req, res) {
 
     const calendar = google.calendar({
       version: 'v3',
-      auth: jwtClient
+      auth: jwtClient,
     });
 
     const existing = await calendar.events.list({
-      calendarId: GOOGLE_CALENDAR_ID,
+      calendarId,
       timeMin: startTime.toISOString(),
       timeMax: endTime.toISOString(),
       singleEvents: true,
@@ -146,9 +107,10 @@ export default async function handler(req, res) {
     );
 
     if (activeEvents.length > 0) {
-      return res.status(409).json({ error: 'Time slot already booked' });
+      return res.status(409).json({
+        error: 'Time slot already booked',
+      });
     }
-
 
     const event = {
       summary: `Reserva de ${name}${company ? ' - ' + company : ''}`,
@@ -165,12 +127,11 @@ export default async function handler(req, res) {
         dateTime: endTime.toISOString(),
         timeZone: 'Europe/Madrid',
       },
-      attendees: email ? [{ email }] : [],
+      attendees: [{ email }],
     };
 
-    // 5. Change calendar.events.insert to use requestBody instead of resource.
     const response = await calendar.events.insert({
-      calendarId: GOOGLE_CALENDAR_ID,
+      calendarId,
       requestBody: event,
       sendUpdates: 'all',
     });
