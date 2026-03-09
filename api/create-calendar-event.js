@@ -90,29 +90,35 @@ export default async function handler(req, res) {
     });
 
 
-    // DEBUG LOGS before JWT creation
-    console.log("HAS GOOGLE_CLIENT_EMAIL:", !!process.env.GOOGLE_CLIENT_EMAIL);
-    console.log("HAS GOOGLE_PRIVATE_KEY:", !!process.env.GOOGLE_PRIVATE_KEY);
-    console.log("PRIVATE KEY LENGTH:", process.env.GOOGLE_PRIVATE_KEY?.length || 0);
-    console.log("HAS GOOGLE_CALENDAR_ID:", !!process.env.GOOGLE_CALENDAR_ID);
+    // Use GOOGLE_SERVICE_ACCOUNT_JSON for auth
+    const serviceAccountRaw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+    console.log("HAS SERVICE ACCOUNT JSON:", !!serviceAccountRaw);
+    if (!serviceAccountRaw) {
+      return res.status(500).json({ error: "Missing GOOGLE_SERVICE_ACCOUNT_JSON" });
+    }
 
-    // Safe private key handling
-    const privateKey = process.env.GOOGLE_PRIVATE_KEY
-      ? process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
-      : null;
-
-    console.log("PRIVATE KEY AFTER REPLACE LENGTH:", privateKey?.length || 0);
-    console.log("PRIVATE KEY HAS BEGIN:", privateKey?.includes("BEGIN PRIVATE KEY") || false);
-    console.log("PRIVATE KEY HAS END:", privateKey?.includes("END PRIVATE KEY") || false);
-
-    if (!privateKey) {
+    let serviceAccount;
+    try {
+      serviceAccount = JSON.parse(serviceAccountRaw);
+    } catch (e) {
       return res.status(500).json({
-        error: "GOOGLE_PRIVATE_KEY is missing at runtime"
+        error: "Invalid GOOGLE_SERVICE_ACCOUNT_JSON",
+        details: e.message
+      });
+    }
+
+    const privateKey = serviceAccount.private_key?.replace(/\\n/g, '\n');
+    console.log("SERVICE ACCOUNT EMAIL:", serviceAccount?.client_email || null);
+    console.log("PRIVATE KEY LENGTH:", privateKey?.length || 0);
+
+    if (!privateKey || !serviceAccount.client_email) {
+      return res.status(500).json({
+        error: "Service account JSON missing private_key or client_email"
       });
     }
 
     const jwtClient = new google.auth.JWT(
-      process.env.GOOGLE_CLIENT_EMAIL,
+      serviceAccount.client_email,
       null,
       privateKey,
       ['https://www.googleapis.com/auth/calendar']
