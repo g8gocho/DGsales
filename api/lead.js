@@ -26,16 +26,16 @@ export default async function handler(req, res) {
     // Basic honeypot anti-spam field: real users leave it empty.
     if (website) return res.status(200).json({ ok: true });
 
+
     const isVoiceSource = source.includes("voice");
 
+    // Para leads de voz, ahora se espera que lleguen los datos reales del cliente
     if (!name || !email) {
-      if (!isVoiceSource) {
-        return res.status(400).json({ error: "Missing required fields: name and email" });
-      }
+      return res.status(400).json({ error: "Missing required fields: name and email" });
     }
 
-    const normalizedName = name || "Voice Reservation";
-    const normalizedEmail = email || `voice-reservation+${Date.now()}@dgsales.local`;
+    const normalizedName = name;
+    const normalizedEmail = email;
 
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail);
     if (!validEmail) {
@@ -51,18 +51,40 @@ export default async function handler(req, res) {
       created_at: new Date().toISOString(),
     };
 
-    // Si el lead viene del agente de voz, crear evento en Google Calendar
+    // Si el lead viene del agente de voz, crear evento en Google Calendar con los datos reales
     if (isVoiceSource) {
       try {
-        await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/api/create-calendar-event', {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        // Prefer start/end from body, fallback to created_at as date
+        const calendarPayload = {
+          name: normalizedName,
+          email: normalizedEmail,
+          company,
+        };
+        if (body.start && body.end) {
+          calendarPayload.start = body.start;
+          calendarPayload.end = body.end;
+        } else if (body.date || lead.created_at) {
+          calendarPayload.date = body.date || lead.created_at;
+        }
+        const calendarRes = await fetch(baseUrl + '/api/create-calendar-event', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: normalizedName,
-            email: normalizedEmail,
-            company
-          }),
+          body: JSON.stringify(calendarPayload),
         });
+        const calendarText = await calendarRes.text().catch(() => "");
+        let calendarJson = null;
+        try {
+          calendarJson = calendarText ? JSON.parse(calendarText) : null;
+        } catch (_) {
+          calendarJson = null;
+        }
+        if (!calendarRes.ok) {
+          console.error('Calendar event creation failed:', calendarRes.status, calendarText);
+        }
+        if (calendarJson && calendarJson.error) {
+          console.error('Calendar event error:', calendarJson.error);
+        }
       } catch (err) {
         console.error('Calendar event creation failed:', err);
       }

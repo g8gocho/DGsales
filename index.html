@@ -1031,8 +1031,17 @@
             const payload = pickCallData(callData || {});
             const endpoint = BACKEND_URL ? BACKEND_URL + '/api/lead' : '/api/lead';
 
-            // /api/lead expects name+email. For voice-only sessions we generate a
-            // valid technical email and preserve full details inside message.
+            // Pedir datos reales al usuario tras la llamada
+            let name = '';
+            let email = '';
+            let company = '';
+            // Prompt secuencial para mejor UX
+            name = window.prompt('¿Cuál es tu nombre? (para la reserva)', '');
+            if (!name) return alert('Debes ingresar un nombre para completar la reserva.');
+            email = window.prompt('¿Cuál es tu email? (para recibir la invitación)', '');
+            if (!email) return alert('Debes ingresar un email válido para completar la reserva.');
+            company = window.prompt('¿Empresa? (opcional)', '');
+
             const message = [
                 'VOICE_RESERVATION',
                 `call_id: ${payload.call_id || ''}`,
@@ -1043,9 +1052,9 @@
             ].join('\n');
 
             const leadPayload = {
-                name: 'Voice Reservation',
-                email: `voice-reservation+${Date.now()}@dgsales.local`,
-                company: 'Voice Agent',
+                name,
+                email,
+                company,
                 message,
                 website: '',
                 source: 'voice-agent'
